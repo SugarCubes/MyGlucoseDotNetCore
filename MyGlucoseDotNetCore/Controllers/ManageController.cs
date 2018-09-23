@@ -61,6 +61,8 @@ namespace MyGlucoseDotNetCore.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 StatusMessage = StatusMessage
             };
 
