@@ -20,6 +20,16 @@ namespace MyGlucoseDotNetCore.Models.ManageViewModels
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
 
+        //Heather Harvey
+        [FirstName]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        //Heather Harvey
+        [LastName]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
         public string StatusMessage { get; set; }
     }
 }
