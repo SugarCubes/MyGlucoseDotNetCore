@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Models.ManageViewModels;
 using MyGlucoseDotNetCore.Services;
+using MyGlucoseDotNetCore.Services.Interfaces;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
@@ -25,6 +26,7 @@ namespace MyGlucoseDotNetCore.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
+        private IApplicationUserRepository _users;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
@@ -34,13 +36,15 @@ namespace MyGlucoseDotNetCore.Controllers
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          IApplicationUserRepository users )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _users = users;
         }
 
         [TempData]
@@ -71,7 +75,7 @@ namespace MyGlucoseDotNetCore.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(IndexViewModel model)
+        public async Task<IActionResult> Index( IndexViewModel model )
         {
             if (!ModelState.IsValid)
             {
@@ -103,6 +107,32 @@ namespace MyGlucoseDotNetCore.Controllers
                     throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
                 }
             }
+
+            if ( model.FirstName != user.FirstName )
+                user.FirstName = model.FirstName;
+
+            if ( model.LastName != user.LastName )
+                user.LastName = model.LastName;
+
+            if ( model.Address1 != user.Address1 )
+                user.Address1 = model.Address1;
+
+            if ( model.Address2 != user.Address2 )
+                user.Address2 = model.Address2;
+
+            if ( model.City != user.City )
+                user.City = model.City;
+
+            if ( model.State != user.State )
+                user.State = model.State;
+
+            if ( model.Zip1 != user.Zip1 )
+                user.Zip1 = model.Zip1;
+
+            if ( model.Zip2 != user.Zip2 )
+                user.Zip2 = model.Zip2;
+
+            await _users.UpdateAsync( user.UserName, user );
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));
