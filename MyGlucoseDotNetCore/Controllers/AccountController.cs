@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Models.AccountViewModels;
 using MyGlucoseDotNetCore.Services;
+using MyGlucoseDotNetCore.Services.Interfaces;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -20,17 +21,20 @@ namespace MyGlucoseDotNetCore.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private IApplicationUserRepository _users;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger )
+            ILogger<AccountController> logger,
+            IApplicationUserRepository users )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _users = users;
         }
 
         [TempData]
@@ -97,9 +101,9 @@ namespace MyGlucoseDotNetCore.Controllers
                 var result = await _signInManager.PasswordSignInAsync( Email, Password, true, lockoutOnFailure: false);
                 if ( result.Succeeded )
                 {
-                    ApplicationUser user = await _userManager.GetUserAsync( User );
+                    ApplicationUser user = await _users.ReadAsync( Email );//await _userManager.GetUserAsync( User );
                     _logger.LogInformation( "User logged in remotely." );
-                    return Json(
+                    return new JsonResult(
                         new
                         {
                             success = true,
