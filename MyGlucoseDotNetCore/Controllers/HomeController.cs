@@ -12,7 +12,7 @@ namespace MyGlucoseDotNetCore.Controllers
     {
         public IActionResult Index()
         {
-            ViewData["Message"] = "Welcome to Sugar Cube!";
+            ViewData["Message"] = "Welcome to MyGlucoseDotNetCore!";
 
             return View();
         }
