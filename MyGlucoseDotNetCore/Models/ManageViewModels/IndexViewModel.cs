@@ -28,11 +28,28 @@ namespace MyGlucoseDotNetCore.Models.ManageViewModels
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        //Heather Harvey
+        [Display(Name = "Address 1")]
         public string Address1 { get; set; }
+
+        //Heather Harvey
+        [Display(Name = "Address 2")]
         public string Address2 { get; set; }
+
+        //Heather Harvey
+        [Display(Name = "City")]
         public string City { get; set; }
+
+        //Heather Harvey
+        [Display(Name = "State")]
         public string State { get; set; }
+
+        //Heather Harvey
+        [Display(Name = "Zip Code 1")]
         public int Zip1 { get; set; }
+
+        //Heather Harvey
+        [Display(Name = "Zip Code 2")]
         public int Zip2 { get; set; }
 
         public string StatusMessage { get; set; }
