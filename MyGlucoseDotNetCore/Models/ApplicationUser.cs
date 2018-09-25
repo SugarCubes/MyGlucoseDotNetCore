@@ -17,5 +17,11 @@ namespace MyGlucoseDotNetCore.Models
         public string State { get; set; }
         public int Zip1 { get; set; }
         public int Zip2 { get; set; }
+
+        public ApplicationUser()
+        {
+
+        } // constructor
+
     }
 }

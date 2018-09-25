@@ -1,0 +1,80 @@
+using MyGlucoseDotNetCore.Data;
+using MyGlucoseDotNetCore.Models;
+using MyGlucoseDotNetCore.Models.ViewModels;
+using MyGlucoseDotNetCore.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace MyGlucoseDotNetCore.Services
+{
+    public class DbMealItemRepository : IMealItemRepository
+    {
+        private readonly ApplicationDbContext _db;
+
+        public DbMealItemRepository( ApplicationDbContext db )
+        {
+            _db = db;
+
+        } // Injection Constructor
+
+
+        public async Task<MealItem> ReadAsync( Guid id, Guid mealid )
+        {
+            return await ReadAll()
+                .SingleOrDefaultAsync( o => o.Id == id
+                && o.MealId == mealid );
+
+        } // ReadAsync
+
+
+        public IQueryable<MealItem> ReadAll()
+        {
+            return _db.MealItems;
+
+        } // ReadAll
+
+
+        public async Task<MealItem> CreateAsync( MealItem mealitem )
+        {
+            _db.MealItems.Add( mealitem );
+            await _db.SaveChangesAsync();
+            return mealitem;
+
+        } // Create
+
+
+        public async Task UpdateAsync( Guid id, Guid mealid, MealItemViewModel mealitemVM )
+        {
+            var oldMealItem = await ReadAsync( id, mealid );
+            if( oldMealItem != null )
+            {
+    			oldMealItem.Meal = mealitemVM.Meal;
+    			oldMealItem.Name = mealitemVM.Name;
+    			oldMealItem.Carbs = mealitemVM.Carbs;
+    			oldMealItem.Servings = mealitemVM.Servings;
+                _db.Entry( oldMealItem ).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
+                return;
+            }
+
+        } // UpdateAsync
+
+
+        public async Task DeleteAsync( Guid id, Guid mealid )
+        {
+            var mealitem = await ReadAsync( id, mealid );
+            if( mealitem != null )
+            {
+                _db.MealItems.Remove( mealitem );
+                await _db.SaveChangesAsync();
+            }
+            return;
+
+        } // DeleteAsync
+
+    } // Class
+
+} // Namespace

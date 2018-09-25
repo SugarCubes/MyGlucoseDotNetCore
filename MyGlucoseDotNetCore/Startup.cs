@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MyGlucoseDotNetCore.Data;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Services;
+using MyGlucoseDotNetCore.Services.Interfaces;
 
 namespace MyGlucoseDotNetCore
 {
@@ -31,6 +32,13 @@ namespace MyGlucoseDotNetCore
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+
+            // Adding scoped services to provide DB Repositories:
+            services.AddScoped<IApplicationUserRepository, DbApplicationUserRepository>();
+            services.AddScoped<IExerciseEntryRepository, DbExerciseEntryRepository>();
+            services.AddScoped<IGlucoseEntryRepository, DbGlucoseEntryRepository>();
+            services.AddScoped<IMealEntryRepository, DbMealEntryRepository>();
+            services.AddScoped<IMealItemRepository, DbMealItemRepository>();
 
             services.AddMvc();
     
