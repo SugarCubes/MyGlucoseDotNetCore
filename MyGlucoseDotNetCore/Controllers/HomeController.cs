@@ -19,7 +19,7 @@ namespace MyGlucoseDotNetCore.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Welcome to MyGlucose's about section.";
+            ViewData["Message"] = "About My Glucose";
 
             return View();
         }
