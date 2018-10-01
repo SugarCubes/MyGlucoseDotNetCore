@@ -103,11 +103,19 @@ namespace MyGlucoseDotNetCore.Controllers
                 {
                     ApplicationUser user = await _users.ReadAsync( Email );//await _userManager.GetUserAsync( User );
                     _logger.LogInformation( "User logged in remotely." );
+
+                    user.RemoteLoginToken = Guid.NewGuid();
+                    user.RemoteLoginExpiration = (long) DateTime.UtcNow.Subtract( new DateTime( 1970, 1, 1 ).AddDays( 30 ) ).TotalSeconds;
+                    await _users.UpdateAsync( user.UserName, user );
+
                     return new JsonResult(
                         new
                         {
                             success = true,
+                            errorCode = ErrorCode.NO_ERROR,
                             user.UserName,
+                            remoteLoginToken = user.RemoteLoginToken.ToString(),
+                            user.RemoteLoginExpiration,
                             user.Address1,
                             user.Address2,
                             user.City,
@@ -120,6 +128,16 @@ namespace MyGlucoseDotNetCore.Controllers
                             user.Zip1,
                             user.Zip2
                         }
+                        );
+                }
+                else
+                {
+                    return new JsonResult(
+                            new
+                            {
+                                success = false,
+                                errorCode = ErrorCode.INVALID_EMAIL_PASSWORD
+                            }
                         );
                 }
             }
