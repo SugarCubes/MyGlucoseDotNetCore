@@ -1,4 +1,4 @@
-# MyGlucoseDotNetCore
+# MyGlucose (.Net Core doctor application)
 The doctor's view/backend website for the MyGlucose application
 
 To use the web server during testing, you will need to configure IIS Express to allow external access (from mobile devices or other computers):
@@ -23,4 +23,4 @@ To use the web server during testing, you will need to configure IIS Express to 
 </site>
 ```
    - Remember to leave the first 2 lines so that testing will still work in your browser
-   - !!!NOTE!!! You **_must_** start VS with Administrator rights so that IIS will bind the wildcard addresses. Otherwise, it will give an error message _"The hostname could not be parsed"_
+   - **!!!NOTE!!! You _MUST_ start Visual Studio with Administrator rights so that IIS will bind the wildcard addresses.** Otherwise, it will give an error message _"The hostname could not be parsed"_
