@@ -1,0 +1,54 @@
+﻿@model MyGlucoseDotNetCore.Models.GlucoseEntries
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>GlucoseEntries</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PatientUsername)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PatientUsername)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Measurement)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Measurement)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BeforeAfter)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BeforeAfter)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WhichMeal)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WhichMeal)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Timestamp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Timestamp)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

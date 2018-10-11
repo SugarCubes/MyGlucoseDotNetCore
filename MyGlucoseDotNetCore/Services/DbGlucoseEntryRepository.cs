@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace MyGlucoseDotNetCore.Services
 {
-    public class DbGlucoseEntryRepository : IGlucoseEntryRepository
+    public class DbGlucoseEntriesRepository : IGlucoseEntriesRepository
     {
         private readonly ApplicationDbContext _db;
 
-        public DbGlucoseEntryRepository( ApplicationDbContext db )
+        public DbGlucoseEntriesRepository( ApplicationDbContext db )
         {
             _db = db;
 
         } // Injection Constructor
 
 
-        public async Task<GlucoseEntry> ReadAsync( Guid id )
+        public async Task<GlucoseEntries> ReadAsync( Guid id )
         {
             return await ReadAll()
                 .SingleOrDefaultAsync( o => o.Id == id );
@@ -29,35 +29,35 @@ namespace MyGlucoseDotNetCore.Services
         } // ReadAsync
 
 
-        public IQueryable<GlucoseEntry> ReadAll()
+        public IQueryable<GlucoseEntries> ReadAll()
         {
             return _db.GlucoseEntries;
 
         } // ReadAll
 
 
-        public async Task<GlucoseEntry> CreateAsync( GlucoseEntry glucoseentry )
+        public async Task<GlucoseEntries> CreateAsync( GlucoseEntries GlucoseEntries )
         {
-            _db.GlucoseEntries.Add( glucoseentry );
+            _db.GlucoseEntries.Add( GlucoseEntries );
             await _db.SaveChangesAsync();
-            return glucoseentry;
+            return GlucoseEntries;
 
         } // Create
 
 
-        public async Task UpdateAsync( Guid id, GlucoseEntryViewModel glucoseentryVM )
+        public async Task UpdateAsync( Guid id, GlucoseEntriesViewModel GlucoseEntriesVM )
         {
-            var oldGlucoseEntry = await ReadAsync( id );
-            if( oldGlucoseEntry != null )
+            var oldGlucoseEntries = await ReadAsync( id );
+            if( oldGlucoseEntries != null )
             {
-    			oldGlucoseEntry.PatientUsername = glucoseentryVM.PatientUsername;
-    			oldGlucoseEntry.Patient = glucoseentryVM.Patient;
-    			oldGlucoseEntry.Measurement = glucoseentryVM.Measurement;
-    			oldGlucoseEntry.BeforeAfter = glucoseentryVM.BeforeAfter;
-    			oldGlucoseEntry.WhichMeal = glucoseentryVM.WhichMeal;
-    			oldGlucoseEntry.Date = glucoseentryVM.Date;
-    			oldGlucoseEntry.Timestamp = glucoseentryVM.Timestamp;
-                _db.Entry( oldGlucoseEntry ).State = EntityState.Modified;
+    			oldGlucoseEntries.PatientUsername = GlucoseEntriesVM.PatientUsername;
+    			oldGlucoseEntries.Patient = GlucoseEntriesVM.Patient;
+    			oldGlucoseEntries.Measurement = GlucoseEntriesVM.Measurement;
+    			oldGlucoseEntries.BeforeAfter = GlucoseEntriesVM.BeforeAfter;
+    			oldGlucoseEntries.WhichMeal = GlucoseEntriesVM.WhichMeal;
+    			oldGlucoseEntries.Date = GlucoseEntriesVM.Date;
+    			oldGlucoseEntries.Timestamp = GlucoseEntriesVM.Timestamp;
+                _db.Entry( oldGlucoseEntries ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;
             }
@@ -67,10 +67,10 @@ namespace MyGlucoseDotNetCore.Services
 
         public async Task DeleteAsync( Guid id )
         {
-            var glucoseentry = await ReadAsync( id );
-            if( glucoseentry != null )
+            var GlucoseEntries = await ReadAsync( id );
+            if( GlucoseEntries != null )
             {
-                _db.GlucoseEntries.Remove( glucoseentry );
+                _db.GlucoseEntries.Remove( GlucoseEntries );
                 await _db.SaveChangesAsync();
             }
             return;

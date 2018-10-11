@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.ValueGeneration;
 using MyGlucoseDotNetCore.Data;
 using System;
 
-namespace MyGlucoseDotNetCore.Data.Migrations
+namespace MyGlucoseDotNetCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180923225909_ScaffoldedNewModels")]
-    partial class ScaffoldedNewModels
+    [Migration("20181011155853_mig3")]
+    partial class mig3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -178,6 +178,10 @@ namespace MyGlucoseDotNetCore.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<long>("RemoteLoginExpiration");
+
+                    b.Property<Guid>("RemoteLoginToken");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<string>("State");
@@ -231,10 +235,10 @@ namespace MyGlucoseDotNetCore.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ExerciseEntry");
+                    b.ToTable("ExerciseEntries");
                 });
 
-            modelBuilder.Entity("MyGlucoseDotNetCore.Models.GlucoseEntry", b =>
+            modelBuilder.Entity("MyGlucoseDotNetCore.Models.GlucoseEntries", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -257,7 +261,7 @@ namespace MyGlucoseDotNetCore.Data.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("GlucoseEntry");
+                    b.ToTable("GlucoseEntries");
                 });
 
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.MealEntry", b =>
@@ -266,6 +270,8 @@ namespace MyGlucoseDotNetCore.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Date");
+
+                    b.Property<string>("PatientId");
 
                     b.Property<long>("Timestamp");
 
@@ -277,9 +283,11 @@ namespace MyGlucoseDotNetCore.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PatientId");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("MealEntry");
+                    b.ToTable("MealEntries");
                 });
 
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.MealItem", b =>
@@ -299,7 +307,7 @@ namespace MyGlucoseDotNetCore.Data.Migrations
 
                     b.HasIndex("MealId");
 
-                    b.ToTable("MealItem");
+                    b.ToTable("MealItems");
                 });
 
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.Patient", b =>
@@ -364,11 +372,11 @@ namespace MyGlucoseDotNetCore.Data.Migrations
                         .HasForeignKey("PatientId");
 
                     b.HasOne("MyGlucoseDotNetCore.Models.ApplicationUser", "User")
-                        .WithMany("ExerciseEntries")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("MyGlucoseDotNetCore.Models.GlucoseEntry", b =>
+            modelBuilder.Entity("MyGlucoseDotNetCore.Models.GlucoseEntries", b =>
                 {
                     b.HasOne("MyGlucoseDotNetCore.Models.Patient", "Patient")
                         .WithMany("GlucoseEntries")
@@ -377,8 +385,12 @@ namespace MyGlucoseDotNetCore.Data.Migrations
 
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.MealEntry", b =>
                 {
-                    b.HasOne("MyGlucoseDotNetCore.Models.ApplicationUser", "User")
+                    b.HasOne("MyGlucoseDotNetCore.Models.Patient")
                         .WithMany("MealEntries")
+                        .HasForeignKey("PatientId");
+
+                    b.HasOne("MyGlucoseDotNetCore.Models.ApplicationUser", "User")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 

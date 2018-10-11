@@ -9,13 +9,12 @@ using Microsoft.EntityFrameworkCore.ValueGeneration;
 using MyGlucoseDotNetCore.Data;
 using System;
 
-namespace MyGlucoseDotNetCore.Data.Migrations
+namespace MyGlucoseDotNetCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181001185735_AddedRemoteLoginFieldsToApplicationUser")]
-    partial class AddedRemoteLoginFieldsToApplicationUser
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,7 +237,7 @@ namespace MyGlucoseDotNetCore.Data.Migrations
                     b.ToTable("ExerciseEntries");
                 });
 
-            modelBuilder.Entity("MyGlucoseDotNetCore.Models.GlucoseEntry", b =>
+            modelBuilder.Entity("MyGlucoseDotNetCore.Models.GlucoseEntries", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -376,7 +375,7 @@ namespace MyGlucoseDotNetCore.Data.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("MyGlucoseDotNetCore.Models.GlucoseEntry", b =>
+            modelBuilder.Entity("MyGlucoseDotNetCore.Models.GlucoseEntries", b =>
                 {
                     b.HasOne("MyGlucoseDotNetCore.Models.Patient", "Patient")
                         .WithMany("GlucoseEntries")

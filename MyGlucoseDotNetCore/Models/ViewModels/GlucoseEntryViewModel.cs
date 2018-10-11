@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MyGlucoseDotNetCore.Models.ViewModels
 {
-    public class GlucoseEntryViewModel
+    public class GlucoseEntriesViewModel
     {
         public string PatientUsername { get; set; }
         public Patient Patient { get; set; }
@@ -15,9 +15,9 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
         public DateTime Date { get; set; }
         public long Timestamp { get; set; }
 
-		public GlucoseEntry GetNewGlucoseEntry()
+		public GlucoseEntries GetNewGlucoseEntries()
 		{
-			return new GlucoseEntry
+			return new GlucoseEntries
 			{
     			PatientUsername = PatientUsername,
     			Patient = Patient,
@@ -28,7 +28,7 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
     			Timestamp = Timestamp
 			};
 
-		} // GetNewGlucoseEntry
+		} // GetNewGlucoseEntries
 
     } // Class
 

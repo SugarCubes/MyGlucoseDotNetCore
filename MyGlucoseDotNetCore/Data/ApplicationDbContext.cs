@@ -11,7 +11,7 @@ namespace MyGlucoseDotNetCore.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public DbSet<ExerciseEntry> ExerciseEntries { get; set; }
-        public DbSet<GlucoseEntry> GlucoseEntries { get; set; }
+        public DbSet<GlucoseEntries> GlucoseEntries { get; set; }
         public DbSet<MealEntry> MealEntries { get; set; }
         public DbSet<MealItem> MealItems { get; set; }
         public DbSet<Patient> Patients { get; set; }
