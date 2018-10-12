@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyGlucoseDotNetCore.Data;
@@ -17,7 +13,7 @@ namespace MyGlucoseDotNetCore
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup( IConfiguration configuration )
         {
             Configuration = configuration;
         }
@@ -25,10 +21,10 @@ namespace MyGlucoseDotNetCore
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices( IServiceCollection services )
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>( options =>
+                 options.UseSqlServer( Configuration.GetConnectionString( "DefaultConnection" ) ) );
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -41,7 +37,7 @@ namespace MyGlucoseDotNetCore
             services.AddScoped<IMealItemRepository, DbMealItemRepository>();
 
             services.AddMvc();
-    
+
             // Added the following service to use the ApplicationUser, 
             // ApplicationRole, and ApplicationDbContext classes 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
@@ -50,9 +46,9 @@ namespace MyGlucoseDotNetCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure( IApplicationBuilder app, IHostingEnvironment env )
         {
-            if (env.IsDevelopment())
+            if ( env.IsDevelopment() )
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
@@ -60,19 +56,24 @@ namespace MyGlucoseDotNetCore
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler( "/Home/Error" );
             }
 
             app.UseStaticFiles();
 
             app.UseAuthentication();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvc( routes =>
+             {
+                 routes.MapRoute(
+                     name: "default",
+                     template: "{controller=Home}/{action=Index}/{id?}" );
+
+                 routes.MapRoute(
+                     name: "areas",
+                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                 );
+             } );
         }
     }
 }

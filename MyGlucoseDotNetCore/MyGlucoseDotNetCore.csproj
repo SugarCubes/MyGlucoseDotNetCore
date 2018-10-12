@@ -19,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\API\Data\" />
+    <Folder Include="Areas\API\Models\" />
     <Folder Include="Data\Migrations\" />
   </ItemGroup>
 

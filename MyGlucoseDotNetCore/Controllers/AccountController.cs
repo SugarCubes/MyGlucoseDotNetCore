@@ -8,6 +8,7 @@ using MyGlucoseDotNetCore.Models.AccountViewModels;
 using MyGlucoseDotNetCore.Services;
 using MyGlucoseDotNetCore.Services.Interfaces;
 using System;
+using System.Diagnostics;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -86,78 +87,6 @@ namespace MyGlucoseDotNetCore.Controllers
             // If we got this far, something failed, redisplay form
             return View( model );
         }
-
-        
-        /// <summary>Allows a patient to login from a remote device.</summary>
-        /// <param name="Email">The patient's email.</param>
-        /// <param name="Password">The patient's password.</param>
-        /// <returns>JsonResult</returns>
-        [HttpPost]
-        [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> LoginRemote( string Email, string Password )
-        {
-            if ( ModelState.IsValid )
-            {
-                // result is a boolean value: whether or not the signin was successful:
-                var result = await _signInManager.PasswordSignInAsync( Email, Password, true, lockoutOnFailure: false);
-                if ( result.Succeeded )                                     // Login was successful
-                {
-                    ApplicationUser user = await _users.ReadAsync( Email ); // Read user from the repository
-                    _logger.LogInformation( "User logged in remotely." );   // Probably not needed
-
-                    user.RemoteLoginToken = Guid.NewGuid();                 // Create a login token, similar to a "session id"
-                    // Not tested: Probably won't be used to force user to login again until much later in development:
-                    user.RemoteLoginExpiration = (long) DateTime.UtcNow.Subtract( new DateTime( 1970, 1, 1 ).AddDays( 30 ) ).TotalSeconds;
-                    await _users.UpdateAsync( user.UserName, user );        // Update the user with the repo
-
-                    return new JsonResult(                                  // This implements IActionResult. If you were 
-                        new                                                 //      to inspect the output, you would see a 
-                        {                                                   //      Json-formatted string.
-                            success = true,
-                            errorCode = ErrorCode.NO_ERROR,
-                            user.UserName,
-                            remoteLoginToken = user.RemoteLoginToken.ToString(),
-                            user.RemoteLoginExpiration,
-                            user.Address1,
-                            user.Address2,
-                            user.City,
-                            user.Email,
-                            user.FirstName,
-                            user.Id,
-                            user.LastName,
-                            user.PhoneNumber,
-                            user.State,
-                            user.Zip1,
-                            user.Zip2
-                        }
-                        );
-
-                }
-                else                                                            // Login didn't work
-                {
-                    return new JsonResult(                                      // We still return a JsonResult
-                            new
-                            {
-                                success = false,                                // Indicate the login was unsuccessful
-                                errorCode = ErrorCode.INVALID_EMAIL_PASSWORD    //  ...and return an error code
-                            }
-                        );
-
-                } // if succeeeded...else
-
-            } // ModelState == valid
-
-            // If we got this far, something failed, so just return an unknown error
-            return new JsonResult( 
-                    new
-                    {
-                        success = false,
-                        errorCode = ErrorCode.UNKNOWN
-                    }
-                );
-
-        } // LoginRemote
 
 
         [HttpGet]
