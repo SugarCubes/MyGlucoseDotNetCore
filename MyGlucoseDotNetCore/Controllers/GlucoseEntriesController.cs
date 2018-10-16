@@ -7,12 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyGlucoseDotNetCore.Data;
 using MyGlucoseDotNetCore.Models;
+using MyGlucoseDotNetCore.Services.Interfaces;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
     public class GlucoseEntriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+
+        
 
         public GlucoseEntriesController(ApplicationDbContext context)
         {
@@ -152,3 +155,6 @@ namespace MyGlucoseDotNetCore.Controllers
         }
     }
 }
+
+        
+        
