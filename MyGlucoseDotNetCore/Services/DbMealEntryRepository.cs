@@ -82,6 +82,11 @@ namespace MyGlucoseDotNetCore.Services
             _db.SaveChanges();
             return mealEntry;
         }
+
+        public MealEntry Read(Guid mealEntryId)
+        {
+            return _db.MealEntries.Include(m => m.MealItems).FirstOrDefault(m => m.Id == mealEntryId);
+        }
     } // Class
 
 } // Namespace

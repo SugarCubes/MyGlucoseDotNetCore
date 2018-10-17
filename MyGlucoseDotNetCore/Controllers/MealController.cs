@@ -34,6 +34,54 @@ namespace MyGlucoseDotNetCore.Controllers
             return View();
         }
 
+        public IActionResult CreateMealEntry()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateMealEntry(MealEntry mealEntry)
+        {
+            if (ModelState.IsValid)
+            {
+                _meal.Create(mealEntry);
+                return RedirectToAction("Index");
+            }
+            return View(mealEntry);
+        }
+
+        public IActionResult CreateMealItem([Bind(Prefix = "id")] Guid mealEntryId)
+        {
+            var mealEntry = _meal.Read(mealEntryId);
+            if(mealEntry == null)
+            {
+                /*******************************/
+                //This will need to change once we create the views
+                /*************************/
+                return RedirectToAction("Index");
+            }
+            // Need to remember to create a view named "MealEntry"
+            ViewData["MealEntry"] = mealEntry;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateMealItem(Guid mealEntryId, MealItem mealItem)
+        {
+            if (ModelState.IsValid)
+            {
+                //mealItem.Id = 0;
+                _item.Create(mealEntryId, mealItem);
+                /*******************************/
+                //This will need to change once we create the views
+                /*************************/
+                return RedirectToAction("Index");
+            }// End if model state is valid statement.
+            // Need to remember to create a view named "MealItem"
+            ViewData["MealItem"] = _meal.Read(mealEntryId);
+            return View(mealItem);
+        }// End CreateMealItem[Post].
+
         public async Task<IActionResult> MealEntrySync(Guid mealId, string Email)
         {
             if (ModelState.IsValid)
