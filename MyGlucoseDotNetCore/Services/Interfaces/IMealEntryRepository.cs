@@ -14,6 +14,7 @@ namespace MyGlucoseDotNetCore.Services.Interfaces
         Task<MealEntry> CreateAsync( MealEntry project );
         Task UpdateAsync( Guid id, MealEntryViewModel project );
         Task DeleteAsync( Guid id );
+        MealEntry Create( MealEntry project );
 
     } // Interface
 

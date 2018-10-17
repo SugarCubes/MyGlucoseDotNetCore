@@ -1,10 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using MyGlucoseDotNetCore.Data;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Models.ViewModels;
 using MyGlucoseDotNetCore.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,24 +36,30 @@ namespace MyGlucoseDotNetCore.Services
         } // ReadAll
 
 
-        public async Task<MealItem> CreateAsync( MealItem mealitem )
+        public async Task<MealItem> CreateAsync( Guid mealEntryId, MealItem mealItem )
         {
-            _db.MealItems.Add( mealitem );
-            await _db.SaveChangesAsync();
-            return mealitem;
+            var mealEntry = Read( mealEntryId );
+            if ( mealEntry != null )
+            {
+                mealEntry.MealItems.Add( mealItem );    // Associate item with the entry
+                mealItem.Meal = mealEntry;              // Associate the entry with the item
+                await _db.SaveChangesAsync();
+            }// End if mealEntry not null statement.
 
-        } // Create
+            return mealItem;
+
+        } // CreateAsync
 
 
         public async Task UpdateAsync( Guid id, Guid mealid, MealItemViewModel mealitemVM )
         {
             var oldMealItem = await ReadAsync( id, mealid );
-            if( oldMealItem != null )
+            if ( oldMealItem != null )
             {
-    			oldMealItem.Meal = mealitemVM.Meal;
-    			oldMealItem.Name = mealitemVM.Name;
-    			oldMealItem.Carbs = mealitemVM.Carbs;
-    			oldMealItem.Servings = mealitemVM.Servings;
+                oldMealItem.Meal = mealitemVM.Meal;
+                oldMealItem.Name = mealitemVM.Name;
+                oldMealItem.Carbs = mealitemVM.Carbs;
+                oldMealItem.Servings = mealitemVM.Servings;
                 _db.Entry( oldMealItem ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;
@@ -66,7 +71,7 @@ namespace MyGlucoseDotNetCore.Services
         public async Task DeleteAsync( Guid id, Guid mealid )
         {
             var mealitem = await ReadAsync( id, mealid );
-            if( mealitem != null )
+            if ( mealitem != null )
             {
                 _db.MealItems.Remove( mealitem );
                 await _db.SaveChangesAsync();
@@ -74,6 +79,27 @@ namespace MyGlucoseDotNetCore.Services
             return;
 
         } // DeleteAsync
+
+
+        public MealItem Create( Guid mealEntryId, MealItem mealItem )
+        {
+            var mealEntry = Read(mealEntryId);
+            if ( mealEntry != null )
+            {
+                mealEntry.MealItems.Add( mealItem );
+                mealItem.Meal = mealEntry;
+                _db.SaveChanges();
+            }// End if mealEntry not null statement.
+
+            return mealItem;
+
+        } // End Create
+
+
+        public MealEntry Read( Guid mealId )
+        {
+            return _db.MealEntries.Include( m => m.MealItems ).FirstOrDefault( m => m.Id == mealId );
+        }// End Read
 
     } // Class
 

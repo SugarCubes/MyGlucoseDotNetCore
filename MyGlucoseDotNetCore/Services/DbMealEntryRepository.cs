@@ -48,14 +48,14 @@ namespace MyGlucoseDotNetCore.Services
         public async Task UpdateAsync( Guid id, MealEntryViewModel mealentryVM )
         {
             var oldMealEntry = await ReadAsync( id );
-            if( oldMealEntry != null )
+            if ( oldMealEntry != null )
             {
-    			oldMealEntry.UserName = mealentryVM.UserName;
-    			oldMealEntry.User = mealentryVM.User;
-    			oldMealEntry.TotalCarbs = mealentryVM.TotalCarbs;
-    			oldMealEntry.Date = mealentryVM.Date;
-    			oldMealEntry.Timestamp = mealentryVM.Timestamp;
-    			oldMealEntry.MealItems = mealentryVM.MealItems;
+                oldMealEntry.UserName = mealentryVM.UserName;
+                oldMealEntry.User = mealentryVM.User;
+                oldMealEntry.TotalCarbs = mealentryVM.TotalCarbs;
+                oldMealEntry.Date = mealentryVM.Date;
+                oldMealEntry.Timestamp = mealentryVM.Timestamp;
+                oldMealEntry.MealItems = mealentryVM.MealItems;
                 _db.Entry( oldMealEntry ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;
@@ -67,7 +67,7 @@ namespace MyGlucoseDotNetCore.Services
         public async Task DeleteAsync( Guid id )
         {
             var mealentry = await ReadAsync( id );
-            if( mealentry != null )
+            if ( mealentry != null )
             {
                 _db.MealEntries.Remove( mealentry );
                 await _db.SaveChangesAsync();
@@ -76,6 +76,17 @@ namespace MyGlucoseDotNetCore.Services
 
         } // DeleteAsync
 
+        public MealEntry Create( MealEntry mealEntry )
+        {
+            _db.MealEntries.Add( mealEntry );
+            _db.SaveChanges();
+            return mealEntry;
+        }
+
+        public MealEntry Read( Guid mealEntryId )
+        {
+            return _db.MealEntries.Include( m => m.MealItems ).FirstOrDefault( m => m.Id == mealEntryId );
+        }
     } // Class
 
 } // Namespace
