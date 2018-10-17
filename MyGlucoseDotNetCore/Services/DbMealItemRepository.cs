@@ -43,7 +43,7 @@ namespace MyGlucoseDotNetCore.Services
             await _db.SaveChangesAsync();
             return mealitem;
 
-        } // Create
+        } // CreateAsync
 
 
         public async Task UpdateAsync( Guid id, Guid mealid, MealItemViewModel mealitemVM )
@@ -74,7 +74,24 @@ namespace MyGlucoseDotNetCore.Services
             return;
 
         } // DeleteAsync
+        
 
+        public MealItem Create(Guid mealEntryId, MealItem mealItem)
+        {
+            var mealEntry = Read(mealEntryId);
+            if (mealEntry != null)
+            {
+                mealEntry.MealItems.Add(mealItem);
+                mealItem.Meal = mealEntry;
+                _db.SaveChanges();
+            }// End if mealEntry not null statement.
+            return mealItem;
+        } // End Create
+
+        public MealEntry Read(Guid mealId)
+        {
+            return _db.MealEntries.Include(m => m.MealItems).FirstOrDefault(m => m.Id == mealId);
+        }// End Read
     } // Class
 
 } // Namespace

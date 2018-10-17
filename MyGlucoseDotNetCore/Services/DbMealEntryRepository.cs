@@ -76,6 +76,12 @@ namespace MyGlucoseDotNetCore.Services
 
         } // DeleteAsync
 
+        public MealEntry Create(MealEntry mealEntry)
+        {
+            _db.MealEntries.Add(mealEntry);
+            _db.SaveChanges();
+            return mealEntry;
+        }
     } // Class
 
 } // Namespace
