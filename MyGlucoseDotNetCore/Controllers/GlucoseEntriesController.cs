@@ -22,13 +22,13 @@ namespace MyGlucoseDotNetCore.Controllers
             _context = context;
         }
 
-        // GET: GlucoseEntries
+        // GET: GlucoseEntry
         public async Task<IActionResult> Index()
         {
             return View(await _context.GlucoseEntries.ToListAsync());
         }
 
-        // GET: GlucoseEntries/Details/5
+        // GET: GlucoseEntry/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -46,18 +46,18 @@ namespace MyGlucoseDotNetCore.Controllers
             return View(GlucoseEntries);
         }
 
-        // GET: GlucoseEntries/Create
+        // GET: GlucoseEntry/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: GlucoseEntries/Create
+        // POST: GlucoseEntry/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PatientUsername,Measurement,BeforeAfter,WhichMeal,Date,Timestamp")] GlucoseEntries GlucoseEntries)
+        public async Task<IActionResult> Create([Bind("Id,PatientUsername,Measurement,BeforeAfter,WhichMeal,Date,Timestamp")] GlucoseEntry GlucoseEntries)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace MyGlucoseDotNetCore.Controllers
             return View(GlucoseEntries);
         }
 
-        // GET: GlucoseEntries/Edit/5
+        // GET: GlucoseEntry/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -85,12 +85,12 @@ namespace MyGlucoseDotNetCore.Controllers
             return View(GlucoseEntries);
         }
 
-        // POST: GlucoseEntries/Edit/5
+        // POST: GlucoseEntry/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,PatientUsername,Measurement,BeforeAfter,WhichMeal,Date,Timestamp")] GlucoseEntries GlucoseEntries)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,PatientUsername,Measurement,BeforeAfter,WhichMeal,Date,Timestamp")] GlucoseEntry GlucoseEntries)
         {
             if (id != GlucoseEntries.Id)
             {
@@ -120,7 +120,7 @@ namespace MyGlucoseDotNetCore.Controllers
             return View(GlucoseEntries);
         }
 
-        // GET: GlucoseEntries/Delete/5
+        // GET: GlucoseEntry/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -138,7 +138,7 @@ namespace MyGlucoseDotNetCore.Controllers
             return View(GlucoseEntries);
         }
 
-        // POST: GlucoseEntries/Delete/5
+        // POST: GlucoseEntry/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

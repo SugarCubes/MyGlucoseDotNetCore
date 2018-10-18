@@ -2,7 +2,7 @@
 
 namespace MyGlucoseDotNetCore.Models
 {
-    public class GlucoseEntries
+    public class GlucoseEntry
     {
         public Guid Id { get; set; }
         public string PatientUsername { get; set; }

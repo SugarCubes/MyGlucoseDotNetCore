@@ -198,7 +198,7 @@ namespace MyGlucoseDotNetCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GlucoseEntries",
+                name: "GlucoseEntry",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -322,7 +322,7 @@ namespace MyGlucoseDotNetCore.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_GlucoseEntries_PatientId",
-                table: "GlucoseEntries",
+                table: "GlucoseEntry",
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
@@ -362,7 +362,7 @@ namespace MyGlucoseDotNetCore.Migrations
                 name: "ExerciseEntries");
 
             migrationBuilder.DropTable(
-                name: "GlucoseEntries");
+                name: "GlucoseEntry");
 
             migrationBuilder.DropTable(
                 name: "MealItems");

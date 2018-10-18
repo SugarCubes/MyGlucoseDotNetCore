@@ -21,7 +21,7 @@ namespace MyGlucoseDotNetCore.Services
         } // Injection Constructor
 
 
-        public async Task<GlucoseEntries> ReadAsync( Guid id )
+        public async Task<GlucoseEntry> ReadAsync( Guid id )
         {
             return await ReadAll()
                 .SingleOrDefaultAsync( o => o.Id == id );
@@ -29,14 +29,14 @@ namespace MyGlucoseDotNetCore.Services
         } // ReadAsync
 
 
-        public IQueryable<GlucoseEntries> ReadAll()
+        public IQueryable<GlucoseEntry> ReadAll()
         {
             return _db.GlucoseEntries;
 
         } // ReadAll
 
 
-        public async Task<GlucoseEntries> CreateAsync( GlucoseEntries GlucoseEntries )
+        public async Task<GlucoseEntry> CreateAsync( GlucoseEntry GlucoseEntries )
         {
             _db.GlucoseEntries.Add( GlucoseEntries );
             await _db.SaveChangesAsync();

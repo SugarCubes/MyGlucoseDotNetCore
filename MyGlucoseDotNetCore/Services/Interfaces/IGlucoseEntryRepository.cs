@@ -9,9 +9,9 @@ namespace MyGlucoseDotNetCore.Services.Interfaces
 {
     public interface IGlucoseEntriesRepository
     {
-        Task<GlucoseEntries> ReadAsync( Guid id );
-        IQueryable<GlucoseEntries> ReadAll();
-        Task<GlucoseEntries> CreateAsync( GlucoseEntries project );
+        Task<GlucoseEntry> ReadAsync( Guid id );
+        IQueryable<GlucoseEntry> ReadAll();
+        Task<GlucoseEntry> CreateAsync( GlucoseEntry project );
         Task UpdateAsync( Guid id, GlucoseEntriesViewModel project );
         Task DeleteAsync( Guid id );
 

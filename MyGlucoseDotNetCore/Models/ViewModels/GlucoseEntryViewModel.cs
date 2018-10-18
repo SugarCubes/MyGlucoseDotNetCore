@@ -15,9 +15,9 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
         public DateTime Date { get; set; }
         public long Timestamp { get; set; }
 
-		public GlucoseEntries GetNewGlucoseEntries()
+		public GlucoseEntry GetNewGlucoseEntries()
 		{
-			return new GlucoseEntries
+			return new GlucoseEntry
 			{
     			PatientUsername = PatientUsername,
     			Patient = Patient,
