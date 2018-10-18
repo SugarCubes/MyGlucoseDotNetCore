@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MyGlucoseDotNetCore.Models.ViewModels
 {
-    public class ExcerciseEntryViewModel
+    public class ExerciseEntryViewModel
     {
         public string UserName { get; set; }
         public ApplicationUser User { get; set; }

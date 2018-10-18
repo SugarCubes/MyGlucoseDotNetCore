@@ -7,7 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+/*********************************************/
+//  Created by J.T. Blevins
+//  Modified by Heather Harvey with advice from Natash Ince and J.T. Blevins
+/*********************************************/
 namespace MyGlucoseDotNetCore.Services
 {
     public class DbExerciseEntryRepository : IExerciseEntryRepository
@@ -45,7 +48,7 @@ namespace MyGlucoseDotNetCore.Services
         } // Create
 
 
-        public async Task UpdateAsync( Guid id, ExcerciseEntryViewModel exerciseentryVM )
+        public async Task UpdateAsync( Guid id, ExerciseEntryViewModel exerciseentryVM )
         {
             var oldExerciseEntry = await ReadAsync( id );
             if( oldExerciseEntry != null )
@@ -75,6 +78,18 @@ namespace MyGlucoseDotNetCore.Services
             return;
 
         } // DeleteAsync
+
+        public ExerciseEntry Create(ExerciseEntry exerciseEntry)
+        {
+            _db.ExerciseEntries.Add(exerciseEntry);
+            _db.SaveChanges();
+            return exerciseEntry;
+        }// ExerciseEntry Create
+
+        public ExerciseEntry Read(Guid exerciseEntryId)
+        {
+            return _db.ExerciseEntries.FirstOrDefault(e => e.Id == exerciseEntryId);
+        }// ExerciseEntry Read
 
     } // Class
 
