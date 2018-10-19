@@ -1,0 +1,53 @@
+﻿
+@model IEnumerable<MyGlucoseDotNetCore.Models.ApplicationUser>
+
+@{ 
+    ViewData["Title"] = "Patient Index";
+    bool patientCheck = false;
+}
+
+<h2>Patient Index</h2>
+<!--Checks if there's actually patients to display in the database-->
+@if (Model != null)
+{
+    patientCheck = true;
+}
+ @if(patientCheck == true)
+ { 
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    First Name
+                </th>
+                <th>
+                    Last Name
+                </th>
+                <th>
+                    Manage
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-controller="Home" asp-route-id="@item.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>There is no patients to display.</p>
+}
+<a asp-action="Index" asp-controller="Home">Home</a>
