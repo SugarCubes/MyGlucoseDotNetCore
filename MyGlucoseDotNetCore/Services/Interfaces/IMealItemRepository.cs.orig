@@ -1,0 +1,26 @@
+using MyGlucoseDotNetCore.Models;
+using MyGlucoseDotNetCore.Models.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace MyGlucoseDotNetCore.Services.Interfaces
+{
+    public interface IMealItemRepository
+    {
+        Task<MealItem> ReadAsync( Guid id, Guid mealid );
+        IQueryable<MealItem> ReadAll();
+        Task<MealItem> CreateAsync( Guid mealEntryId, MealItem mealItem );
+        Task UpdateAsync( Guid id, Guid mealid, MealItemViewModel mealItemVM );
+        Task DeleteAsync( Guid id, Guid mealid );
+<<<<<<< HEAD
+        MealItem Create( Guid mealEntryId, MealItem mealItem );
+=======
+        MealItem Create(Guid mealEntryId, MealItem mealItem);
+        MealEntry Read(Guid mealId);
+>>>>>>> PersonList
+
+    } // Interface
+
+} // Namespace

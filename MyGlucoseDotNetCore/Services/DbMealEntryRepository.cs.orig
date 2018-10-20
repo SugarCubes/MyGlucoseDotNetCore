@@ -24,7 +24,6 @@ namespace MyGlucoseDotNetCore.Services
         public async Task<MealEntry> ReadAsync( Guid id )
         {
             return await ReadAll()
-                .Include( o => o.MealItems )
                 .SingleOrDefaultAsync( o => o.Id == id );
 
         } // ReadAsync
@@ -32,8 +31,7 @@ namespace MyGlucoseDotNetCore.Services
 
         public IQueryable<MealEntry> ReadAll()
         {
-            return _db.MealEntries
-                .Include( o => o.MealItems );
+            return _db.MealEntries;
 
         } // ReadAll
 
@@ -50,7 +48,7 @@ namespace MyGlucoseDotNetCore.Services
         public async Task UpdateAsync( Guid id, MealEntryViewModel mealentryVM )
         {
             var oldMealEntry = await ReadAsync( id );
-            if( oldMealEntry != null )
+            if ( oldMealEntry != null )
             {
                 oldMealEntry.UserName = mealentryVM.UserName;
                 oldMealEntry.User = mealentryVM.User;
@@ -69,7 +67,7 @@ namespace MyGlucoseDotNetCore.Services
         public async Task DeleteAsync( Guid id )
         {
             var mealentry = await ReadAsync( id );
-            if( mealentry != null )
+            if ( mealentry != null )
             {
                 _db.MealEntries.Remove( mealentry );
                 await _db.SaveChangesAsync();
@@ -78,6 +76,29 @@ namespace MyGlucoseDotNetCore.Services
 
         } // DeleteAsync
 
+<<<<<<< HEAD
+        public MealEntry Create( MealEntry mealEntry )
+        {
+            _db.MealEntries.Add( mealEntry );
+=======
+        public MealEntry Create(MealEntry mealEntry)
+        {
+            _db.MealEntries.Add(mealEntry);
+>>>>>>> PersonList
+            _db.SaveChanges();
+            return mealEntry;
+        }
+
+<<<<<<< HEAD
+        public MealEntry Read( Guid mealEntryId )
+        {
+            return _db.MealEntries.Include( m => m.MealItems ).FirstOrDefault( m => m.Id == mealEntryId );
+=======
+        public MealEntry Read(Guid mealEntryId)
+        {
+            return _db.MealEntries.Include(m => m.MealItems).FirstOrDefault(m => m.Id == mealEntryId);
+>>>>>>> PersonList
+        }
     } // Class
 
 } // Namespace

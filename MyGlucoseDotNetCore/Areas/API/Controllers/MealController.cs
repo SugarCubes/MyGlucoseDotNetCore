@@ -7,7 +7,7 @@ using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Models.ViewModels;
 using MyGlucoseDotNetCore.Services.Interfaces;
 
-namespace MyGlucoseDotNetCore.Controllers
+namespace MyGlucoseDotNetCore.Areas.API.Controllers
 {
     public class MealController : Controller
     {
@@ -200,7 +200,7 @@ namespace MyGlucoseDotNetCore.Controllers
                 ApplicationUser user = await _users.ReadAsync(Email);   // Read user from the repository
                 user.RemoteLoginToken = Guid.NewGuid();                 // Create a login token, similar to a "session id"
 
-                MealItem item = await _item.ReadAsync(itemId, mealId);
+                MealItem item = await _item.ReadAsync(itemId);
 
                 var itemModel = new MealItemViewModel
                 {
@@ -210,7 +210,7 @@ namespace MyGlucoseDotNetCore.Controllers
                     Servings = item.Servings,
                 };
 
-                await _item.UpdateAsync( item.Id, item.MealId, itemModel );
+                await _item.UpdateAsync( item.Id, itemModel );
 
                 return new JsonResult(                                  // This implements IActionResult. If you were 
                        new                                                 //      to inspect the output, you would see a 

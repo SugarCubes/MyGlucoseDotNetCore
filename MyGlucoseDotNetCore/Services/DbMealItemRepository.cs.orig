@@ -20,10 +20,11 @@ namespace MyGlucoseDotNetCore.Services
         } // Injection Constructor
 
 
-        public async Task<MealItem> ReadAsync( Guid mealid )
+        public async Task<MealItem> ReadAsync( Guid id, Guid mealid )
         {
             return await ReadAll()
-                .SingleOrDefaultAsync( o => o.Id == mealid );
+                .SingleOrDefaultAsync( o => o.Id == id
+                && o.MealId == mealid );
 
         } // ReadAsync
 
@@ -37,9 +38,7 @@ namespace MyGlucoseDotNetCore.Services
 
         public async Task<MealItem> CreateAsync( Guid mealEntryId, MealItem mealItem )
         {
-            var mealEntry = await _db.MealEntries
-                .Include( o => o.MealItems )
-                .SingleOrDefaultAsync( o => o.Id == mealEntryId );
+            var mealEntry = Read( mealEntryId );
             if ( mealEntry != null )
             {
                 mealEntry.MealItems.Add( mealItem );    // Associate item with the entry
@@ -47,14 +46,17 @@ namespace MyGlucoseDotNetCore.Services
                 await _db.SaveChangesAsync();
             }// End if mealEntry not null statement.
 
+<<<<<<< HEAD
             return mealItem;
 
+=======
+>>>>>>> PersonList
         } // CreateAsync
 
 
-        public async Task UpdateAsync( Guid id, MealItemViewModel mealitemVM )
+        public async Task UpdateAsync( Guid id, Guid mealid, MealItemViewModel mealitemVM )
         {
-            var oldMealItem = await ReadAsync( id );
+            var oldMealItem = await ReadAsync( id, mealid );
             if ( oldMealItem != null )
             {
                 oldMealItem.Meal = mealitemVM.Meal;
@@ -69,9 +71,9 @@ namespace MyGlucoseDotNetCore.Services
         } // UpdateAsync
 
 
-        public async Task DeleteAsync( Guid id )
+        public async Task DeleteAsync( Guid id, Guid mealid )
         {
-            var mealitem = await ReadAsync( id );
+            var mealitem = await ReadAsync( id, mealid );
             if ( mealitem != null )
             {
                 _db.MealItems.Remove( mealitem );
@@ -80,7 +82,48 @@ namespace MyGlucoseDotNetCore.Services
             return;
 
         } // DeleteAsync
+        
 
+<<<<<<< HEAD
+
+        public MealItem Create( Guid mealEntryId, MealItem mealItem )
+        {
+            var mealEntry = Read(mealEntryId);
+            if ( mealEntry != null )
+            {
+                mealEntry.MealItems.Add( mealItem );
+                mealItem.Meal = mealEntry;
+                _db.SaveChanges();
+            }// End if mealEntry not null statement.
+
+            return mealItem;
+
+        } // End Create
+
+
+        public MealEntry Read( Guid mealId )
+        {
+            return _db.MealEntries.Include( m => m.MealItems ).FirstOrDefault( m => m.Id == mealId );
+        }// End Read
+
+=======
+        public MealItem Create(Guid mealEntryId, MealItem mealItem)
+        {
+            var mealEntry = Read(mealEntryId);
+            if (mealEntry != null)
+            {
+                mealEntry.MealItems.Add(mealItem);
+                mealItem.Meal = mealEntry;
+                _db.SaveChanges();
+            }// End if mealEntry not null statement.
+            return mealItem;
+        } // End Create
+
+        public MealEntry Read(Guid mealId)
+        {
+            return _db.MealEntries.Include(m => m.MealItems).FirstOrDefault(m => m.Id == mealId);
+        }// End Read
+>>>>>>> PersonList
     } // Class
 
 } // Namespace

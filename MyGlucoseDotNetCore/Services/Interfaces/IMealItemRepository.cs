@@ -9,12 +9,11 @@ namespace MyGlucoseDotNetCore.Services.Interfaces
 {
     public interface IMealItemRepository
     {
-        Task<MealItem> ReadAsync( Guid id, Guid mealid );
+        Task<MealItem> ReadAsync( Guid Id );
         IQueryable<MealItem> ReadAll();
-        Task<MealItem> CreateAsync( Guid mealEntryId, MealItem mealItem );
-        Task UpdateAsync( Guid id, Guid mealid, MealItemViewModel mealItemVM );
-        Task DeleteAsync( Guid id, Guid mealid );
-        MealItem Create( Guid mealEntryId, MealItem mealItem );
+        Task<MealItem> CreateAsync( Guid mealEntryId, MealItem project );
+        Task UpdateAsync( Guid id, MealItemViewModel project );
+        Task DeleteAsync( Guid id );
 
     } // Interface
 
