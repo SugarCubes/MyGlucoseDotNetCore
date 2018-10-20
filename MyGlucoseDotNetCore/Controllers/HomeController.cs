@@ -5,11 +5,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyGlucoseDotNetCore.Models;
+using MyGlucoseDotNetCore.Services.Interfaces;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
     public class HomeController : Controller
     {
+        private IApplicationUserRepository _repo;
+
+        public HomeController(IApplicationUserRepository repo)
+        {
+            _repo = repo;
+        }
         public IActionResult Index()
         {
             ViewData["Message"] = "Welcome to My Glucose!";
@@ -37,7 +44,8 @@ namespace MyGlucoseDotNetCore.Controllers
         }
         public IActionResult PatientIndex()
         {
-            return View();
+            var model = _repo.ReadAll();
+            return View(model);
         }
     }
 }
