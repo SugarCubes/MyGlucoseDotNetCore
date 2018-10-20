@@ -8,6 +8,7 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
 {
     public class PatientViewModel //: IdentityUser
     {
+        public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public List<GlucoseEntries> GlucoseEntries { get; set; }
@@ -22,7 +23,7 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
 
         public ApplicationUser GetNewUser()
         {
-            return new ApplicationUser
+            return new ApplicationUser 
             {
                 FirstName = FirstName,
                 LastName = LastName,
@@ -34,5 +35,13 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
             };
 
         } // GetNewUser
+
+        public IdentityUser GetIdentity()
+        {
+            return new IdentityUser
+            {
+                UserName = UserName
+            };
+        }
     }
 }
