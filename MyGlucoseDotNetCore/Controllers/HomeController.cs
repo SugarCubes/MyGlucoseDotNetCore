@@ -44,6 +44,9 @@ namespace MyGlucoseDotNetCore.Controllers
         }
         public IActionResult PatientIndex()
         {
+            // TODO: Need to return patients, not ApplicationsUsers
+            //      Also, need to use ToList().
+            //      Needs to be tested as well
             var model = _repo.ReadAll();
             return View(model);
         }
