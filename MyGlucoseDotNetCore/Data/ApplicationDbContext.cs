@@ -15,6 +15,7 @@ namespace MyGlucoseDotNetCore.Data
         public DbSet<MealEntry> MealEntries { get; set; }
         public DbSet<MealItem> MealItems { get; set; }
         public DbSet<Patient> Patients { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -31,6 +32,10 @@ namespace MyGlucoseDotNetCore.Data
             builder.Entity<Patient>()
                 .HasMany( o => o.GlucoseEntries )
                 .WithOne( o => o.Patient );
+
+            builder.Entity<Doctor>()
+                .HasMany( o => o.Patients )
+                .WithOne( o => o.Doctor );
 
         }
     }
