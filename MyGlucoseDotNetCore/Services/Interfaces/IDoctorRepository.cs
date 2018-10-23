@@ -9,11 +9,11 @@ namespace MyGlucoseDotNetCore.Services.Interfaces
 {
     public interface IDoctorRepository
     {
-        Task<Doctor> ReadAsync( string usernameid );
+        Task<Doctor> ReadAsync( string username );
         IQueryable<Doctor> ReadAll();
         Task<Doctor> CreateAsync( Doctor project );
-        Task UpdateAsync( string usernameid, DoctorViewModel project );
-        Task DeleteAsync( string usernameid );
+        Task UpdateAsync( string username, DoctorViewModel project );
+        Task DeleteAsync( string username );
 
     } // Interface
 
