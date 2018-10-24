@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyGlucoseDotNetCore.Models.ViewModels
 {
-    public class PatientViewModel //: IdentityUser
+    public class PatientViewModel
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }
@@ -26,7 +26,7 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
 
         public Patient GetNewPatient()
         {
-            return new Patient 
+            return new Patient
             {
                 UserName = UserName,
                 FirstName = FirstName,
