@@ -44,7 +44,7 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
                 MealEntries = MealEntries
             };
 
-        } // getnewpatient
+        } // getnewpatient.
 
     } // class
 
