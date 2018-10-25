@@ -1,27 +1,22 @@
-﻿
-@model IEnumerable<MyGlucoseDotNetCore.Models.Patient>
+﻿@model IEnumerable<MyGlucoseDotNetCore.Models.ViewModels.PatientViewModel>
 
-@{ 
-    ViewData["Title"] = "Patient Index";
-    bool patientCheck = false;
+@{
+    ViewData["Title"] = "Patient List";
 }
 
-<h2>Patient Index</h2>
-<!--Checks if there's actually patients to display in the database-->
-@if (Model != null)
-{
-    patientCheck = true;
-}
- @if(patientCheck == true)
- { 
-    <table class="table">
-        <thead>
-            <tr>
+<h2>Patient List</h2>
+
+<p>
+    <a asp-action="CreatePatient" asp-controller="Home">Add new Patient</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
                 <th>
-                    First Name
+                    @Html.DisplayNameFor(model => model.FirstName)
                 </th>
                 <th>
-                    Last Name
+                    @Html.DisplayNameFor(model => model.LastName)
                 </th>
                 <th>
                     Manage
@@ -39,15 +34,11 @@
                         @Html.DisplayFor(modelItem => item.LastName)
                     </td>
                     <td>
-                        <a asp-action="Details" asp-controller="Home" asp-route-id="@item.Id">Details</a>
+                        <a asp-action="Details" asp-controller="Home" >Details</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-}
-else
-{
-    <p>There are no patients to display.</p>
-}
+
 <a asp-action="Index" asp-controller="Home">Home</a>
