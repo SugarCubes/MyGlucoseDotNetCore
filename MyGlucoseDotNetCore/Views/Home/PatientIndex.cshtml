@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<MyGlucoseDotNetCore.Models.ViewModels.PatientViewModel>
 
 @{
-    ViewData["Title"] = "PatientIndex";
+    ViewData["Title"] = "Patient List";
 }
 
 <h2>PatientIndex</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="CreatePatient" asp-controller="Home">Add new Patient</a>
 </p>
 <table class="table">
     <thead>

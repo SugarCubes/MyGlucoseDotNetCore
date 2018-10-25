@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyGlucoseDotNetCore.Data;
 using MyGlucoseDotNetCore.Models;
+using MyGlucoseDotNetCore.Models.ViewModels;
 using MyGlucoseDotNetCore.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -74,5 +75,13 @@ namespace MyGlucoseDotNetCore.Services
             return;
 
         }
+
+        public PatientViewModel CreatePatient(PatientViewModel patient)
+        {
+            _db.PatientViewModel.Add(patient);
+            _db.SaveChanges();
+            return patient;
+        }// End Create.
+        
     }
 }

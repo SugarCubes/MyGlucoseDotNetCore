@@ -1,4 +1,5 @@
 ﻿using MyGlucoseDotNetCore.Models;
+using MyGlucoseDotNetCore.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace MyGlucoseDotNetCore.Services.Interfaces
         Task<ApplicationUser> CreateAsync( ApplicationUser applicationUser );
         Task UpdateAsync( string username, ApplicationUser applicationUser );
         Task DeleteAsync( string username );
+        PatientViewModel CreatePatient(PatientViewModel patient);
     }
 }
