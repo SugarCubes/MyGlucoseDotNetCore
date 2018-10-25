@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MyGlucoseDotNetCore.Models;
+using MyGlucoseDotNetCore.Models.ViewModels;
 
 namespace MyGlucoseDotNetCore.Data
 {
@@ -33,5 +34,7 @@ namespace MyGlucoseDotNetCore.Data
                 .WithOne( o => o.Patient );
 
         }
+
+        public DbSet<MyGlucoseDotNetCore.Models.ViewModels.PatientViewModel> PatientViewModel { get; set; }
     }
 }

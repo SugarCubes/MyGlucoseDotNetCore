@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyGlucoseDotNetCore.Models.ViewModels
 {
-    public class PatientViewModel //: IdentityUser
+    public class PatientViewModel : IdentityUser
     {
+        [Key]
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -23,10 +25,10 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
 
-
-        public Patient GetNewPatient()
+        
+        public ApplicationUser GetNewPatient()
         {
-            return new Patient 
+            return new ApplicationUser 
             {
                 UserName = UserName,
                 FirstName = FirstName,
@@ -38,14 +40,14 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
                 Zip1 = Zip1,
                 Zip2 = Zip2,
                 PhoneNumber = PhoneNumber,
-                Email = Email,
-                GlucoseEntries = GlucoseEntries,
-                ExerciseEntries = ExerciseEntries,
-                MealEntries = MealEntries
+                Email = Email
+                //GlucoseEntries = GlucoseEntries,
+                //ExerciseEntries = ExerciseEntries,
+                //MealEntries = MealEntries
             };
 
         } // GetNewPatient
-
+        
     } // class
 
 } // namespace
