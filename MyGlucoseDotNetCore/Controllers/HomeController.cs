@@ -63,21 +63,7 @@ namespace MyGlucoseDotNetCore.Controllers
 
         public IActionResult PatientIndex()
         {
-            var model = _repo.ReadAll()
-            .Select(p => new PatientViewModel
-            {
-                UserName = p.UserName,
-                FirstName = p.FirstName,
-                LastName = p.LastName,
-                Address1 = p.Address1,
-                Address2 = p.Address2,
-                City = p.City,
-                State = p.State,
-                Zip1 = p.Zip1,
-                Zip2 = p.Zip2,
-                PhoneNumber = p.PhoneNumber,
-                Email = p.Email
-             });
+            var model = _repo.ReadAll();
             return View(model);
         }
     }
