@@ -77,7 +77,7 @@ namespace MyGlucoseDotNetCore.Controllers
                 Zip2 = p.Zip2,
                 PhoneNumber = p.PhoneNumber,
                 Email = p.Email
-             });
+            });
             return View(model);
         }
     }

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Patient List";
 }
 
-<h2>PatientIndex</h2>
+<h2>Patient List</h2>
 
 <p>
     <a asp-action="CreatePatient" asp-controller="Home">Add new Patient</a>
@@ -18,26 +18,27 @@
                 <th>
                     @Html.DisplayNameFor(model => model.LastName)
                 </th>
-                
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UserName">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UserName">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UserName">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                <th>
+                    Manage
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-controller="Home" >Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+<a asp-action="Index" asp-controller="Home">Home</a>

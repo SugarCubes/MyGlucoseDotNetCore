@@ -49,5 +49,5 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
         } // GetNewPatient
         */
     } // class
-    
+
 } // namespace
