@@ -51,14 +51,14 @@ namespace MyGlucoseDotNetCore.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreatePatient(PatientViewModel patient)
+        public async Task<IActionResult> CreatePatient( PatientViewModel patientVM )
         {
             if (ModelState.IsValid)
             {
-                _repo.CreatePatient(patient);
-                return RedirectToAction("Index");
+                await _repo.CreatePatientAsync( patientVM.GetNewPatient() );
+                return RedirectToAction( "Index" );
             }
-            return View(patient);
+            return View( patientVM );
         }
 
         public IActionResult PatientIndex()

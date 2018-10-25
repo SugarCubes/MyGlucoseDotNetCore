@@ -13,5 +13,7 @@ namespace MyGlucoseDotNetCore.Services.Interfaces
         Task<ApplicationUser> CreateAsync( ApplicationUser applicationUser );
         Task UpdateAsync( string username, ApplicationUser applicationUser );
         Task DeleteAsync( string username );
+
+        Task<Patient> CreatePatientAsync( Patient patient );
     }
 }
