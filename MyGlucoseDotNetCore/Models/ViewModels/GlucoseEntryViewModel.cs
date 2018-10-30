@@ -24,7 +24,7 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
     			Measurement = Measurement,
     			BeforeAfter = BeforeAfter,
     			WhichMeal = WhichMeal,
-    			Date = Date,
+    			CreatedAt = Date,
     			Timestamp = Timestamp
 			};
 

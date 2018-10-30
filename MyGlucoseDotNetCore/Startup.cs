@@ -35,6 +35,7 @@ namespace MyGlucoseDotNetCore
             services.AddScoped<IGlucoseEntriesRepository, DbGlucoseEntriesRepository>();
             services.AddScoped<IMealEntryRepository, DbMealEntryRepository>();
             services.AddScoped<IMealItemRepository, DbMealItemRepository>();
+            services.AddScoped<IPatientRepository, DbPatientRepository>();
 
             services.AddMvc();
 

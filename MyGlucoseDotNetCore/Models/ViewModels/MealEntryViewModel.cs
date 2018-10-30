@@ -21,7 +21,7 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
     			UserName = UserName,
     			User = User,
     			TotalCarbs = TotalCarbs,
-    			Date = Date,
+    			CreatedAt = Date,
     			Timestamp = Timestamp
 			};
 

@@ -4,6 +4,7 @@ using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Models.ViewModels;
 using MyGlucoseDotNetCore.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -52,15 +53,16 @@ namespace MyGlucoseDotNetCore.Services
         } // CreateAsync
 
 
-        public async Task UpdateAsync( Guid id, MealItemViewModel mealitemVM )
+        public async Task UpdateAsync( Guid id, MealItem mealItem )
         {
             var oldMealItem = await ReadAsync( id );
             if ( oldMealItem != null )
             {
-                oldMealItem.Meal = mealitemVM.Meal;
-                oldMealItem.Name = mealitemVM.Name;
-                oldMealItem.Carbs = mealitemVM.Carbs;
-                oldMealItem.Servings = mealitemVM.Servings;
+                oldMealItem.Meal = mealItem.Meal;
+                oldMealItem.Name = mealItem.Name;
+                oldMealItem.Carbs = mealItem.Carbs;
+                oldMealItem.Servings = mealItem.Servings;
+                oldMealItem.UpdatedAt = mealItem.UpdatedAt;
                 _db.Entry( oldMealItem ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;
@@ -80,6 +82,32 @@ namespace MyGlucoseDotNetCore.Services
             return;
 
         } // DeleteAsync
+        
+
+        public async Task CreateOrUpdateEntries( ICollection<MealItem> mealItems )
+        {
+            foreach ( MealItem mealItem in mealItems )
+            {
+                MealItem dbMealItem = await ReadAsync( mealItem.Id );
+                mealItem.UpdatedAt = DateTime.Now;
+                if ( dbMealItem == null )                  // If meal entry doesn't exist
+                {
+                    // Create in the database
+                    await CreateAsync( mealItem.Id, mealItem );
+
+                }
+                else if ( dbMealItem.UpdatedAt < mealItem.UpdatedAt )
+                {
+                    // Update in the database
+                    await UpdateAsync( mealItem.Id, mealItem );
+
+                }
+
+            } // foreach MealEntry
+
+            return;
+
+        } // CreateOrUpdateEntries
 
     } // Class
 

@@ -2,8 +2,6 @@
 using MyGlucoseDotNetCore.Data;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Services.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -77,7 +75,7 @@ namespace MyGlucoseDotNetCore.Services
 
         public async Task<Patient> CreatePatientAsync( Patient patient )
         {
-            _db.Users.Add( patient );
+            //_db.Users.Add( patient );
             // TODO: Add to Patient role:
 
             await _db.SaveChangesAsync();

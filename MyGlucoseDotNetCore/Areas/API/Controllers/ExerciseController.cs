@@ -98,12 +98,12 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                     User = exercise.User,
                     ExerciseName = exercise.ExerciseName,
                     Minutes = exercise.Minutes,
-                    Date = exercise.Date,
+                    Date = exercise.CreatedAt,
                     Timestamp = exercise.Timestamp,
                 };
 
 
-                await _exercise.UpdateAsync(exercise.Id, exerciseModel);
+                await _exercise.UpdateAsync(exercise.Id, exerciseModel.GetNewExcerciseEntry());
 
                 return new JsonResult(                                  // This implements IActionResult. If you were 
                         new                                             //      to inspect the output, you would see a 
@@ -115,7 +115,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                             exercise.User,
                             exercise.ExerciseName,
                             exercise.Minutes,
-                            exercise.Date,
+                            exercise.CreatedAt,
                             exercise.Timestamp
                         }
                         );

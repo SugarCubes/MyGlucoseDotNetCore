@@ -91,12 +91,12 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                     Measurement = glucose.Measurement,
                     BeforeAfter = glucose.BeforeAfter,
                     WhichMeal = glucose.WhichMeal,
-                    Date = glucose.Date,
+                    Date = glucose.CreatedAt,
                     Timestamp = glucose.Timestamp,
                 };
 
 
-                await _glucose.UpdateAsync(glucose.Id, glucoseModel);
+                await _glucose.UpdateAsync(glucose.Id, glucoseModel.GetNewGlucoseEntries());
 
                 return new JsonResult(                                  // This implements IActionResult. If you were 
                         new                                             //      to inspect the output, you would see a 
@@ -109,7 +109,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                             glucose.Measurement,
                             glucose.BeforeAfter,
                             glucose.WhichMeal,
-                            glucose.Date,
+                            glucose.CreatedAt,
                             glucose.Timestamp
                         }
                         );

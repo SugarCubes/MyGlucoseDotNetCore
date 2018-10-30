@@ -48,7 +48,7 @@ namespace MyGlucoseDotNetCore.Services
         } // Create
 
 
-        public async Task UpdateAsync( Guid id, ExerciseEntryViewModel exerciseentryVM )
+        public async Task UpdateAsync( Guid id, ExerciseEntry exerciseentryVM )
         {
             var oldExerciseEntry = await ReadAsync( id );
             if( oldExerciseEntry != null )
@@ -57,8 +57,9 @@ namespace MyGlucoseDotNetCore.Services
     			oldExerciseEntry.User = exerciseentryVM.User;
     			oldExerciseEntry.ExerciseName = exerciseentryVM.ExerciseName;
     			oldExerciseEntry.Minutes = exerciseentryVM.Minutes;
-    			oldExerciseEntry.Date = exerciseentryVM.Date;
-    			oldExerciseEntry.Timestamp = exerciseentryVM.Timestamp;
+    			oldExerciseEntry.CreatedAt = exerciseentryVM.CreatedAt;
+                oldExerciseEntry.UpdatedAt = exerciseentryVM.UpdatedAt;
+                oldExerciseEntry.Timestamp = exerciseentryVM.Timestamp;
                 _db.Entry( oldExerciseEntry ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;
@@ -90,6 +91,32 @@ namespace MyGlucoseDotNetCore.Services
         {
             return _db.ExerciseEntries.FirstOrDefault(e => e.Id == exerciseEntryId);
         }// ExerciseEntry Read
+        
+
+        public async Task CreateOrUpdateEntries( ICollection<ExerciseEntry> exerciseEntries )
+        {
+            foreach ( ExerciseEntry exerciseEntry in exerciseEntries )
+            {
+                ExerciseEntry dbExerciseEntry = await ReadAsync( exerciseEntry.Id );
+                exerciseEntry.UpdatedAt = DateTime.Now;
+                if ( dbExerciseEntry == null )                  // If meal entry doesn't exist
+                {
+                    // Create in the database
+                    await CreateAsync( exerciseEntry );
+
+                }
+                else if ( dbExerciseEntry.UpdatedAt < exerciseEntry.UpdatedAt )
+                {
+                    // Update in the database
+                    await UpdateAsync( exerciseEntry.Id, exerciseEntry );
+
+                }
+
+            } // foreach MealEntry
+
+            return;
+
+        } // CreateOrUpdateEntries
 
     } // Class
 

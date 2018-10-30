@@ -12,8 +12,8 @@ using System;
 namespace MyGlucoseDotNetCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181011155853_mig3")]
-    partial class mig3
+    [Migration("20181030030351_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -150,6 +150,8 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<DateTime>("CreatedAt");
+
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
@@ -188,6 +190,8 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
+                    b.Property<DateTime>("UpdatedAt");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
@@ -215,7 +219,7 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("ExerciseName");
 
@@ -224,6 +228,8 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<string>("PatientId");
 
                     b.Property<long>("Timestamp");
+
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.Property<string>("UserId");
 
@@ -245,7 +251,7 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<int>("BeforeAfter");
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<float>("Measurement");
 
@@ -255,13 +261,15 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<long>("Timestamp");
 
+                    b.Property<DateTime>("UpdatedAt");
+
                     b.Property<int>("WhichMeal");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("GlucoseEntry");
+                    b.ToTable("GlucoseEntries");
                 });
 
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.MealEntry", b =>
@@ -269,13 +277,15 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("PatientId");
 
                     b.Property<long>("Timestamp");
 
                     b.Property<int>("TotalCarbs");
+
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.Property<string>("UserId");
 
@@ -303,6 +313,8 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<int>("Servings");
 
+                    b.Property<DateTime>("UpdatedAt");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MealId");
@@ -310,10 +322,24 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.ToTable("MealItems");
                 });
 
+            modelBuilder.Entity("MyGlucoseDotNetCore.Models.Doctor", b =>
+                {
+                    b.HasBaseType("MyGlucoseDotNetCore.Models.ApplicationUser");
+
+                    b.Property<string>("DegreeAbbreviation");
+
+                    b.ToTable("Doctor");
+
+                    b.HasDiscriminator().HasValue("Doctor");
+                });
+
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.Patient", b =>
                 {
                     b.HasBaseType("MyGlucoseDotNetCore.Models.ApplicationUser");
 
+                    b.Property<string>("DoctorId");
+
+                    b.HasIndex("DoctorId");
 
                     b.ToTable("Patient");
 
@@ -368,7 +394,7 @@ namespace MyGlucoseDotNetCore.Migrations
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.ExerciseEntry", b =>
                 {
                     b.HasOne("MyGlucoseDotNetCore.Models.Patient")
-                        .WithMany("ExcerciseEntries")
+                        .WithMany("ExerciseEntries")
                         .HasForeignKey("PatientId");
 
                     b.HasOne("MyGlucoseDotNetCore.Models.ApplicationUser", "User")
@@ -379,7 +405,7 @@ namespace MyGlucoseDotNetCore.Migrations
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.GlucoseEntry", b =>
                 {
                     b.HasOne("MyGlucoseDotNetCore.Models.Patient", "Patient")
-                        .WithMany("GlucoseEntry")
+                        .WithMany("GlucoseEntries")
                         .HasForeignKey("PatientId");
                 });
 
@@ -400,6 +426,13 @@ namespace MyGlucoseDotNetCore.Migrations
                         .WithMany("MealItems")
                         .HasForeignKey("MealId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyGlucoseDotNetCore.Models.Patient", b =>
+                {
+                    b.HasOne("MyGlucoseDotNetCore.Models.Doctor", "Doctor")
+                        .WithMany("Patients")
+                        .HasForeignKey("DoctorId");
                 });
 #pragma warning restore 612, 618
         }

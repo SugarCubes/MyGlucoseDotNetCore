@@ -13,11 +13,25 @@ namespace MyGlucoseDotNetCore.Models
         public string Name { get; set; }
         public int Carbs { get; set; }
         public int Servings { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         public MealItem()
         {
             Meal = new MealEntry();
-        }
 
-    }
-}
+        } // constructor
+
+        public override string ToString()
+        {
+            return "MEAL ITEM:"
+                + "\nId: " + Id
+                + "\nMealId: " + MealId
+                + "\nName: " + Name
+                + "\nCarbs: " + Carbs
+                + "\nServings: " + Servings;
+
+        } // ToString
+
+    } // class
+
+} // namespace

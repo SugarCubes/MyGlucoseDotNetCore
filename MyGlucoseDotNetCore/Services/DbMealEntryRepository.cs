@@ -13,10 +13,13 @@ namespace MyGlucoseDotNetCore.Services
     public class DbMealEntryRepository : IMealEntryRepository
     {
         private readonly ApplicationDbContext _db;
+        private IMealItemRepository _mealItemRepository;
 
-        public DbMealEntryRepository( ApplicationDbContext db )
+        public DbMealEntryRepository( ApplicationDbContext db,
+            IMealItemRepository mealItemRepository )
         {
             _db = db;
+            _mealItemRepository = mealItemRepository;
 
         } // Injection Constructor
 
@@ -47,17 +50,18 @@ namespace MyGlucoseDotNetCore.Services
         } // Create
 
 
-        public async Task UpdateAsync( Guid id, MealEntryViewModel mealentryVM )
+        public async Task UpdateAsync( Guid id, MealEntry mealEntry )
         {
             var oldMealEntry = await ReadAsync( id );
             if( oldMealEntry != null )
             {
-                oldMealEntry.UserName = mealentryVM.UserName;
-                oldMealEntry.User = mealentryVM.User;
-                oldMealEntry.TotalCarbs = mealentryVM.TotalCarbs;
-                oldMealEntry.Date = mealentryVM.Date;
-                oldMealEntry.Timestamp = mealentryVM.Timestamp;
-                oldMealEntry.MealItems = mealentryVM.MealItems;
+                oldMealEntry.UserName = mealEntry.UserName;
+                oldMealEntry.User = mealEntry.User;
+                oldMealEntry.TotalCarbs = mealEntry.TotalCarbs;
+                oldMealEntry.CreatedAt = mealEntry.CreatedAt;
+                oldMealEntry.UpdatedAt = mealEntry.UpdatedAt;   // Updated in the Controller
+                oldMealEntry.Timestamp = mealEntry.Timestamp;
+                oldMealEntry.MealItems = mealEntry.MealItems;
                 _db.Entry( oldMealEntry ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;
@@ -77,6 +81,35 @@ namespace MyGlucoseDotNetCore.Services
             return;
 
         } // DeleteAsync
+
+
+        public async Task CreateOrUpdateEntries( ICollection<MealEntry> mealEntries )
+        {
+            foreach ( MealEntry mealEntry in mealEntries )
+            {
+                MealEntry dbMealEntry = await ReadAsync( mealEntry.Id );
+                mealEntry.UpdatedAt = DateTime.Now;
+                if ( dbMealEntry == null )                  // If meal entry doesn't exist
+                {
+                    // Create in the database
+                    await CreateAsync( mealEntry );
+
+                }
+                else if ( dbMealEntry.UpdatedAt < mealEntry.UpdatedAt )
+                {
+                    // Update in the database
+                    await UpdateAsync( mealEntry.Id, mealEntry );
+
+                }
+
+                // Check whether meal items need to be created/updated:
+                await _mealItemRepository.CreateOrUpdateEntries( mealEntry.MealItems );
+
+            } // foreach MealEntry
+
+            return;
+
+        } // CreateOrUpdateEntries
 
     } // Class
 

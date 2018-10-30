@@ -149,6 +149,8 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<DateTime>("CreatedAt");
+
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
@@ -187,6 +189,8 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
+                    b.Property<DateTime>("UpdatedAt");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
@@ -214,7 +218,7 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("ExerciseName");
 
@@ -223,6 +227,8 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<string>("PatientId");
 
                     b.Property<long>("Timestamp");
+
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.Property<string>("UserId");
 
@@ -244,7 +250,7 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<int>("BeforeAfter");
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<float>("Measurement");
 
@@ -253,6 +259,8 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<string>("PatientUsername");
 
                     b.Property<long>("Timestamp");
+
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.Property<int>("WhichMeal");
 
@@ -268,13 +276,15 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("PatientId");
 
                     b.Property<long>("Timestamp");
 
                     b.Property<int>("TotalCarbs");
+
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.Property<string>("UserId");
 
@@ -301,6 +311,8 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<string>("Name");
 
                     b.Property<int>("Servings");
+
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("Id");
 

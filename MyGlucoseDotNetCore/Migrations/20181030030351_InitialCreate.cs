@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MyGlucoseDotNetCore.Migrations
 {
-    public partial class mig3 : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,6 +35,7 @@ namespace MyGlucoseDotNetCore.Migrations
                     Address2 = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
@@ -52,13 +53,22 @@ namespace MyGlucoseDotNetCore.Migrations
                     SecurityStamp = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     Zip1 = table.Column<int>(nullable: false),
-                    Zip2 = table.Column<int>(nullable: false)
+                    Zip2 = table.Column<int>(nullable: false),
+                    DegreeAbbreviation = table.Column<string>(nullable: true),
+                    DoctorId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_AspNetUsers_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,11 +182,12 @@ namespace MyGlucoseDotNetCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     ExerciseName = table.Column<string>(nullable: true),
                     Minutes = table.Column<int>(nullable: false),
                     PatientId = table.Column<string>(nullable: true),
                     Timestamp = table.Column<long>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true)
                 },
@@ -198,16 +209,17 @@ namespace MyGlucoseDotNetCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GlucoseEntry",
+                name: "GlucoseEntries",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     BeforeAfter = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     Measurement = table.Column<float>(nullable: false),
                     PatientId = table.Column<string>(nullable: true),
                     PatientUsername = table.Column<string>(nullable: true),
                     Timestamp = table.Column<long>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
                     WhichMeal = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -226,10 +238,11 @@ namespace MyGlucoseDotNetCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     PatientId = table.Column<string>(nullable: true),
                     Timestamp = table.Column<long>(nullable: false),
                     TotalCarbs = table.Column<int>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true)
                 },
@@ -258,7 +271,8 @@ namespace MyGlucoseDotNetCore.Migrations
                     Carbs = table.Column<int>(nullable: false),
                     MealId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    Servings = table.Column<int>(nullable: false)
+                    Servings = table.Column<int>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -311,6 +325,11 @@ namespace MyGlucoseDotNetCore.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_DoctorId",
+                table: "AspNetUsers",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ExerciseEntries_PatientId",
                 table: "ExerciseEntries",
                 column: "PatientId");
@@ -322,7 +341,7 @@ namespace MyGlucoseDotNetCore.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_GlucoseEntries_PatientId",
-                table: "GlucoseEntry",
+                table: "GlucoseEntries",
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
@@ -362,7 +381,7 @@ namespace MyGlucoseDotNetCore.Migrations
                 name: "ExerciseEntries");
 
             migrationBuilder.DropTable(
-                name: "GlucoseEntry");
+                name: "GlucoseEntries");
 
             migrationBuilder.DropTable(
                 name: "MealItems");

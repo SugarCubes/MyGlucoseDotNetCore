@@ -11,9 +11,10 @@ namespace MyGlucoseDotNetCore.Services.Interfaces
     {
         Task<GlucoseEntry> ReadAsync( Guid id );
         IQueryable<GlucoseEntry> ReadAll();
-        Task<GlucoseEntry> CreateAsync( GlucoseEntry project );
-        Task UpdateAsync( Guid id, GlucoseEntriesViewModel project );
+        Task<GlucoseEntry> CreateAsync( GlucoseEntry glucoseEntry );
+        Task UpdateAsync( Guid id, GlucoseEntry glucoseEntry );
         Task DeleteAsync( Guid id );
+        Task CreateOrUpdateEntries( ICollection<GlucoseEntry> glucoseEntries );
 
     } // Interface
 

@@ -45,18 +45,19 @@ namespace MyGlucoseDotNetCore.Services
         } // Create
 
 
-        public async Task UpdateAsync( Guid id, GlucoseEntriesViewModel GlucoseEntriesVM )
+        public async Task UpdateAsync( Guid id, GlucoseEntry GlucoseEntry )
         {
             var oldGlucoseEntries = await ReadAsync( id );
             if( oldGlucoseEntries != null )
             {
-    			oldGlucoseEntries.PatientUsername = GlucoseEntriesVM.PatientUsername;
-    			oldGlucoseEntries.Patient = GlucoseEntriesVM.Patient;
-    			oldGlucoseEntries.Measurement = GlucoseEntriesVM.Measurement;
-    			oldGlucoseEntries.BeforeAfter = GlucoseEntriesVM.BeforeAfter;
-    			oldGlucoseEntries.WhichMeal = GlucoseEntriesVM.WhichMeal;
-    			oldGlucoseEntries.Date = GlucoseEntriesVM.Date;
-    			oldGlucoseEntries.Timestamp = GlucoseEntriesVM.Timestamp;
+    			oldGlucoseEntries.PatientUsername = GlucoseEntry.PatientUsername;
+    			oldGlucoseEntries.Patient = GlucoseEntry.Patient;
+    			oldGlucoseEntries.Measurement = GlucoseEntry.Measurement;
+    			oldGlucoseEntries.BeforeAfter = GlucoseEntry.BeforeAfter;
+    			oldGlucoseEntries.WhichMeal = GlucoseEntry.WhichMeal;
+    			oldGlucoseEntries.CreatedAt = GlucoseEntry.CreatedAt;
+                oldGlucoseEntries.UpdatedAt = GlucoseEntry.UpdatedAt;
+                oldGlucoseEntries.Timestamp = GlucoseEntry.Timestamp;
                 _db.Entry( oldGlucoseEntries ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;
@@ -76,6 +77,32 @@ namespace MyGlucoseDotNetCore.Services
             return;
 
         } // DeleteAsync
+
+
+        public async Task CreateOrUpdateEntries( ICollection<GlucoseEntry> glucoseEntries )
+        {
+            foreach ( GlucoseEntry glucoseEntry in glucoseEntries )
+            {
+                GlucoseEntry dbGlucoseEntry = await ReadAsync( glucoseEntry.Id );
+                glucoseEntry.UpdatedAt = DateTime.Now;
+                if ( dbGlucoseEntry == null )                  // If meal entry doesn't exist
+                {
+                    // Create in the database
+                    await CreateAsync( glucoseEntry );
+
+                }
+                else if ( dbGlucoseEntry.UpdatedAt < glucoseEntry.UpdatedAt )
+                {
+                    // Update in the database
+                    await UpdateAsync( glucoseEntry.Id, glucoseEntry );
+
+                }
+
+            } // foreach MealEntry
+
+            return;
+
+        } // CreateOrUpdateEntries
 
     } // Class
 

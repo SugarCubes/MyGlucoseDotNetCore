@@ -157,13 +157,13 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                     UserName = meal.UserName,
                     User = meal.User,
                     TotalCarbs = meal.TotalCarbs,
-                    Date = meal.Date,
+                    Date = meal.CreatedAt,
                     Timestamp = meal.Timestamp,
                     MealItems = meal.MealItems,
                 };
 
 
-                await _meal.UpdateAsync( meal.Id, mealModel );
+                await _meal.UpdateAsync( meal.Id, mealModel.GetNewMealEntry() );
 
                 return new JsonResult(                                  // This implements IActionResult. If you were 
                         new                                             //      to inspect the output, you would see a 
@@ -174,7 +174,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                             meal.UserName,
                             meal.User,
                             meal.TotalCarbs,
-                            meal.Date,
+                            meal.CreatedAt,
                             meal.Timestamp,
                             meal.MealItems
                         }
@@ -210,7 +210,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                     Servings = item.Servings,
                 };
 
-                await _item.UpdateAsync( item.Id, itemModel );
+                await _item.UpdateAsync( item.Id, itemModel.GetNewMealItem() );
 
                 return new JsonResult(                                  // This implements IActionResult. If you were 
                        new                                                 //      to inspect the output, you would see a 
