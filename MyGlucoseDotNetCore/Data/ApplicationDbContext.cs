@@ -37,6 +37,14 @@ namespace MyGlucoseDotNetCore.Data
                 .HasMany( o => o.Patients )
                 .WithOne( o => o.Doctor );
 
+            builder.Entity<MealEntry>()
+                .HasMany( o => o.MealItems )
+                .WithOne( o => o.Meal );
+
+            builder.Entity<MealItem>()
+                .HasOne( o => o.Meal )
+                .WithMany( o => o.MealItems );
+
         }
     }
 }

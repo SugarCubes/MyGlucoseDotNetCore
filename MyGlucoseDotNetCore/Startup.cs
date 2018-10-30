@@ -8,6 +8,7 @@ using MyGlucoseDotNetCore.Data;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Services;
 using MyGlucoseDotNetCore.Services.Interfaces;
+using Newtonsoft.Json;
 
 namespace MyGlucoseDotNetCore
 {
@@ -37,7 +38,12 @@ namespace MyGlucoseDotNetCore
             services.AddScoped<IMealItemRepository, DbMealItemRepository>();
             services.AddScoped<IPatientRepository, DbPatientRepository>();
 
-            services.AddMvc();
+            services.AddMvc()
+            .AddJsonOptions( options =>
+            {
+                options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            } );
 
             // Added the following service to use the ApplicationUser, 
             // ApplicationRole, and ApplicationDbContext classes 

@@ -46,9 +46,9 @@ namespace MyGlucoseDotNetCore.Models
                 + "\nZip1: " + Zip1
                 + "\nZip2: " + Zip2
                 + "\nUserName: " + UserName
-                + "\n" + glucoseString
-                + "\n" + exerciseString
-                + "\n" + mealEntryString;
+                + "\nGlucoseEntries: " + glucoseString
+                + "\nExerciseEntries: " + exerciseString
+                + "\nMealEntries: " + mealEntryString;
 
         } // ToString
 

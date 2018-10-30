@@ -61,7 +61,7 @@ namespace MyGlucoseDotNetCore.Services
                 oldMealEntry.CreatedAt = mealEntry.CreatedAt;
                 oldMealEntry.UpdatedAt = mealEntry.UpdatedAt;   // Updated in the Controller
                 oldMealEntry.Timestamp = mealEntry.Timestamp;
-                oldMealEntry.MealItems = mealEntry.MealItems;
+                //oldMealEntry.MealItems = mealEntry.MealItems;
                 _db.Entry( oldMealEntry ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;

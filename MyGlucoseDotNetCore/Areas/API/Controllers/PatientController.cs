@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Services.Interfaces;
+using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -31,17 +32,26 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
         } // injection constructor
 
 
-        // GET: /PI/Patient/Sync
+        // GET: /API/Patient/Sync
         [HttpPost]
-        public async Task<ActionResult> Sync( Patient patient )
+        public async Task<ActionResult> Sync( [FromBody] Patient patient )
         {
-            Debug.WriteLine( patient );
+            //Patient patient = JsonConvert.DeserializeObject<Patient>( patientString );
+            //Console.WriteLine( patient );
+
+            if ( patient == null || string.IsNullOrEmpty( patient.UserName ) )
+                return new JsonResult( new { success = false, errorCode = ErrorCode.UNKNOWN } );
+
             Patient dbPatient = await _patientRepository.ReadAsync( patient.UserName );
+
+            if ( dbPatient != null && patient.RemoteLoginToken != dbPatient.RemoteLoginToken )
+                return new JsonResult( new { success = false, errorCode = ErrorCode.INVALID_LOGIN_TOKEN } );
+
+            Console.WriteLine( "Patient appears to be valid: " + patient.FirstName );
 
             if ( dbPatient != null && dbPatient.UpdatedAt < patient.UpdatedAt )  // If database is outdated...
             {
                 DateTime updatedAt = patient.UpdatedAt;
-
 
             } // 
 
@@ -55,7 +65,12 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
             if ( patient.ExerciseEntries != null && patient.ExerciseEntries.Count > 0 )
                 await _exerciseEntryRepository.CreateOrUpdateEntries( patient.ExerciseEntries );
 
-            return new JsonResult( new { patient } );
+            return new JsonResult( new
+            {
+                success = true,
+                errorCode = ErrorCode.NO_ERROR,
+                patient
+            } );
 
         } // Sync
 
