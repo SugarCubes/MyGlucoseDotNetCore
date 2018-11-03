@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MyGlucoseDotNetCore.Models
 {
     public class Patient : ApplicationUser
     {
+        public string DoctorUserName { get; set; }
+        public string DoctorId { get; set; }
         public Doctor Doctor { get; set; }
         public List<GlucoseEntry> GlucoseEntries { get; set; }
         public List<ExerciseEntry> ExerciseEntries { get; set; }
@@ -48,7 +51,8 @@ namespace MyGlucoseDotNetCore.Models
                 + "\nUserName: " + UserName
                 + "\nGlucoseEntries: " + glucoseString
                 + "\nExerciseEntries: " + exerciseString
-                + "\nMealEntries: " + mealEntryString;
+                + "\nMealEntries: " + mealEntryString
+                + "\nDoctorUserName: " + DoctorUserName;
 
         } // ToString
 

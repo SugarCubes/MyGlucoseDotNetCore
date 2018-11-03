@@ -98,7 +98,6 @@ namespace MyGlucoseDotNetCore.Services
             foreach ( ExerciseEntry exerciseEntry in exerciseEntries )
             {
                 ExerciseEntry dbExerciseEntry = await ReadAsync( exerciseEntry.Id );
-                exerciseEntry.UpdatedAt = DateTime.Now;
                 if ( dbExerciseEntry == null )                  // If meal entry doesn't exist
                 {
                     // Create in the database

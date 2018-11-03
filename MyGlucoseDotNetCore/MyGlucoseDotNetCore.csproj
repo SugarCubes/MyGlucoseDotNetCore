@@ -12,6 +12,13 @@
     <None Remove="Data\Migrations\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20181031162350_AddedDatesToModels.cs" />
+    <Compile Remove="Migrations\20181031162350_AddedDatesToModels.Designer.cs" />
+    <Compile Remove="Migrations\20181102224730_AddedDoctorIdToPatient.cs" />
+    <Compile Remove="Migrations\20181102224730_AddedDoctorIdToPatient.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />

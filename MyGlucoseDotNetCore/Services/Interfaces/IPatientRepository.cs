@@ -12,7 +12,7 @@ namespace MyGlucoseDotNetCore.Services.Interfaces
         Task<Patient> ReadAsync( string username );
         IQueryable<Patient> ReadAll();
         Task<Patient> CreateAsync( Patient project );
-        Task UpdateAsync( string username, PatientViewModel project );
+        Task UpdateAsync( string username, Patient project );
         Task DeleteAsync( string username );
 
     } // Interface

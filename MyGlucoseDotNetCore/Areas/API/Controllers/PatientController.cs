@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Services.Interfaces;
-using Newtonsoft.Json;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace MyGlucoseDotNetCore.Areas.API.Controllers
@@ -36,26 +34,28 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Sync( [FromBody] Patient patient )
         {
-            //Patient patient = JsonConvert.DeserializeObject<Patient>( patientString );
-            //Console.WriteLine( patient );
-
+            // Make sure there was no trouble binding all of the patient's data:
             if ( patient == null || string.IsNullOrEmpty( patient.UserName ) )
                 return new JsonResult( new { success = false, errorCode = ErrorCode.UNKNOWN } );
 
+            // If no problems, get the current data from the DB:
             Patient dbPatient = await _patientRepository.ReadAsync( patient.UserName );
 
-            if ( dbPatient != null && patient.RemoteLoginToken != dbPatient.RemoteLoginToken )
+            // If we have no data, or login token doesn't match, return invalid:
+            if ( dbPatient == null || dbPatient != null && patient.RemoteLoginToken != dbPatient.RemoteLoginToken )
                 return new JsonResult( new { success = false, errorCode = ErrorCode.INVALID_LOGIN_TOKEN } );
 
             Console.WriteLine( "Patient appears to be valid: " + patient.FirstName );
 
+            // Check if data needs to be updated:
             if ( dbPatient != null && dbPatient.UpdatedAt < patient.UpdatedAt )  // If database is outdated...
             {
                 DateTime updatedAt = patient.UpdatedAt;
+                await _patientRepository.UpdateAsync( patient.UserName, patient );
 
-            } // 
+            } // if
 
-            // Sync the information sent to us
+            // Check the data sent to the server, to check if needs to be updated:
             if ( patient.GlucoseEntries != null && patient.GlucoseEntries.Count > 0 )
                 await _glucoseEntryRepository.CreateOrUpdateEntries( patient.GlucoseEntries );
 
@@ -65,11 +65,18 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
             if ( patient.ExerciseEntries != null && patient.ExerciseEntries.Count > 0 )
                 await _exerciseEntryRepository.CreateOrUpdateEntries( patient.ExerciseEntries );
 
+            // Nullify sensitive information:
+            patient.PasswordHash = "";
+            patient.SecurityStamp = "";
+            patient.ConcurrencyStamp = "";
+            patient.Doctor = null;
+
             return new JsonResult( new
             {
                 success = true,
                 errorCode = ErrorCode.NO_ERROR,
-                patient
+                patient,
+                patient.DoctorUserName
             } );
 
         } // Sync

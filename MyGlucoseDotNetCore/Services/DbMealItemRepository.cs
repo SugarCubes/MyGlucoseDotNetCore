@@ -62,7 +62,7 @@ namespace MyGlucoseDotNetCore.Services
                 oldMealItem.Name = mealItem.Name;
                 oldMealItem.Carbs = mealItem.Carbs;
                 oldMealItem.Servings = mealItem.Servings;
-                oldMealItem.UpdatedAt = mealItem.UpdatedAt;
+                //oldMealItem.UpdatedAt = mealItem.UpdatedAt;
                 _db.Entry( oldMealItem ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;
@@ -89,7 +89,6 @@ namespace MyGlucoseDotNetCore.Services
             foreach ( MealItem mealItem in mealItems )
             {
                 MealItem dbMealItem = await ReadAsync( mealItem.Id );
-                mealItem.UpdatedAt = DateTime.Now;
                 if ( dbMealItem == null )                  // If meal entry doesn't exist
                 {
                     // Create in the database
