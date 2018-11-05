@@ -50,8 +50,8 @@ namespace MyGlucoseDotNetCore.Services
             var oldGlucoseEntries = await ReadAsync( id );
             if( oldGlucoseEntries != null )
             {
-    			oldGlucoseEntries.PatientUsername = GlucoseEntry.PatientUsername;
-    			oldGlucoseEntries.Patient = GlucoseEntry.Patient;
+                oldGlucoseEntries.UserName = GlucoseEntry.UserName;
+                oldGlucoseEntries.Patient = GlucoseEntry.Patient;
     			oldGlucoseEntries.Measurement = GlucoseEntry.Measurement;
     			oldGlucoseEntries.BeforeAfter = GlucoseEntry.BeforeAfter;
     			oldGlucoseEntries.WhichMeal = GlucoseEntry.WhichMeal;

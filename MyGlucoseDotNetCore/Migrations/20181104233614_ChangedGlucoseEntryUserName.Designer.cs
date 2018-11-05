@@ -12,9 +12,10 @@ using System;
 namespace MyGlucoseDotNetCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181104233614_ChangedGlucoseEntryUserName")]
+    partial class ChangedGlucoseEntryUserName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,8 +162,6 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<string>("FirstName");
 
-                    b.Property<int>("Height");
-
                     b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
@@ -196,8 +195,6 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
-                    b.Property<int>("Weight");
-
                     b.Property<int>("Zip1");
 
                     b.Property<int>("Zip2");
@@ -224,13 +221,11 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
+                    b.Property<string>("ExerciseName");
+
                     b.Property<int>("Minutes");
 
-                    b.Property<string>("Name");
-
                     b.Property<string>("PatientId");
-
-                    b.Property<int>("Steps");
 
                     b.Property<long>("Timestamp");
 

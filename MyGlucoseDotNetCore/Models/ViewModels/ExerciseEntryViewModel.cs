@@ -20,7 +20,7 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
 			{
     			UserName = UserName,
     			User = User,
-    			ExerciseName = ExerciseName,
+    			Name = ExerciseName,
     			Minutes = Minutes,
     			CreatedAt = Date,
     			Timestamp = Timestamp

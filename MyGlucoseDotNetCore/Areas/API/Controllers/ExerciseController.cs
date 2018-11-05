@@ -96,7 +96,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                 {
                     UserName = exercise.UserName,
                     User = exercise.User,
-                    ExerciseName = exercise.ExerciseName,
+                    ExerciseName = exercise.Name,
                     Minutes = exercise.Minutes,
                     Date = exercise.CreatedAt,
                     Timestamp = exercise.Timestamp,
@@ -113,7 +113,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                             remoteMealToken = _exercise.ToString(),
                             exercise.UserName,
                             exercise.User,
-                            exercise.ExerciseName,
+                            exercise.Name,
                             exercise.Minutes,
                             exercise.CreatedAt,
                             exercise.Timestamp

@@ -48,18 +48,18 @@ namespace MyGlucoseDotNetCore.Services
         } // Create
 
 
-        public async Task UpdateAsync( Guid id, ExerciseEntry exerciseentryVM )
+        public async Task UpdateAsync( Guid id, ExerciseEntry exerciseEntry )
         {
             var oldExerciseEntry = await ReadAsync( id );
             if( oldExerciseEntry != null )
             {
-    			oldExerciseEntry.UserName = exerciseentryVM.UserName;
-    			oldExerciseEntry.User = exerciseentryVM.User;
-    			oldExerciseEntry.ExerciseName = exerciseentryVM.ExerciseName;
-    			oldExerciseEntry.Minutes = exerciseentryVM.Minutes;
-    			oldExerciseEntry.CreatedAt = exerciseentryVM.CreatedAt;
-                oldExerciseEntry.UpdatedAt = exerciseentryVM.UpdatedAt;
-                oldExerciseEntry.Timestamp = exerciseentryVM.Timestamp;
+    			oldExerciseEntry.UserName = exerciseEntry.UserName;
+    			oldExerciseEntry.User = exerciseEntry.User;
+    			oldExerciseEntry.Name = exerciseEntry.Name;
+    			oldExerciseEntry.Minutes = exerciseEntry.Minutes;
+    			oldExerciseEntry.CreatedAt = exerciseEntry.CreatedAt;
+                oldExerciseEntry.UpdatedAt = exerciseEntry.UpdatedAt;
+                oldExerciseEntry.Timestamp = exerciseEntry.Timestamp;
                 _db.Entry( oldExerciseEntry ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;

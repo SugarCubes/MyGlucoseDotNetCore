@@ -62,9 +62,13 @@ namespace MyGlucoseDotNetCore.Services
                 oldPatient.Email = oldPatient.Email;
                 oldPatient.CreatedAt = patient.CreatedAt;
                 oldPatient.UpdatedAt = patient.UpdatedAt;
-                oldPatient.GlucoseEntries = patient.GlucoseEntries;
-                oldPatient.ExerciseEntries = patient.ExerciseEntries;
-                oldPatient.MealEntries = patient.MealEntries;
+                // Tries to insert duplicate entries:
+                //if ( patient.GlucoseEntries != null )
+                //    oldPatient.GlucoseEntries = patient.GlucoseEntries;
+                //if ( patient.ExerciseEntries != null )
+                //    oldPatient.ExerciseEntries = patient.ExerciseEntries;
+                //if ( patient.MealEntries != null )
+                //    oldPatient.MealEntries = patient.MealEntries;
                 oldPatient.DoctorUserName = patient.DoctorUserName;
                 //oldPatient.Doctor = null;
                 //oldPatient.DoctorId = patient.DoctorId;

@@ -19,7 +19,7 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
 		{
 			return new GlucoseEntry
 			{
-    			PatientUsername = PatientUsername,
+    			UserName = PatientUsername,
     			Patient = Patient,
     			Measurement = Measurement,
     			BeforeAfter = BeforeAfter,

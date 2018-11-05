@@ -5,7 +5,7 @@ namespace MyGlucoseDotNetCore.Models
     public class GlucoseEntry
     {
         public Guid Id { get; set; }
-        public string PatientUsername { get; set; }
+        public string UserName { get; set; }
         public Patient Patient { get; set; }
         public float Measurement { get; set; }
         public BeforeAfter BeforeAfter { get; set; }
@@ -18,7 +18,7 @@ namespace MyGlucoseDotNetCore.Models
         {
             return "GLUCOSE ENTRY:"
                 + "\nId: " + Id
-                + "\nPatient: " + PatientUsername
+                + "\nPatient: " + UserName
                 + "\nMeasurement: " + Measurement
                 + "\nBefore/After: " + BeforeAfter.ToString()
                 + "\nWhich meal: " + WhichMeal.ToString()

@@ -19,6 +19,8 @@ namespace MyGlucoseDotNetCore.Models
         public string State { get; set; }
         public int Zip1 { get; set; }
         public int Zip2 { get; set; }
+        public int Height { get; set; }
+        public int Weight { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 

@@ -7,8 +7,9 @@ namespace MyGlucoseDotNetCore.Models
         public Guid Id { get; set; }
         public string UserName { get; set; }
         public ApplicationUser User { get; set; }
-        public string ExerciseName { get; set; }
+        public string Name { get; set; }
         public int Minutes { get; set; }
+        public int Steps { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public long Timestamp { get; set; }
@@ -18,8 +19,9 @@ namespace MyGlucoseDotNetCore.Models
             return "EXERCISE ENTRY:"
                 + "\nId: " + Id
                 + "\nUserName: " + UserName
-                + "\nExercise name: " + ExerciseName
+                + "\nExercise name: " + Name
                 + "\nMinutes: " + Minutes
+                + "\nSteps" + Steps
                 + "\nDate: " + CreatedAt
                 + "\nTimestamp: " + Timestamp;
 

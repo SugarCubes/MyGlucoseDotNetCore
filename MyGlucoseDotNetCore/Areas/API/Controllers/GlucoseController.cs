@@ -86,7 +86,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
 
                 var glucoseModel = new GlucoseEntriesViewModel
                 {
-                    PatientUsername = glucose.PatientUsername,
+                    PatientUsername = glucose.UserName,
                     Patient = glucose.Patient,
                     Measurement = glucose.Measurement,
                     BeforeAfter = glucose.BeforeAfter,
@@ -104,7 +104,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                             success = true,
                             errorCode = ErrorCode.NO_ERROR,
                             remoteGlucoseToken = _glucose.ToString(),
-                            glucose.PatientUsername,
+                            glucose.UserName,
                             glucose.Patient,
                             glucose.Measurement,
                             glucose.BeforeAfter,
