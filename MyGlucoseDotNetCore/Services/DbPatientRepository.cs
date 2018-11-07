@@ -56,12 +56,13 @@ namespace MyGlucoseDotNetCore.Services
                 oldPatient.Address1 = patient.Address1;
                 oldPatient.Address2 = patient.Address2;
                 oldPatient.City = patient.City;
-                oldPatient.Zip1 = oldPatient.Zip1;
-                oldPatient.Zip2 = oldPatient.Zip2;
-                oldPatient.PhoneNumber = oldPatient.PhoneNumber;
-                oldPatient.Email = oldPatient.Email;
+                oldPatient.Zip1 = patient.Zip1;
+                oldPatient.Zip2 = patient.Zip2;
+                oldPatient.PhoneNumber = patient.PhoneNumber;
+                oldPatient.Email = patient.Email;
                 oldPatient.CreatedAt = patient.CreatedAt;
                 oldPatient.UpdatedAt = patient.UpdatedAt;
+                oldPatient.RemoteLoginToken = patient.RemoteLoginToken;
                 // Tries to insert duplicate entries:
                 //if ( patient.GlucoseEntries != null )
                 //    oldPatient.GlucoseEntries = patient.GlucoseEntries;
@@ -76,8 +77,15 @@ namespace MyGlucoseDotNetCore.Services
                 //    .SingleOrDefaultAsync( u => u.UserName == patient.DoctorUserName );
                 //if ( doctor != null )
                 //    oldPatient.Doctor = patient.Doctor;
-                if ( oldPatient.Doctor.Id == patient.Doctor.Id )
+                if ( oldPatient.Doctor != null && patient.Doctor != null 
+                    && oldPatient.Doctor.Id == patient.Doctor.Id )
                     _db.Entry( patient.Doctor ).State = EntityState.Unchanged;
+                //foreach ( var glucoseEntry in patient.GlucoseEntries )
+                //    _db.Entry( glucoseEntry ).State = EntityState.Unchanged;
+                //foreach ( var exerciseEntry in patient.ExerciseEntries )
+                //    _db.Entry( exerciseEntry ).State = EntityState.Unchanged;
+                //foreach ( var mealEntry in patient.MealEntries )
+                //    _db.Entry( mealEntry ).State = EntityState.Unchanged;
                 //_db.Entry( patient.GlucoseEntries ).State = EntityState.Unchanged;
                 //_db.Entry( patient.MealEntries ).State = EntityState.Unchanged;
                 //_db.Entry( patient.ExerciseEntries ).State = EntityState.Unchanged;

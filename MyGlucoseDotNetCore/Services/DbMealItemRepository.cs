@@ -24,6 +24,7 @@ namespace MyGlucoseDotNetCore.Services
         public async Task<MealItem> ReadAsync( Guid mealid )
         {
             return await ReadAll()
+                .Include( o => o.Meal )
                 .SingleOrDefaultAsync( o => o.Id == mealid );
 
         } // ReadAsync
@@ -31,7 +32,8 @@ namespace MyGlucoseDotNetCore.Services
 
         public IQueryable<MealItem> ReadAll()
         {
-            return _db.MealItems;
+            return _db.MealItems
+                .Include( o => o.Meal );
 
         } // ReadAll
 
@@ -62,7 +64,11 @@ namespace MyGlucoseDotNetCore.Services
                 oldMealItem.Name = mealItem.Name;
                 oldMealItem.Carbs = mealItem.Carbs;
                 oldMealItem.Servings = mealItem.Servings;
+                oldMealItem.Meal = mealItem.Meal;
+                oldMealItem.MealId = mealItem.MealId;
+                oldMealItem.UpdatedAt = DateTime.Now;
                 //oldMealItem.UpdatedAt = mealItem.UpdatedAt;
+                _db.Entry( oldMealItem.Meal ).State = EntityState.Unchanged;
                 _db.Entry( oldMealItem ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;
