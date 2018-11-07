@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MyGlucoseDotNetCore.Data;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Services.Interfaces;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -56,13 +57,26 @@ namespace MyGlucoseDotNetCore.Services
                 oldPatient.Address1 = patient.Address1;
                 oldPatient.Address2 = patient.Address2;
                 oldPatient.City = patient.City;
+                oldPatient.State = patient.State;
                 oldPatient.Zip1 = patient.Zip1;
                 oldPatient.Zip2 = patient.Zip2;
                 oldPatient.PhoneNumber = patient.PhoneNumber;
                 oldPatient.Email = patient.Email;
                 oldPatient.CreatedAt = patient.CreatedAt;
-                oldPatient.UpdatedAt = patient.UpdatedAt;
-                oldPatient.RemoteLoginToken = patient.RemoteLoginToken;
+                oldPatient.UpdatedAt = DateTime.Now;
+                oldPatient.RemoteLoginToken = patient.RemoteLoginToken; // In case it has changed
+                oldPatient.Height = patient.Height;
+                oldPatient.Weight = patient.Weight;
+                oldPatient.DoctorUserName = patient.DoctorUserName;
+                if ( oldPatient.Doctor != null && patient.Doctor != null
+                    && oldPatient.Doctor.Id == patient.Doctor.Id )
+                    _db.Entry( patient.Doctor ).State = EntityState.Unchanged;
+                //oldPatient.Doctor = null;
+                //oldPatient.DoctorId = patient.DoctorId;
+                //var doctor = await _db.Doctors
+                //    .SingleOrDefaultAsync( u => u.UserName == patient.DoctorUserName );
+                //if ( doctor != null )
+                //    oldPatient.Doctor = patient.Doctor;
                 // Tries to insert duplicate entries:
                 //if ( patient.GlucoseEntries != null )
                 //    oldPatient.GlucoseEntries = patient.GlucoseEntries;
@@ -70,25 +84,6 @@ namespace MyGlucoseDotNetCore.Services
                 //    oldPatient.ExerciseEntries = patient.ExerciseEntries;
                 //if ( patient.MealEntries != null )
                 //    oldPatient.MealEntries = patient.MealEntries;
-                oldPatient.DoctorUserName = patient.DoctorUserName;
-                //oldPatient.Doctor = null;
-                //oldPatient.DoctorId = patient.DoctorId;
-                //var doctor = await _db.Doctors
-                //    .SingleOrDefaultAsync( u => u.UserName == patient.DoctorUserName );
-                //if ( doctor != null )
-                //    oldPatient.Doctor = patient.Doctor;
-                if ( oldPatient.Doctor != null && patient.Doctor != null 
-                    && oldPatient.Doctor.Id == patient.Doctor.Id )
-                    _db.Entry( patient.Doctor ).State = EntityState.Unchanged;
-                //foreach ( var glucoseEntry in patient.GlucoseEntries )
-                //    _db.Entry( glucoseEntry ).State = EntityState.Unchanged;
-                //foreach ( var exerciseEntry in patient.ExerciseEntries )
-                //    _db.Entry( exerciseEntry ).State = EntityState.Unchanged;
-                //foreach ( var mealEntry in patient.MealEntries )
-                //    _db.Entry( mealEntry ).State = EntityState.Unchanged;
-                //_db.Entry( patient.GlucoseEntries ).State = EntityState.Unchanged;
-                //_db.Entry( patient.MealEntries ).State = EntityState.Unchanged;
-                //_db.Entry( patient.ExerciseEntries ).State = EntityState.Unchanged;
                 _db.Entry( oldPatient ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;
