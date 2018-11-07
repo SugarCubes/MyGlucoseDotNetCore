@@ -108,15 +108,6 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
 
             } // if succeeeded...else
 
-            // If we got this far, something failed, so just return an unknown error
-            return new JsonResult(
-                    new
-                    {
-                        success = false,
-                        errorCode = ErrorCode.UNKNOWN
-                    }
-                );
-
         } // LoginRemote
 
 
@@ -126,7 +117,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
         public async Task<IActionResult> Register( RegisterViewModel model )
         {
             var doctor = await _doctorRepository.ReadAsync( model.DoctorUserName );
-            var patient = model.GetNewPatient();
+            Patient patient = model.GetNewPatient();
             patient.Doctor = doctor;
 
             var result = await _userManager.CreateAsync(patient, model.Password);
@@ -162,6 +153,8 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                     patient.RemoteLoginToken,
                     patient.RemoteLoginExpiration,
                     patient.DoctorUserName,
+                    patient.Email,
+                    patient.UserName,
                     doctorId = patient.Doctor != null ? patient.Doctor.Id : ""
                 } );
             

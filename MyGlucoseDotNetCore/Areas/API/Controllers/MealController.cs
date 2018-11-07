@@ -155,7 +155,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                 var mealModel = new MealEntryViewModel
                 {
                     UserName = meal.UserName,
-                    User = meal.User,
+                    Patient = meal.Patient,
                     TotalCarbs = meal.TotalCarbs,
                     Date = meal.CreatedAt,
                     Timestamp = meal.Timestamp,
@@ -172,7 +172,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                             errorCode = ErrorCode.NO_ERROR,
                             remoteMealToken = _meal.ToString(),
                             meal.UserName,
-                            meal.User,
+                            meal.Patient,
                             meal.TotalCarbs,
                             meal.CreatedAt,
                             meal.Timestamp,

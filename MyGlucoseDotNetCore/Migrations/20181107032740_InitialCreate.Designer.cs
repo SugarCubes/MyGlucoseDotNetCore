@@ -12,15 +12,15 @@ using System;
 namespace MyGlucoseDotNetCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181031185209_AddedDrUserNameToPatient")]
-    partial class AddedDrUserNameToPatient
+    [Migration("20181107032740_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.3-rtm-10026")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+                .HasAnnotation("ProductVersion", "2.0.3-rtm-10026");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
@@ -128,8 +128,7 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -161,6 +160,8 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("FirstName");
+
+                    b.Property<int>("Height");
 
                     b.Property<string>("LastName");
 
@@ -195,6 +196,8 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
+                    b.Property<int>("Weight");
+
                     b.Property<int>("Zip1");
 
                     b.Property<int>("Zip2");
@@ -206,8 +209,7 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
 
@@ -221,11 +223,13 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<string>("ExerciseName");
-
                     b.Property<int>("Minutes");
 
+                    b.Property<string>("Name");
+
                     b.Property<string>("PatientId");
+
+                    b.Property<int>("Steps");
 
                     b.Property<long>("Timestamp");
 
@@ -257,11 +261,11 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<string>("PatientId");
 
-                    b.Property<string>("PatientUsername");
-
                     b.Property<long>("Timestamp");
 
                     b.Property<DateTime>("UpdatedAt");
+
+                    b.Property<string>("UserName");
 
                     b.Property<int>("WhichMeal");
 

@@ -8,7 +8,7 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
     public class ExerciseEntryViewModel
     {
         public string UserName { get; set; }
-        public ApplicationUser User { get; set; }
+        public Patient Patient { get; set; }
         public string ExerciseName { get; set; }
         public int Minutes { get; set; }
         public DateTime Date { get; set; }
@@ -19,7 +19,7 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
 			return new ExerciseEntry
 			{
     			UserName = UserName,
-    			User = User,
+    			Patient = Patient,
     			Name = ExerciseName,
     			Minutes = Minutes,
     			CreatedAt = Date,

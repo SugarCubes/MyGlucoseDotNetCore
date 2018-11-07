@@ -95,7 +95,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                 var exerciseModel = new ExerciseEntryViewModel
                 {
                     UserName = exercise.UserName,
-                    User = exercise.User,
+                    Patient = exercise.Patient,
                     ExerciseName = exercise.Name,
                     Minutes = exercise.Minutes,
                     Date = exercise.CreatedAt,
@@ -112,7 +112,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
                             errorCode = ErrorCode.NO_ERROR,
                             remoteMealToken = _exercise.ToString(),
                             exercise.UserName,
-                            exercise.User,
+                            exercise.Patient,
                             exercise.Name,
                             exercise.Minutes,
                             exercise.CreatedAt,

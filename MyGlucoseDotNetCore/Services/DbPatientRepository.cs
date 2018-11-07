@@ -78,6 +78,9 @@ namespace MyGlucoseDotNetCore.Services
                 //    oldPatient.Doctor = patient.Doctor;
                 if ( oldPatient.Doctor.Id == patient.Doctor.Id )
                     _db.Entry( patient.Doctor ).State = EntityState.Unchanged;
+                //_db.Entry( patient.GlucoseEntries ).State = EntityState.Unchanged;
+                //_db.Entry( patient.MealEntries ).State = EntityState.Unchanged;
+                //_db.Entry( patient.ExerciseEntries ).State = EntityState.Unchanged;
                 _db.Entry( oldPatient ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;

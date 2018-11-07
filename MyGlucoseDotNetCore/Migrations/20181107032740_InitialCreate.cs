@@ -40,6 +40,7 @@ namespace MyGlucoseDotNetCore.Migrations
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
+                    Height = table.Column<int>(nullable: false),
                     LastName = table.Column<string>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
@@ -55,10 +56,12 @@ namespace MyGlucoseDotNetCore.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Weight = table.Column<int>(nullable: false),
                     Zip1 = table.Column<int>(nullable: false),
                     Zip2 = table.Column<int>(nullable: false),
                     DegreeAbbreviation = table.Column<string>(nullable: true),
-                    DoctorId = table.Column<string>(nullable: true)
+                    DoctorId = table.Column<string>(nullable: true),
+                    DoctorUserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -76,7 +79,7 @@ namespace MyGlucoseDotNetCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
                     RoleId = table.Column<string>(nullable: false)
@@ -97,7 +100,7 @@ namespace MyGlucoseDotNetCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
@@ -183,9 +186,10 @@ namespace MyGlucoseDotNetCore.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    ExerciseName = table.Column<string>(nullable: true),
                     Minutes = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     PatientId = table.Column<string>(nullable: true),
+                    Steps = table.Column<int>(nullable: false),
                     Timestamp = table.Column<long>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
@@ -217,9 +221,9 @@ namespace MyGlucoseDotNetCore.Migrations
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     Measurement = table.Column<float>(nullable: false),
                     PatientId = table.Column<string>(nullable: true),
-                    PatientUsername = table.Column<string>(nullable: true),
                     Timestamp = table.Column<long>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
+                    UserName = table.Column<string>(nullable: true),
                     WhichMeal = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -294,8 +298,7 @@ namespace MyGlucoseDotNetCore.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -321,8 +324,7 @@ namespace MyGlucoseDotNetCore.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_DoctorId",

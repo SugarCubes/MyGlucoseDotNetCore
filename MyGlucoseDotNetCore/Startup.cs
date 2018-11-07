@@ -24,8 +24,15 @@ namespace MyGlucoseDotNetCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices( IServiceCollection services )
         {
-            services.AddDbContext<ApplicationDbContext>( options =>
-                 options.UseSqlServer( Configuration.GetConnectionString( "DefaultConnection" ) ) );
+            //services.AddDbContext<ApplicationDbContext>( options =>
+            //     options.UseSqlServer( Configuration.GetConnectionString( "DefaultConnection" ) ) );
+
+            services.AddDbContextPool<ApplicationDbContext>( options =>
+              options.UseMySql( Configuration.GetConnectionString( "MySqlConnection" ) ) );//,
+                 //mysqlOptions =>
+                 //{
+                 //    mysqlOptions.ServerVersion( new Version( 5, 5, 60 ), ServerType.MySql );
+                 //} ) );
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

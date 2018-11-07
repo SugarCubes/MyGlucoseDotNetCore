@@ -56,12 +56,14 @@ namespace MyGlucoseDotNetCore.Services
             if( oldMealEntry != null )
             {
                 oldMealEntry.UserName = mealEntry.UserName;
-                oldMealEntry.User = mealEntry.User;
+                oldMealEntry.Patient = mealEntry.Patient;
                 oldMealEntry.TotalCarbs = mealEntry.TotalCarbs;
                 oldMealEntry.CreatedAt = mealEntry.CreatedAt;
                 oldMealEntry.UpdatedAt = mealEntry.UpdatedAt;   // Updated in the Controller
                 oldMealEntry.Timestamp = mealEntry.Timestamp;
                 //oldMealEntry.MealItems = mealEntry.MealItems;
+                _db.Entry( mealEntry.MealItems ).State = EntityState.Unchanged;
+                _db.Entry( oldMealEntry.MealItems ).State = EntityState.Unchanged;
                 _db.Entry( oldMealEntry ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;

@@ -31,7 +31,18 @@ namespace MyGlucoseDotNetCore.Data
 
             builder.Entity<Patient>()
                 .HasMany( o => o.GlucoseEntries )
-                .WithOne( o => o.Patient );
+                .WithOne( o => o.Patient )
+                .HasForeignKey( o => o.UserName );
+
+            builder.Entity<Patient>()
+                .HasMany( o => o.MealEntries )
+                .WithOne( o => o.Patient )
+                .HasForeignKey( o => o.UserName );
+
+            builder.Entity<Patient>()
+                .HasMany( o => o.ExerciseEntries )
+                .WithOne( o => o.Patient )
+                .HasForeignKey( o => o.UserName );
 
             builder.Entity<Doctor>()
                 .HasMany( o => o.Patients )
@@ -41,9 +52,9 @@ namespace MyGlucoseDotNetCore.Data
                 .HasMany( o => o.MealItems )
                 .WithOne( o => o.Meal );
 
-            builder.Entity<MealItem>()
-                .HasOne( o => o.Meal )
-                .WithMany( o => o.MealItems );
+            //builder.Entity<MealItem>()
+            //    .HasOne( o => o.Meal )
+            //    .WithMany( o => o.MealItems );
 
         }
     }

@@ -7,7 +7,7 @@ namespace MyGlucoseDotNetCore.Models
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }
-        public ApplicationUser User { get; set; }
+        public Patient Patient { get; set; }
         public int TotalCarbs { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

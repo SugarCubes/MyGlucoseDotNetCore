@@ -54,7 +54,7 @@ namespace MyGlucoseDotNetCore.Services
             if( oldExerciseEntry != null )
             {
     			oldExerciseEntry.UserName = exerciseEntry.UserName;
-    			oldExerciseEntry.User = exerciseEntry.User;
+    			oldExerciseEntry.Patient = exerciseEntry.Patient;
     			oldExerciseEntry.Name = exerciseEntry.Name;
     			oldExerciseEntry.Minutes = exerciseEntry.Minutes;
     			oldExerciseEntry.CreatedAt = exerciseEntry.CreatedAt;

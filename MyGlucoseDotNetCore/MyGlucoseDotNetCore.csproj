@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnet-MyGlucoseDotNetCore-8B83B3C5-51EF-4374-9857-13FDCA3C45FA</UserSecretsId>
+	<OutputType>Exe</OutputType>
+	<PreserveCompilationContext>true</PreserveCompilationContext>
+	<RuntimeIdentifiers>win7-x64;win7-x86;ubuntu.16.04-x64;linux-arm;</RuntimeIdentifiers>
+    <SuppressDockerTargets>True</SuppressDockerTargets>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +28,7 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" PrivateAssets="All" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
