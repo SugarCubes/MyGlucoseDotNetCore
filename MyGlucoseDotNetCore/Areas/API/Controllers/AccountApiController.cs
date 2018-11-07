@@ -119,6 +119,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
             var doctor = await _doctorRepository.ReadAsync( model.DoctorUserName );
             Patient patient = model.GetNewPatient();
             patient.Doctor = doctor;
+            patient.DoctorUserName = doctor.UserName;
 
             var result = await _userManager.CreateAsync(patient, model.Password);
 

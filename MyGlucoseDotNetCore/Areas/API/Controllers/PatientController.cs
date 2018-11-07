@@ -42,9 +42,10 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
             Patient dbPatient = await _patientRepository.ReadAsync( patient.UserName );
 
             // If we have no data, or login token doesn't match, return invalid:
-            if ( dbPatient == null && patient != null && patient.RemoteLoginToken != dbPatient.RemoteLoginToken )
+            bool loggedIn = patient.RemoteLoginToken == dbPatient.RemoteLoginToken;
+            if ( dbPatient == null || !loggedIn )
                 return new JsonResult( new { success = false, errorCode = ErrorCode.INVALID_LOGIN_TOKEN } );
-
+            
             Console.WriteLine( "Patient appears to be valid: " + patient.FirstName );
 
             // Check if data needs to be updated:
