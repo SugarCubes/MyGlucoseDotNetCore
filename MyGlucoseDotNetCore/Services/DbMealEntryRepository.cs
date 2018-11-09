@@ -59,7 +59,7 @@ namespace MyGlucoseDotNetCore.Services
                 oldMealEntry.Patient = mealEntry.Patient;
                 oldMealEntry.TotalCarbs = mealEntry.TotalCarbs;
                 oldMealEntry.CreatedAt = mealEntry.CreatedAt;
-                oldMealEntry.UpdatedAt = DateTime.Now;
+                oldMealEntry.UpdatedAt = mealEntry.UpdatedAt;
                 oldMealEntry.Timestamp = mealEntry.Timestamp;
                 //oldMealEntry.MealItems = mealEntry.MealItems;
 

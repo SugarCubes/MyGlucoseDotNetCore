@@ -63,7 +63,7 @@ namespace MyGlucoseDotNetCore.Services
                 oldPatient.PhoneNumber = patient.PhoneNumber;
                 oldPatient.Email = patient.Email;
                 oldPatient.CreatedAt = patient.CreatedAt;
-                oldPatient.UpdatedAt = DateTime.Now;
+                oldPatient.UpdatedAt = patient.UpdatedAt;
                 oldPatient.RemoteLoginToken = patient.RemoteLoginToken; // In case it has changed
                 oldPatient.Height = patient.Height;
                 oldPatient.Weight = patient.Weight;

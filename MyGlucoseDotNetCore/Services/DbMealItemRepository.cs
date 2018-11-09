@@ -60,13 +60,12 @@ namespace MyGlucoseDotNetCore.Services
             var oldMealItem = await ReadAsync( id );
             if ( oldMealItem != null )
             {
-                oldMealItem.Meal = mealItem.Meal;
                 oldMealItem.Name = mealItem.Name;
                 oldMealItem.Carbs = mealItem.Carbs;
                 oldMealItem.Servings = mealItem.Servings;
-                oldMealItem.Meal = mealItem.Meal;
-                oldMealItem.MealId = mealItem.MealId;
-                oldMealItem.UpdatedAt = DateTime.Now;
+                //oldMealItem.Meal = mealItem.Meal;
+                //oldMealItem.MealId = mealItem.MealId;
+                oldMealItem.UpdatedAt = mealItem.UpdatedAt;
                 //oldMealItem.UpdatedAt = mealItem.UpdatedAt;
                 _db.Entry( oldMealItem.Meal ).State = EntityState.Unchanged;
                 _db.Entry( oldMealItem ).State = EntityState.Modified;
