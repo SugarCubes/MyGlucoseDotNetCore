@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MyGlucoseDotNetCore.Models.GlucoseEntries>
+﻿@model IEnumerable<MyGlucoseDotNetCore.Models.GlucoseEntry>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,24 +12,27 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.PatientUsername)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Measurement)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.BeforeAfter)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.WhichMeal)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Date)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Timestamp)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Measurement)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeforeAfter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WhichMeal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Timestamp)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -37,7 +40,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PatientUsername)
+                @Html.DisplayFor(modelItem => item.UserName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Measurement)
@@ -49,7 +52,10 @@
                 @Html.DisplayFor(modelItem => item.WhichMeal)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Date)
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Timestamp)

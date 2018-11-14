@@ -72,16 +72,7 @@ namespace MyGlucoseDotNetCore.Services
             return;
 
         }
-
-        public async Task<Patient> CreatePatientAsync( Patient patient )
-        {
-            //_db.Users.Add( patient );
-            // TODO: Add to Patient role:
-
-            await _db.SaveChangesAsync();
-            return patient;
-
-        }
+        
 
     }
 
