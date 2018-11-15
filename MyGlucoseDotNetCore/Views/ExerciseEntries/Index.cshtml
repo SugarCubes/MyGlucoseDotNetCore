@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MyGlucoseDotNetCore.Models.GlucoseEntry>
+﻿@model IEnumerable<MyGlucoseDotNetCore.Models.ExerciseEntry>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,16 +13,16 @@
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.UserName)
+                    @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Measurement)
+                    @Html.DisplayNameFor(model => model.Minutes)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.BeforeAfter)
+                    @Html.DisplayNameFor(model => model.Steps)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.WhichMeal)
+                    @Html.DisplayNameFor(model => model.CreatedAt)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.UpdatedAt)
@@ -30,6 +30,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Timestamp)
                 </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -37,22 +40,25 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Measurement)
+                @Html.DisplayFor(modelItem => item.Minutes)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BeforeAfter)
+                @Html.DisplayFor(modelItem => item.Steps)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.WhichMeal)
+                @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Timestamp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

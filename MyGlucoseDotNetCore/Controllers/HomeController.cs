@@ -56,7 +56,7 @@ namespace MyGlucoseDotNetCore.Controllers
             if (ModelState.IsValid)
             {
                 await _repo.CreatePatientAsync( patientVM.GetNewPatient() );
-                return RedirectToAction( "Index" );
+                //return RedirectToAction( "Index" );
             }
             return View( patientVM );
         }
