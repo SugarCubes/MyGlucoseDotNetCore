@@ -27,7 +27,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
         {
             var data = _excerciseEntryRepo
                 .ReadAll()
-                .Where(e => e.UserName == UserName)
+                .Where(e => e.UserName == UserName && e.Minutes > 0 )
                 .OrderBy(e => e.UpdatedAt);
             return new JsonResult(new { exerciseEntries = data });
 
