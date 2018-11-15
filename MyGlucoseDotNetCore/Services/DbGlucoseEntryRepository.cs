@@ -24,6 +24,7 @@ namespace MyGlucoseDotNetCore.Services
         public async Task<GlucoseEntry> ReadAsync( Guid id )
         {
             return await ReadAll()
+                .Include( p => p.Patient )
                 .SingleOrDefaultAsync( o => o.Id == id );
 
         } // ReadAsync
