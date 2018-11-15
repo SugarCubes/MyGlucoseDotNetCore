@@ -157,19 +157,7 @@ namespace MyGlucoseDotNetCore.Controllers
         {
             return _context.GlucoseEntries.Any(e => e.Id == id);
         }
-
-        public IActionResult GlucoseBarGraph(float measurment)
-        {
-            var lstModel = new List<GlucoseEntry>();
-
-            lstModel.Add(new GlucoseEntry
-            {
-                Measurement = measurment,
-                //Quantity = rnd.Next(10)
-            });
-
-            return View(/*1stModel*/);
-        }
+        
     }
 }
 
