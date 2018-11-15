@@ -8,18 +8,22 @@ using Microsoft.EntityFrameworkCore;
 using MyGlucoseDotNetCore.Data;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Services.Interfaces;
+using MyGlucoseDotNetCore.Models.ViewModels;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
     public class GlucoseEntriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IGlucoseEntriesRepository _entry;
+        private Random rnd = new Random();
 
-        
 
-        public GlucoseEntriesController(ApplicationDbContext context)
+        public GlucoseEntriesController(ApplicationDbContext context, 
+                                        IGlucoseEntriesRepository entry)
         {
             _context = context;
+            _entry = entry;
         }
 
         // GET: GlucoseEntry
@@ -57,7 +61,7 @@ namespace MyGlucoseDotNetCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PatientUsername,Measurement,BeforeAfter,WhichMeal,Date,Timestamp")] GlucoseEntry GlucoseEntries)
+        public async Task<IActionResult> Create([Bind("Id,UserName,Measurement,BeforeAfter,WhichMeal,Date,Timestamp")] GlucoseEntry GlucoseEntries)
         {
             if (ModelState.IsValid)
             {
@@ -153,6 +157,7 @@ namespace MyGlucoseDotNetCore.Controllers
         {
             return _context.GlucoseEntries.Any(e => e.Id == id);
         }
+        
     }
 }
 
