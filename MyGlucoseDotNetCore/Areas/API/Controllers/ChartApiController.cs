@@ -1,47 +1,71 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using MyGlucoseDotNetCore.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using MyGlucoseDotNetCore.Services.Interfaces;
 
 namespace MyGlucoseDotNetCore.Areas.API.Controllers
 {
     [Area("API")]
     public class ChartApiController : Controller
     {
-        private IGlucoseEntriesRepository _gEntry;
+        private IGlucoseEntriesRepository _glucoseEntryRepo;
+        private IExerciseEntryRepository _excerciseEntryRepo;
+        private IMealEntryRepository _mealEntryRepo;
 
-        public IActionResult Index()
+        public ChartApiController(IGlucoseEntriesRepository glucoseEntriesRepository,
+                                  IExerciseEntryRepository excerciseEntryRepo, 
+                                  IMealEntryRepository mealEntryRepoository )
         {
-            return View();
-        }
-
-        public ChartApiController(IGlucoseEntriesRepository gEntry)
-        {
-            _gEntry = gEntry;
+            _glucoseEntryRepo = glucoseEntriesRepository;
+            _excerciseEntryRepo = excerciseEntryRepo;
+            _mealEntryRepo = mealEntryRepoository;
 
         } // constructor
 
+        public JsonResult GetUserExerciseChart(string UserName)
+        {
+            var data = _excerciseEntryRepo
+                .ReadAll()
+                .Where(e => e.UserName == UserName)
+                .OrderBy(e => e.UpdatedAt);
+            return new JsonResult(new { exerciseEntries = data });
+
+        } // GetGlucoseChart
+
+
         public JsonResult GetGlucoseChart()
         {
-            // TODO: Create ReadAll(Username)
-            var data = _gEntry
+            var data = _glucoseEntryRepo
                 .ReadAll()
                 .OrderBy(o => o.UpdatedAt);
             return new JsonResult(new { glucoseEntries = data });
 
         } // GetGlucoseChart
 
+
         public JsonResult GetUserGlucoseChart(string UserName)
         {
-            // TODO: Create ReadAll(Username)
-            var data = _gEntry
+            var data = _glucoseEntryRepo
                 .ReadAll()
                 .Where(o => o.UserName == UserName)
                 .OrderBy(o => o.UpdatedAt);
             return new JsonResult(new { glucoseEntries = data });
 
         } // GetGlucoseChart
-    } // end chart controller
-}// end namespace
+
+
+        public JsonResult GetUserMealChart( string UserName )
+        {
+            // TODO: Create ReadAll(Username)
+            var data = _mealEntryRepo
+                .ReadAll()
+                .Where(o => o.UserName == UserName)
+                .OrderBy(o => o.UpdatedAt);
+            return new JsonResult( new { mealEntries = data } );
+
+        } // GetMealChart
+
+    } // class
+
+} // namespace

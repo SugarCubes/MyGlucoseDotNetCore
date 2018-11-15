@@ -8,14 +8,24 @@ namespace MyGlucoseDotNetCore.Controllers
 {
     public class ChartController : Controller
     {
-        public ChartController()// IGlucoseEntriesRepository glucoseEntryRepository )
-        {
-            //_glucoseEntryRepo = glucoseEntryRepository;
-
-        }
         public IActionResult GlucoseIndex()
         {
             return View();
+
         }
-    }
-}
+
+        public IActionResult ExerciseIndex()
+        {
+            return View();
+
+        }
+
+        public IActionResult MealIndex()
+        {
+            return View();
+
+        }
+
+    } // class
+    
+} // namespace

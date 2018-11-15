@@ -46,6 +46,7 @@ namespace MyGlucoseDotNetCore.Controllers
         }
 
        
+                //return RedirectToAction( "Index" );
 
 
     }
