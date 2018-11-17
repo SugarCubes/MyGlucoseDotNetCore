@@ -1,0 +1,25 @@
+﻿@using System.Windows.Forms.dll;
+
+@{
+    ViewData["Title"] = "RoleSelect";
+}
+
+<h2>Role</h2>
+@{ 
+    string messageBoxText = "Are you a Physicain?";
+    string caption = "Role";
+    MessageBoxButton button = MessageBoxButton.YesNo;
+
+    MessageBoxResult result = messageBoxText.Show(messageBoxText, caption, button);
+
+    switch (result)
+    {
+        case MessageBoxResult.Yes:
+            Response.Redirect("https://localhost:44346/Account/Register");
+            break;
+        case MessageBoxResult.No:
+            Response.Redirect("https://localhost:44346/Account/PatientRegister");
+            break;
+    }
+}
+
