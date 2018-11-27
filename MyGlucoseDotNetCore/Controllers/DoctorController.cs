@@ -8,26 +8,33 @@ using MyGlucoseDotNetCore.Services.Interfaces;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
-    public class PatientController : Controller
+    public class DoctorController : Controller
     {
         private IPatientRepository _pat;
-        private IDoctorRepository _doc;
 
-        public PatientController(IPatientRepository pat,
-                                 IDoctorRepository doc)
+        public DoctorController(IPatientRepository pat)
         {
             _pat = pat;
-            _doc = doc;
         }
 
         public IActionResult Index()
         {
-            var doctors = _doc.ReadAll();
-            return View(doctors);
+            var model = _pat.ReadAll()
+            .Select(p => new PatientViewModel
+            {
+                FirstName = p.FirstName,
+                LastName = p.LastName,
+                PhoneNumber = p.PhoneNumber
+            });
+            return View(model);
         }
 
-        public IActionResult patientList()
+        //[HttpPost]
+        public IActionResult PatientDetails()
         {
+            
+            //var patient = _pat.ReadAsync(userName);
+
             var model = _pat.ReadAll()
             .Select(p => new PatientViewModel
             {
@@ -44,22 +51,6 @@ namespace MyGlucoseDotNetCore.Controllers
                 Email = p.Email
             });
             return View(model);
-        }
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(PatientViewModel patientVM)
-        {
-            if (ModelState.IsValid)
-            {
-                await _pat.CreateAsync(patientVM.GetNewPatient());
-                return RedirectToAction("Index");
-            }
-            return View(patientVM);
         }
     }
 }

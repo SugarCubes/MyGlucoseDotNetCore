@@ -14,6 +14,7 @@ namespace MyGlucoseDotNetCore.Services.Interfaces
         Task<Doctor> CreateAsync( Doctor project );
         Task UpdateAsync( string username, DoctorViewModel project );
         Task DeleteAsync( string username );
+        
 
     } // Interface
 
