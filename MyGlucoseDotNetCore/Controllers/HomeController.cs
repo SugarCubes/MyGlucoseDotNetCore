@@ -21,6 +21,10 @@ namespace MyGlucoseDotNetCore.Controllers
         }
         public IActionResult Index()
         {
+            if(User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Doctor");
+            }
             ViewData["Message"] = "Welcome to My Glucose!";
 
             return View();

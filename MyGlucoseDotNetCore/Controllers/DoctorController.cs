@@ -19,6 +19,11 @@ namespace MyGlucoseDotNetCore.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult PatientNames()
+        {
             var model = _pat.ReadAll()
             .Select(p => new PatientViewModel
             {
@@ -28,6 +33,7 @@ namespace MyGlucoseDotNetCore.Controllers
             });
             return View(model);
         }
+ 
 
         //[HttpPost]
         public IActionResult PatientDetails()

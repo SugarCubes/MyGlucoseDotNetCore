@@ -1,53 +1,14 @@
-﻿@model IEnumerable<MyGlucoseDotNetCore.Models.ViewModels.PatientViewModel>
-
+﻿
 @{
-    ViewData["Title"] = "Welcome Doctor! Here is the list of all the patients!";
-    
+    ViewData["Title"] = "Index";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>Pick your functionality</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<div class="form-group">
-    <form asp-action="PatientDetails">
-        <table class="table">
-            <thead>
-                <tr>
-                        <th>
-                            First Name
-                        </th>
-                        <th>
-                            Last Name
-                        </th>
-                        <th>
-                            Phone Number
-                        </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-        @foreach (var item in Model) {
-                <tr>
-                    <td class="form-group">
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                        <input name="FirstName" value="@item.FirstName" type="hidden" />
-                    </td>
-                    <td class="form-group">
-                        @Html.DisplayFor(modelItem => item.LastName)
-                        <input name="LastName" value="@item.LastName" type="hidden" />
-                    </td>
-                    <td class="form-group">
-                        @Html.DisplayFor(modelItem => item.PhoneNumber)
-                        <input name="PhoneNumber" value="@item.PhoneNumber" type="hidden" />
-                    </td>
-                    <td class="form-group">
-                        <a asp-action="PatientDetails" asp-route-id="@item.UserName">Patient Details</a>
-                    </td>
-                </tr>
-        }
-            </tbody>
-        </table>
-    </form>
-</div>
+<select onchange="location = this.value;">
+    <option value=""></option>
+    <option value="/Chart/GlucoseIndex">Glucose Graph</option>
+    <option value="/Chart/ExerciseIndex">Exercise Graph</option>
+    <option value="/Chart/MealIndex">Meal Graph</option>
+</select>
+ 
