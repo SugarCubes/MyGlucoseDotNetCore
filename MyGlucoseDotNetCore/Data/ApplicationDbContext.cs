@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MyGlucoseDotNetCore.Models;
@@ -16,6 +17,7 @@ namespace MyGlucoseDotNetCore.Data
         public DbSet<MealItem> MealItems { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -39,6 +41,10 @@ namespace MyGlucoseDotNetCore.Data
                 .WithOne( o => o.Patient )
                 .HasForeignKey( o => o.UserName );
 
+            //builder.Entity<ApplicationUser>()
+            //    .HasMany(r => r.Roles)
+            //    .WithOne(u => u.ApplicationRole)
+
             builder.Entity<Patient>()
                 .HasMany( o => o.ExerciseEntries )
                 .WithOne( o => o.Patient )
@@ -51,6 +57,9 @@ namespace MyGlucoseDotNetCore.Data
             builder.Entity<MealEntry>()
                 .HasMany( o => o.MealItems )
                 .WithOne( o => o.Meal );
+            
+            
+
 
             //builder.Entity<MealItem>()
             //    .HasOne( o => o.Meal )

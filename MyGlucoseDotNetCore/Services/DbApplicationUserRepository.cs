@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MyGlucoseDotNetCore.Data;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Services.Interfaces;
@@ -11,11 +12,51 @@ namespace MyGlucoseDotNetCore.Services
     {
         private ApplicationDbContext _db;
 
-        public DbApplicationUserRepository( ApplicationDbContext db )
+
+        private UserManager<ApplicationUser> _userManager;
+
+        public DbApplicationUserRepository( ApplicationDbContext db,
+                                            UserManager<ApplicationUser> userManager)
         {
             _db = db;
-
+            _userManager = userManager;
         } // constructor
+
+        public async Task<bool> AssignRole(string email, string roleName)
+        {
+            var user = await ReadAsync(email);
+
+            if (user != null)
+            {
+                if (!user.HasRole(roleName))
+                {
+                    _userManager.AddToRoleAsync(user, roleName).Wait();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public ApplicationUser ReadRoleUser(string email)
+        {
+            ApplicationUser appUser = null;
+            appUser = _db.Users.FirstOrDefault(u => u.Email == email);
+            if (appUser != null)
+            {
+                AddRoles(appUser);
+            }
+            return appUser;
+
+        }
+
+        private void AddRoles(ApplicationUser user)
+        {
+            var roleIds = _db.UserRoles.Where(ur => ur.UserId == user.Id).Select(ur => ur.RoleId);
+            foreach (var roleId in roleIds)
+            {
+                user.Roles.Add(_db.Roles.Find(roleId));
+            }
+        }
 
         public async Task<ApplicationUser> ReadAsync( string username )
         {

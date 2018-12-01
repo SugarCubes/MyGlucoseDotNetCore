@@ -27,6 +27,8 @@ namespace MyGlucoseDotNetCore
             //services.AddDbContext<ApplicationDbContext>( options =>
             //     options.UseSqlServer( Configuration.GetConnectionString( "DefaultConnection" ) ) );
 
+            services.AddScoped<RoleInitalizer>();
+
             services.AddDbContextPool<ApplicationDbContext>( options =>
               options.UseMySql( Configuration.GetConnectionString( "MySqlConnection" ) ) );//,
                  //mysqlOptions =>
@@ -45,6 +47,8 @@ namespace MyGlucoseDotNetCore
             services.AddScoped<IMealItemRepository, DbMealItemRepository>();
             services.AddScoped<IPatientRepository, DbPatientRepository>();
             services.AddScoped<IDoctorRepository, DbDoctorRepository>();
+
+            //services.AddIdentityCore<RoleUser>(options => { });
 
             services.AddMvc()
             .AddJsonOptions( options =>

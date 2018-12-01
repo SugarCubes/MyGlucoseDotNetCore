@@ -13,7 +13,9 @@ namespace MyGlucoseDotNetCore.Services.Interfaces
         Task<ApplicationUser> CreateAsync( ApplicationUser applicationUser );
         Task UpdateAsync( string username, ApplicationUser applicationUser );
         Task DeleteAsync( string username );
+        ApplicationUser ReadRoleUser(string email);
 
+        Task<bool> AssignRole(string email, string roleName);
         
     }
 }

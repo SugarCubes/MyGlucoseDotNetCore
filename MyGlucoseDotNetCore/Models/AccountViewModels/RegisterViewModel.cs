@@ -8,10 +8,16 @@ namespace MyGlucoseDotNetCore.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        public ApplicationRole Role { get; set; }
+
+        //public string SelectedUser { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -36,6 +42,10 @@ namespace MyGlucoseDotNetCore.Models.AccountViewModels
             };
 
         } // GetNewPatient
+        public RegisterViewModel()
+        {
+            Role = new ApplicationRole();
+        }
 
     }
 

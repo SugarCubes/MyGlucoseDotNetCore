@@ -8,21 +8,47 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
-            <h4>Create a new account.</h4>
+            <h1>Create a new account</h1>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
+            <h4>What Are You?</h4>
             <div class="form-group">
-                <label asp-for="Email"></label>
+                <label asp-for="Role" style="font-size: 18px;" class="control_label"></label>
+                <div>
+                    @Html.Label("Doctor")
+                    @Html.RadioButtonFor(d => d.Role, "Doctor")
+                    <br />
+                    @Html.Label("Patient")
+                    @Html.RadioButtonFor(p => p.Role, "Patient")
+                </div>
+            </div>
+
+                @*<label for="Role">Doctor</label>
+                <input type="radio" class="radio" name="Role" value="Doctor"/>
+                <br/>
+                <label for="Role">Patient</label>
+                <input type="radio" class="radio" name="Role" value="Patient"/>*@
+                @*<label asp-for="Role" name="role" type="text" class="control-label"></label>
+                <select name="type">
+                    <option value=""></option>
+                    <option value="Doctor">Doctor</option>
+                    <option value="Patient">Patient</option>
+                </select>*@                 
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+                <br/>
+            <div class="form-group">
+                <label asp-for="Email" style="font-size: 18px;" c></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password"></label>
+                <label asp-for="Password" style="font-size: 18px;" c></label>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ConfirmPassword"></label>
+                <label asp-for="ConfirmPassword" style="font-size: 18px;" c></label>
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>

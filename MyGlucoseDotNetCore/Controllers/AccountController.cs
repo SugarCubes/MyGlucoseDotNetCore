@@ -24,6 +24,9 @@ namespace MyGlucoseDotNetCore.Controllers
         private readonly ILogger _logger;
         private IApplicationUserRepository _users;
 
+
+         
+
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -237,6 +240,7 @@ namespace MyGlucoseDotNetCore.Controllers
                     return RedirectToLocal( returnUrl );
                 }
                 AddErrors( result );
+                //if()
             }
 
             // If we got this far, something failed, redisplay form

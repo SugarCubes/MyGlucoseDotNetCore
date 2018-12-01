@@ -9,6 +9,7 @@ namespace MyGlucoseDotNetCore.Models
     {
         public string DegreeAbbreviation { get; set; }
         public List<Patient> Patients { get; set; }
+        public string Role { get; set; }
 
         public Doctor()
         {

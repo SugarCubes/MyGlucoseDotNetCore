@@ -8,6 +8,7 @@ namespace MyGlucoseDotNetCore.Models
         public string DoctorUserName { get; set; }
         public string DoctorId { get; set; }
         public Doctor Doctor { get; set; }
+        //public ApplicatonRole Role { get; set; }
         public List<GlucoseEntry> GlucoseEntries { get; set; }
         public List<ExerciseEntry> ExerciseEntries { get; set; }
         public List<MealEntry> MealEntries { get; set; }

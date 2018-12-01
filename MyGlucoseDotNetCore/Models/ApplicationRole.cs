@@ -10,5 +10,11 @@ namespace MyGlucoseDotNetCore.Models
     {
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
+        //public string Role { get; set; }
+
+        public ApplicationRole()
+        {
+        } // constructor
+
     }
 }
