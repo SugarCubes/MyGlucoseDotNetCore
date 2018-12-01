@@ -17,7 +17,7 @@ namespace MyGlucoseDotNetCore.Data
         public DbSet<MealItem> MealItems { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
-        public DbSet<ApplicationUser> Users { get; set; }
+        //public DbSet<ApplicationUserRole> UserRoles { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -30,6 +30,19 @@ namespace MyGlucoseDotNetCore.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+
+            builder.Entity<ApplicationUserRole>()
+                .HasKey( k => new { k.UserId, k.RoleId } );
+
+            builder.Entity<ApplicationUser>()
+                .HasMany( o => o.Roles )
+                .WithOne( o => o.User )
+                .HasForeignKey( o => o.UserId );
+
+            builder.Entity<ApplicationRole>()
+                .HasMany( o => o.Users )
+                .WithOne( o => o.Role )
+                .HasForeignKey( o => o.RoleId );
 
             builder.Entity<Patient>()
                 .HasMany( o => o.GlucoseEntries )

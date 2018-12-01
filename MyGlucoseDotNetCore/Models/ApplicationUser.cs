@@ -10,7 +10,7 @@ namespace MyGlucoseDotNetCore.Models
     public class ApplicationUser : IdentityUser
     {
         //public ICollection<IdentityRole> Roles { get; set; }
-        public List<ApplicationRole> Roles { get; set; }
+        public List<ApplicationUserRole> Roles { get; set; }
         //public IdentityUser User { get;  set; }
 
         public string FirstName { get; set; }
@@ -28,15 +28,18 @@ namespace MyGlucoseDotNetCore.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
+        public ApplicationUser()
+        {
+            Roles = new List<ApplicationUserRole>();
+
+        } // constructor
+
         public bool HasRole(string roleName)
         {
-            return Roles.Any(r => r.Name == roleName);
-        }
+            return Roles.Any(r => r.Role.Name == roleName);
 
-        //public ApplicationUser()
-        //{
-        //    Roles = new List<ApplicationRole>();
-        //} // constructor
+        } // HasRole
 
-    }
-}
+    } // class
+
+} // namespace

@@ -30,13 +30,18 @@ namespace MyGlucoseDotNetCore.Services
 
             if(!_context.Roles.Any(r => r.Name == "Doctor"))
             {
-                await _roleManager.CreateAsync(new IdentityRole { Name = "Doctor"});
+                await _roleManager.CreateAsync(new ApplicationRole { Name = "Doctor", Description = "A role allowing doctors to view their patients' statistics.", CreatedDate = DateTime.Now } );
             }
 
             if (!_context.Roles.Any(r => r.Name == "Patient"))
             {
-                await _roleManager.CreateAsync(new IdentityRole { Name = "Patient" });
+                await _roleManager.CreateAsync(new ApplicationRole { Name = "Patient", Description = "A patient, registered to a doctor", CreatedDate = DateTime.Now });
             }
-        }
-    }
-}
+
+            return;
+
+        } // SeedAsync
+
+    } // class
+
+} // namespace

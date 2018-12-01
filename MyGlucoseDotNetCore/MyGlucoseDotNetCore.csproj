@@ -21,6 +21,8 @@
     <Compile Remove="Migrations\20181031162350_AddedDatesToModels.Designer.cs" />
     <Compile Remove="Migrations\20181102224730_AddedDoctorIdToPatient.cs" />
     <Compile Remove="Migrations\20181102224730_AddedDoctorIdToPatient.Designer.cs" />
+    <Compile Remove="Migrations\20181201183817_role.cs" />
+    <Compile Remove="Migrations\20181201183817_role.Designer.cs" />
   </ItemGroup>
 
 

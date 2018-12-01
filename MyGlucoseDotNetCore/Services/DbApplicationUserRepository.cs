@@ -51,12 +51,26 @@ namespace MyGlucoseDotNetCore.Services
 
         private void AddRoles(ApplicationUser user)
         {
-            var roleIds = _db.UserRoles.Where(ur => ur.UserId == user.Id).Select(ur => ur.RoleId);
+            var roleIds = _db.UserRoles
+                .Where(ur => ur.UserId == user.Id)
+                .Select(ur => ur.RoleId);
             foreach (var roleId in roleIds)
             {
-                user.Roles.Add(_db.Roles.Find(roleId));
-            }
-        }
+                var role = _db.Roles
+                    .FirstOrDefault( o => o.Id == roleId );
+                user.Roles.Add(
+                    new ApplicationUserRole
+                    {
+                        UserId = user.Id,
+                        User = user,
+                        RoleId = role.Id,
+                        Role = role
+                    } );
+                _db.SaveChanges();
+
+            } // foreach
+
+        } // AddRoles
 
         public async Task<ApplicationUser> ReadAsync( string username )
         {
