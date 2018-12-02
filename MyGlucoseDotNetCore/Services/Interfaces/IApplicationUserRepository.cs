@@ -18,9 +18,10 @@ namespace MyGlucoseDotNetCore.Services.Interfaces
         //ApplicationRole Read(string role);
 
         Task<bool> AssignRole(string email, string roleName);
+        List<ApplicationRole> ReadAllRoles();
 
         //bool HasRole(string roleName);
-        
-        
+
+
     }
 }

@@ -15,7 +15,9 @@ namespace MyGlucoseDotNetCore.Models.AccountViewModels
         public string Email { get; set; }
 
         [Required]
-        public ApplicationRole Role { get; set; }
+        public string Role { get; set; }
+
+        public List<ApplicationRole> AllRoles { get; set; }
 
         //public string SelectedUser { get; set; }
 
@@ -42,9 +44,10 @@ namespace MyGlucoseDotNetCore.Models.AccountViewModels
             };
 
         } // GetNewPatient
+
         public RegisterViewModel()
         {
-            Role = new ApplicationRole();
+            //Role = new ApplicationRole();
         }
 
     }

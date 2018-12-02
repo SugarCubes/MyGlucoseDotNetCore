@@ -36,7 +36,7 @@ namespace MyGlucoseDotNetCore.Models
 
         public bool HasRole(string roleName)
         {
-            return Roles.FirstOrDefault(r => r.Name == roleName) != null;
+            return Roles.Any( r => r.Name == roleName );
             //Role != null;
             //roleName = Role.ToString();
             //return Role;

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using MyGlucoseDotNetCore.Data;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Services.Interfaces;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,88 +18,59 @@ namespace MyGlucoseDotNetCore.Services
         private UserManager<ApplicationUser> _userManager;
 
         public DbApplicationUserRepository( ApplicationDbContext db,
-                                            UserManager<ApplicationUser> userManager)
+                                            UserManager<ApplicationUser> userManager )
         {
             _db = db;
             _userManager = userManager;
         } // constructor
 
-        public async Task<bool> AssignRole(string email, string roleName)
+
+        public async Task<bool> AssignRole( string email, string roleName )
         {
             var user = await ReadAsync(email);
 
-            if (user != null)
+            if( user != null )
             {
-                if (!user.HasRole(roleName))
+                if( !user.HasRole( roleName ) )
                 {
-                    _userManager.AddToRoleAsync(user, roleName).Wait();
+                    Debug.WriteLine( "User doesn't have role '" + roleName + "'. Adding..." );
+                    await _userManager.AddToRoleAsync( user, roleName );//.Wait();
                     return true;
                 }
+                else
+                    Debug.WriteLine( "User has role '" + roleName + "'." );
             }
             return false;
-        }
 
-        //public bool AssignRole(string email, string roleName)
-        //{
-        //    var user = ReadUser(email);
+        } // AssignRole
 
-        //    if (user != null)
-        //    {
-        //        if (!user.HasRole(roleName))
-        //        {
-        //            _userManager.AddToRoleAsync(user, roleName).Wait();
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
 
-        public ApplicationUser ReadUser(string email)
+        public ApplicationUser ReadUser( string email )
         {
-            ApplicationUser appUser = null;
-            appUser = _db.Users.FirstOrDefault(u => u.Email == email);
-            if (appUser != null)
-            {
-                AddRoles(appUser);
-            }
+            ApplicationUser appUser = _db.Users
+                .Include( r => r.Roles )
+                .FirstOrDefault( u => u.Email == email );
+            
             return appUser;
 
         }
 
-        private void AddRoles(ApplicationUser user)
-        {
-            var roleIds = _db.UserRoles
-                .Where(ur => ur.UserId == user.Id)
-                .Select(ur => ur.RoleId);
-            foreach (var roleId in roleIds)
-            {
-                var role = _db.Roles
-                    .FirstOrDefault( o => o.Id == roleId );
-                user.Roles.Add(
-                    new ApplicationUserRole
-                    {
-                        UserId = user.Id,
-                        User = user,
-                        RoleId = role.Id,
-                        Role = role
-                    } );
-                _db.SaveChanges();
-
-            } // foreach
-
-        } // AddRoles
-
         public async Task<ApplicationUser> ReadAsync( string username )
         {
             return await ReadAll()
+                .Include( r => r.Roles )
                 .SingleOrDefaultAsync( o => o.UserName == username );
-        }
+
+        } // ReadAsync
+
 
         public IQueryable<ApplicationUser> ReadAll()
         {
-            return _db.Users;
+            return _db.Users
+                .Include( r => r.Roles );
 
-        }
+        } // ReadAll
+
 
         public async Task<ApplicationUser> CreateAsync( ApplicationUser applicationUser )
         {
@@ -105,12 +78,13 @@ namespace MyGlucoseDotNetCore.Services
             await _db.SaveChangesAsync();
             return applicationUser;
 
-        }
+        } // CreateAsync
+
 
         public async Task UpdateAsync( string username, ApplicationUser applicationUser )
         {
             var oldUser = await ReadAsync( username );
-            if ( oldUser != null )
+            if( oldUser != null )
             {
                 oldUser.UserName = applicationUser.UserName;
                 oldUser.Address1 = applicationUser.Address1;
@@ -127,21 +101,31 @@ namespace MyGlucoseDotNetCore.Services
                 await _db.SaveChangesAsync();
 
                 return;
-            }
 
-        }
+            } // if
+
+        } // UpdateAsync
+
 
         public async Task DeleteAsync( string username )
         {
             var user = await ReadAsync( username );
-            if ( user != null )
+            if( user != null )
             {
                 _db.Users.Remove( user );
                 await _db.SaveChangesAsync();
             }
             return;
 
-        }
+        } // DeleteAsync
+
+
+        public List<ApplicationRole> ReadAllRoles()
+        {
+            return _db.Roles.ToList();
+
+        } // ReadAllRoles
+
 
         //public bool HasRole(string roleName)
         //{

@@ -1,12 +1,12 @@
 ﻿@model RegisterViewModel
-@using MyGlucoseDotNetCore.Services.Interfaces
-@inject IApplicationUserRepository assignRole
+@*@using MyGlucoseDotNetCore.Services.Interfaces*@
+@*@inject IApplicationUserRepository assignRole*@
 @*@inject UserManager<IdentityUser> UserManager*@
 @{
-    ViewData["Title"] = "Register";
+    ViewData[ "Title" ] = "Register";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>@ViewData[ "Title" ]</h2>
 
 <div class="row">
     <div class="col-md-4">
@@ -14,23 +14,34 @@
             <h1>Create a new account</h1>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
-            <h4>What Are You?</h4>
             <div class="form-group">
-                <label asp-for="Role" style="font-size: 18px;" class="control_label"></label>
-                <div>
-                    @Html.Label("Doctor")
-                    @Html.RadioButtonFor(d => d.Role, "Doctor")
-                    @*@assignRole.AssignRole(User.Identity.Name, "Doctor")*@
-                    <br />
-                    @Html.Label("Patient")
-                    @Html.RadioButtonFor(p => p.Role, "Patient")
-                    @*@assignRole.AssignRole(User.Identity.Name, "Patient")*@
+                <label asp-for="Role" style="font-size: 18px;" class="control_label"></label><br />
+                @for( int i = 0; i < Model.AllRoles.Count(); i++ )
+                {
+                    @Html.Label( Model.AllRoles[ i ].Name )
+                    if( i == 0 )
+                    {
+                        <input asp-for="Role" type="radio" value="@Model.AllRoles[i].Name" checked="checked" /> 
+                    }
+                    else
+                    {
+                        <input asp-for="Role" type="radio" value="@Model.AllRoles[i].Name" /> 
+                    }
+                    @*<input asp-for="@role.Name" type="hidden" />*@
 
-                </div>
+                }
+                @*@Html.Label( "Doctor" )
+        <input asp-for="Role" type="radio" value="@Roles.DOCTOR" checked="checked" />
+        @Html.Label( "Patient" )
+        <input asp-for="Role" type="radio" value="@Roles.PATIENT" />*@
+
+                @*@Html.RadioButtonFor( r => r.Role, Roles.DOCTOR )*@
+                @*@Html.RadioButtonFor( r => r.Role, Roles.PATIENT )*@
+
             </div>
 
             @*<label for="Role">Doctor</label>
-                <input type="radio" class="radio" name="Role" value="Doctor"/>
+                <input type="radio" id="Role" name="Role" value="Doctor"/>
                 <br/>
                 <label for="Role">Patient</label>
                 <input type="radio" class="radio" name="Role" value="Patient"/>*@
@@ -41,7 +52,6 @@
                     <option value="Patient">Patient</option>
                 </select>*@
             <span asp-validation-for="Role" class="text-danger"></span>
-            @*</div>*@
             <br />
             <div class="form-group">
                 <label asp-for="Email" style="font-size: 18px;" c></label>
@@ -64,5 +74,5 @@
 </div>
 
 @section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync( "_ValidationScriptsPartial" )
 }

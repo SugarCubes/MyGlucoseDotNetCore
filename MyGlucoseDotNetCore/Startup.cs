@@ -27,7 +27,7 @@ namespace MyGlucoseDotNetCore
             //services.AddDbContext<ApplicationDbContext>( options =>
             //     options.UseSqlServer( Configuration.GetConnectionString( "DefaultConnection" ) ) );
 
-            services.AddScoped<RoleInitalizer>();
+            services.AddScoped<DatabaseSeeder>();
 
             services.AddDbContextPool<ApplicationDbContext>( options =>
               options.UseMySql( Configuration.GetConnectionString( "MySqlConnection" ) ) );//,
