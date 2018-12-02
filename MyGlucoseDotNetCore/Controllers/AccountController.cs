@@ -227,6 +227,7 @@ namespace MyGlucoseDotNetCore.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
+                
                 if ( result.Succeeded )
                 {
                     _logger.LogInformation( "User created a new account with password." );
@@ -237,8 +238,12 @@ namespace MyGlucoseDotNetCore.Controllers
 
                     await _signInManager.SignInAsync( user, isPersistent: false );
                     _logger.LogInformation( "User created a new account with password." );
+  
                     return RedirectToLocal( returnUrl );
                 }
+                await _users.AssignRole(User.Identity.Name, model.Role.ToString());
+                //await _users.AssignRole(model.Email, model.Role);
+
                 AddErrors( result );
                 //if()
             }

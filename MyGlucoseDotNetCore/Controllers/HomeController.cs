@@ -12,18 +12,26 @@ namespace MyGlucoseDotNetCore.Controllers
 {
     public class HomeController : Controller
     {
-        private IApplicationUserRepository _repo;
+        private IApplicationUserRepository _user;
         
 
-        public HomeController(IApplicationUserRepository repo)
+        public HomeController(IApplicationUserRepository user)
         {
-            _repo = repo;
+            _user = user;
         }
         public IActionResult Index()
         {
-            if(User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Doctor");
+                var user = _user.ReadUser(User.Identity.Name);
+                if (user.HasRole("Doctor"))
+                {
+                    return RedirectToAction("Index", "Doctor");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Patient");
+                }
             }
             ViewData["Message"] = "Welcome to My Glucose!";
 

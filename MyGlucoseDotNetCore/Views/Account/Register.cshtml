@@ -1,4 +1,7 @@
 ﻿@model RegisterViewModel
+@using MyGlucoseDotNetCore.Services.Interfaces
+@inject IApplicationUserRepository assignRole
+@*@inject UserManager<IdentityUser> UserManager*@
 @{
     ViewData["Title"] = "Register";
 }
@@ -17,26 +20,29 @@
                 <div>
                     @Html.Label("Doctor")
                     @Html.RadioButtonFor(d => d.Role, "Doctor")
+                    @*@assignRole.AssignRole(User.Identity.Name, "Doctor")*@
                     <br />
                     @Html.Label("Patient")
                     @Html.RadioButtonFor(p => p.Role, "Patient")
+                    @*@assignRole.AssignRole(User.Identity.Name, "Patient")*@
+
                 </div>
             </div>
 
-                @*<label for="Role">Doctor</label>
+            @*<label for="Role">Doctor</label>
                 <input type="radio" class="radio" name="Role" value="Doctor"/>
                 <br/>
                 <label for="Role">Patient</label>
                 <input type="radio" class="radio" name="Role" value="Patient"/>*@
-                @*<label asp-for="Role" name="role" type="text" class="control-label"></label>
+            @*<label asp-for="Role" name="role" type="text" class="control-label"></label>
                 <select name="type">
                     <option value=""></option>
                     <option value="Doctor">Doctor</option>
                     <option value="Patient">Patient</option>
-                </select>*@                 
-                <span asp-validation-for="Role" class="text-danger"></span>
-            </div>
-                <br/>
+                </select>*@
+            <span asp-validation-for="Role" class="text-danger"></span>
+            @*</div>*@
+            <br />
             <div class="form-group">
                 <label asp-for="Email" style="font-size: 18px;" c></label>
                 <input asp-for="Email" class="form-control" />

@@ -26,7 +26,7 @@ namespace MyGlucoseDotNetCore.Controllers
             return View(doctors);
         }
 
-        public IActionResult patientList()
+        public IActionResult PatientList()
         {
             var model = _pat.ReadAll()
             .Select(p => new PatientViewModel

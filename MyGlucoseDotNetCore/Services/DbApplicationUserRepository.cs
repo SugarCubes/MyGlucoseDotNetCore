@@ -37,7 +37,22 @@ namespace MyGlucoseDotNetCore.Services
             return false;
         }
 
-        public ApplicationUser ReadRoleUser(string email)
+        //public bool AssignRole(string email, string roleName)
+        //{
+        //    var user = ReadUser(email);
+
+        //    if (user != null)
+        //    {
+        //        if (!user.HasRole(roleName))
+        //        {
+        //            _userManager.AddToRoleAsync(user, roleName).Wait();
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
+
+        public ApplicationUser ReadUser(string email)
         {
             ApplicationUser appUser = null;
             appUser = _db.Users.FirstOrDefault(u => u.Email == email);
@@ -127,8 +142,24 @@ namespace MyGlucoseDotNetCore.Services
             return;
 
         }
-        
 
+        //public bool HasRole(string roleName)
+        //{
+        //    string role = Read(roleName).ToString();
+        //    if(roleName == role)
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
+
+        //public ApplicationRole Read(string role)
+        //{
+        //    return _db.Roles.FirstOrDefault(r => r.Role == role);
+        //}
     }
 
 }

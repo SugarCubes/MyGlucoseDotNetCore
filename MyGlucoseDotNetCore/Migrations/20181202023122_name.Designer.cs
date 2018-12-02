@@ -12,8 +12,8 @@ using System;
 namespace MyGlucoseDotNetCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181201190416_Roles")]
-    partial class Roles
+    [Migration("20181202023122_name")]
+    partial class name
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -224,6 +224,8 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<string>("RoleId");
 
+                    b.Property<string>("Name");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
@@ -332,8 +334,6 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.HasBaseType("MyGlucoseDotNetCore.Models.ApplicationUser");
 
                     b.Property<string>("DegreeAbbreviation");
-
-                    b.Property<string>("Role");
 
                     b.ToTable("Doctor");
 

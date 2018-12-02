@@ -223,6 +223,8 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<string>("RoleId");
 
+                    b.Property<string>("Name");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
@@ -331,8 +333,6 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.HasBaseType("MyGlucoseDotNetCore.Models.ApplicationUser");
 
                     b.Property<string>("DegreeAbbreviation");
-
-                    b.Property<string>("Role");
 
                     b.ToTable("Doctor");
 
