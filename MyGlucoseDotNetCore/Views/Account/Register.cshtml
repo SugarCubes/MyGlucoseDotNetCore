@@ -21,38 +21,19 @@
                     @Html.Label( Model.AllRoles[ i ].Name )
                     if( i == 0 )
                     {
-                        <input asp-for="Role" type="radio" value="@Model.AllRoles[i].Name" checked="checked" /> 
+                        <input asp-for="Role" type="radio" value="@Model.AllRoles[i].Name" checked="checked" />
                     }
                     else
                     {
-                        <input asp-for="Role" type="radio" value="@Model.AllRoles[i].Name" /> 
+                        <input asp-for="Role" type="radio" value="@Model.AllRoles[i].Name" />
                     }
                     @*<input asp-for="@role.Name" type="hidden" />*@
-
+@:&nbsp;
                 }
-                @*@Html.Label( "Doctor" )
-        <input asp-for="Role" type="radio" value="@Roles.DOCTOR" checked="checked" />
-        @Html.Label( "Patient" )
-        <input asp-for="Role" type="radio" value="@Roles.PATIENT" />*@
-
-                @*@Html.RadioButtonFor( r => r.Role, Roles.DOCTOR )*@
-                @*@Html.RadioButtonFor( r => r.Role, Roles.PATIENT )*@
 
             </div>
 
-            @*<label for="Role">Doctor</label>
-                <input type="radio" id="Role" name="Role" value="Doctor"/>
-                <br/>
-                <label for="Role">Patient</label>
-                <input type="radio" class="radio" name="Role" value="Patient"/>*@
-            @*<label asp-for="Role" name="role" type="text" class="control-label"></label>
-                <select name="type">
-                    <option value=""></option>
-                    <option value="Doctor">Doctor</option>
-                    <option value="Patient">Patient</option>
-                </select>*@
             <span asp-validation-for="Role" class="text-danger"></span>
-            <br />
             <div class="form-group">
                 <label asp-for="Email" style="font-size: 18px;" c></label>
                 <input asp-for="Email" class="form-control" />
