@@ -15,12 +15,12 @@ namespace MyGlucoseDotNetCore.Controllers
     public class GlucoseEntriesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private IGlucoseEntriesRepository _entry;
+        private IGlucoseEntryRepository _entry;
         private Random rnd = new Random();
 
 
         public GlucoseEntriesController(ApplicationDbContext context, 
-                                        IGlucoseEntriesRepository entry)
+                                        IGlucoseEntryRepository entry)
         {
             _context = context;
             _entry = entry;

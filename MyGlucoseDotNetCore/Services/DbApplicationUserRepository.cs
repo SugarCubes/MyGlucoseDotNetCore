@@ -22,7 +22,15 @@ namespace MyGlucoseDotNetCore.Services
         {
             _db = db;
             _userManager = userManager;
+
         } // constructor
+
+
+        public bool UserExists( string userName )
+        {
+            return _db.Users.Any( o => o.UserName == userName );
+
+        } // UserExists
 
 
         public async Task<bool> AssignRole( string email, string roleName )

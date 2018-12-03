@@ -10,11 +10,11 @@ namespace MyGlucoseDotNetCore.Models
     {
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
-        public List<ApplicationUserRole> Users { get; set; }
+        //public List<ApplicationUser> Users { get; set; }
 
         public ApplicationRole()
         {
-            Users = new List<ApplicationUserRole>();
+            //Users = new List<ApplicationUser>();
 
         } // constructor
 

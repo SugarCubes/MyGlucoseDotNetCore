@@ -1,5 +1,6 @@
-﻿@{
-    ViewData[ "Title" ] = "Glucose Entries for user " + ViewData[ "UserName" ];
+﻿
+@{
+    ViewData[ "Title" ] = "Steps for user " + ViewData[ "UserName" ];
 }
 
 <h2>@ViewData[ "Title" ]</h2>
@@ -8,6 +9,7 @@
 
 @section scripts{
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="~/js/glucoseChart.js"></script>
+    <script type="text/javascript" src="~/js/stepChart.js"></script>
 
 }
+

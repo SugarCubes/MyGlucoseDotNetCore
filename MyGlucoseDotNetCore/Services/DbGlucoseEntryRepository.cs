@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MyGlucoseDotNetCore.Services
 {
-    public class DbGlucoseEntriesRepository : IGlucoseEntriesRepository
+    public class DbGlucoseEntriesRepository : IGlucoseEntryRepository
     {
         private readonly ApplicationDbContext _db;
 

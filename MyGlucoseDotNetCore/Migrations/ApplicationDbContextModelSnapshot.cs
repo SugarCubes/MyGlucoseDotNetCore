@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using MyGlucoseDotNetCore.Data;
 using System;
@@ -110,6 +108,8 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -123,9 +123,9 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256);
 
-                    b.Property<string>("Role");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -215,21 +215,6 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationUser");
-                });
-
-            modelBuilder.Entity("MyGlucoseDotNetCore.Models.ApplicationUserRole", b =>
-                {
-                    b.Property<string>("UserId");
-
-                    b.Property<string>("RoleId");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("ApplicationUserRole");
                 });
 
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.ExerciseEntry", b =>
@@ -399,17 +384,11 @@ namespace MyGlucoseDotNetCore.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MyGlucoseDotNetCore.Models.ApplicationUserRole", b =>
+            modelBuilder.Entity("MyGlucoseDotNetCore.Models.ApplicationRole", b =>
                 {
-                    b.HasOne("MyGlucoseDotNetCore.Models.ApplicationRole", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyGlucoseDotNetCore.Models.ApplicationUser", "User")
+                    b.HasOne("MyGlucoseDotNetCore.Models.ApplicationUser")
                         .WithMany("Roles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.ExerciseEntry", b =>

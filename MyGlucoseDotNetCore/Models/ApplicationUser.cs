@@ -10,7 +10,7 @@ namespace MyGlucoseDotNetCore.Models
     public class ApplicationUser : IdentityUser
     {
         //public ICollection<IdentityRole> Roles { get; set; }
-        public List<ApplicationUserRole> Roles { get; set; }
+        public List<ApplicationRole> Roles { get; set; }
         //public IdentityUser User { get;  set; }
 
         public string FirstName { get; set; }
@@ -30,7 +30,7 @@ namespace MyGlucoseDotNetCore.Models
 
         public ApplicationUser()
         {
-            Roles = new List<ApplicationUserRole>();
+            Roles = new List<ApplicationRole>();
 
         } // constructor
 

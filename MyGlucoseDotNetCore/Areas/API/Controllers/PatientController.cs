@@ -12,13 +12,13 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
         private IPatientRepository _patientRepository;
         private IMealEntryRepository _mealEntryRepository;
         private IMealItemRepository _mealItemRepository;
-        private IGlucoseEntriesRepository _glucoseEntryRepository;
+        private IGlucoseEntryRepository _glucoseEntryRepository;
         private IExerciseEntryRepository _exerciseEntryRepository;
 
         public PatientController( IPatientRepository patientRepository,
             IMealEntryRepository mealEntryRepository,
             IMealItemRepository mealItemRepository,
-            IGlucoseEntriesRepository glucoseEntriesRepository,
+            IGlucoseEntryRepository glucoseEntriesRepository,
             IExerciseEntryRepository exerciseEntryRepository )
         {
             _patientRepository = patientRepository;

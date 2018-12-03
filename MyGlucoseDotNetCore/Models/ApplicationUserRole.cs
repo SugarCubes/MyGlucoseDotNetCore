@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace MyGlucoseDotNetCore.Models
 {
-    public class ApplicationUserRole
+    public class ApplicationUserRole : IdentityUserRole<string>
     {
-        public string UserId { get; set; }
+        //public string UserId { get; set; }
         public ApplicationUser User { get; set; }
-        public string Name { get; set; }
-        public string RoleId { get; set; }
+        //public string Name { get; set; }
+        //public string RoleId { get; set; }
         public ApplicationRole Role { get; set; }
     }
 }

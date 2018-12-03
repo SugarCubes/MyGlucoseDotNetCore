@@ -8,6 +8,7 @@ namespace MyGlucoseDotNetCore.Services.Interfaces
 {
     public interface IApplicationUserRepository
     {
+        bool UserExists( string userName );
         Task<ApplicationUser> ReadAsync( string username );
         IQueryable<ApplicationUser> ReadAll();
         Task<ApplicationUser> CreateAsync( ApplicationUser applicationUser );

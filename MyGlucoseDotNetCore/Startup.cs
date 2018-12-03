@@ -42,7 +42,7 @@ namespace MyGlucoseDotNetCore
             // Adding scoped services to provide DB Repositories:
             services.AddScoped<IApplicationUserRepository, DbApplicationUserRepository>();
             services.AddScoped<IExerciseEntryRepository, DbExerciseEntryRepository>();
-            services.AddScoped<IGlucoseEntriesRepository, DbGlucoseEntriesRepository>();
+            services.AddScoped<IGlucoseEntryRepository, DbGlucoseEntriesRepository>();
             services.AddScoped<IMealEntryRepository, DbMealEntryRepository>();
             services.AddScoped<IMealItemRepository, DbMealItemRepository>();
             services.AddScoped<IPatientRepository, DbPatientRepository>();
