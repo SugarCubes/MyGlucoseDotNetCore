@@ -6,6 +6,7 @@ namespace MyGlucoseDotNetCore.Models
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }
+        //public string UserId { get; set; }
         public Patient Patient { get; set; }
         public string Name { get; set; }
         public int Minutes { get; set; }
@@ -19,10 +20,12 @@ namespace MyGlucoseDotNetCore.Models
             return "EXERCISE ENTRY:"
                 + "\nId: " + Id
                 + "\nUserName: " + UserName
+                //+ "\nUserId: " + UserId
                 + "\nExercise name: " + Name
                 + "\nMinutes: " + Minutes
                 + "\nSteps" + Steps
-                + "\nDate: " + CreatedAt
+                + "\nCreatedAt: " + CreatedAt
+                + "\nUpdatedAt: " + UpdatedAt
                 + "\nTimestamp: " + Timestamp;
 
         } // ToString

@@ -1,0 +1,74 @@
+﻿@model MyGlucoseDotNetCore.Models.ViewModels.PatientViewModel
+
+@{
+    ViewData["Title"] = "PatientDetails";
+}
+
+<h2>PatientDetails</h2>
+
+<div>
+    <h4>PatientViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            UserName
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt>
+            First Name
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt>
+            Last Name
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt>
+            Address
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address1)
+            @Html.DisplayFor(model => model.Address2)
+        </dd>
+        <dt>
+            City
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+        <dt>
+            State
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.State)
+        </dd>
+        <dt>
+            Zip
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Zip1)
+            @Html.DisplayFor(model => model.Zip2)
+        </dd>
+        <dt>
+            Phone Number
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt>
+            Email
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

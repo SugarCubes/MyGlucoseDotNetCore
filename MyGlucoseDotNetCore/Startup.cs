@@ -27,6 +27,8 @@ namespace MyGlucoseDotNetCore
             //services.AddDbContext<ApplicationDbContext>( options =>
             //     options.UseSqlServer( Configuration.GetConnectionString( "DefaultConnection" ) ) );
 
+            services.AddScoped<DatabaseSeeder>();
+
             services.AddDbContextPool<ApplicationDbContext>( options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -37,11 +39,13 @@ namespace MyGlucoseDotNetCore
             // Adding scoped services to provide DB Repositories:
             services.AddScoped<IApplicationUserRepository, DbApplicationUserRepository>();
             services.AddScoped<IExerciseEntryRepository, DbExerciseEntryRepository>();
-            services.AddScoped<IGlucoseEntriesRepository, DbGlucoseEntriesRepository>();
+            services.AddScoped<IGlucoseEntryRepository, DbGlucoseEntriesRepository>();
             services.AddScoped<IMealEntryRepository, DbMealEntryRepository>();
             services.AddScoped<IMealItemRepository, DbMealItemRepository>();
             services.AddScoped<IPatientRepository, DbPatientRepository>();
             services.AddScoped<IDoctorRepository, DbDoctorRepository>();
+
+            //services.AddIdentityCore<RoleUser>(options => { });
 
             services.AddMvc()
             .AddJsonOptions( options =>

@@ -1,34 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyGlucoseDotNetCore.Models;
-using MyGlucoseDotNetCore.Models.ViewModels;
 using MyGlucoseDotNetCore.Services.Interfaces;
+using System.Diagnostics;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
     public class HomeController : Controller
     {
-        private IApplicationUserRepository _repo;
-        
+        private IApplicationUserRepository _user;
 
-        public HomeController(IApplicationUserRepository repo)
+
+        public HomeController( IApplicationUserRepository user )
         {
-            _repo = repo;
+            _user = user;
         }
+
+
         public IActionResult Index()
         {
-            ViewData["Message"] = "Welcome to My Glucose!";
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //var user = _user.ReadUser(User.);
+
+            if( User.IsInRole( Roles.DOCTOR ) )
+            {
+                return RedirectToAction( nameof( Index ), "Doctor" );
+            }
+            else if( User.IsInRole( Roles.PATIENT ) )
+            {
+                return RedirectToAction( nameof( Index ), "Patient" );
+            }
+            //}
+            ViewData[ "Message" ] = "Welcome to My Glucose!";
 
             return View();
         }
 
         public IActionResult About()
         {
-            ViewData["Message"] = "About My Glucose";
+            ViewData[ "Message" ] = "About My Glucose";
 
             return View();
         }
@@ -36,17 +46,17 @@ namespace MyGlucoseDotNetCore.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData[ "Message" ] = "Your contact page.";
 
             return View();
         }
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View( new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier } );
         }
 
-       
-                //return RedirectToAction( "Index" );
+
+        //return RedirectToAction( "Index" );
 
 
     }

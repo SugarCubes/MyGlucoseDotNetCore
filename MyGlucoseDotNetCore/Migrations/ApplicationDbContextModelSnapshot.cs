@@ -111,6 +111,8 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -125,6 +127,8 @@ namespace MyGlucoseDotNetCore.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -259,6 +263,8 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<DateTime>("UpdatedAt");
 
+                    b.Property<string>("UserId");
+
                     b.Property<string>("UserName");
 
                     b.Property<int>("WhichMeal");
@@ -383,6 +389,13 @@ namespace MyGlucoseDotNetCore.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyGlucoseDotNetCore.Models.ApplicationRole", b =>
+                {
+                    b.HasOne("MyGlucoseDotNetCore.Models.ApplicationUser")
+                        .WithMany("Roles")
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.ExerciseEntry", b =>

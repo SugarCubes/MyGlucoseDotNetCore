@@ -21,37 +21,42 @@
             success: function (response) {
                 console.log(response);
 
-                var glucoseArray = [["Date", "Reading"]];
-                $.each(response.glucoseEntries, function () {
-                    var glucoseItem = [this.updatedAt, this.measurement];
-                    glucoseArray.push(glucoseItem);
-                });
+                if (response.glucoseEntries !== null && response.glucoseEntries.length > 0) {
 
-                var gData = google.visualization.arrayToDataTable(glucoseArray);
-                var data = new google.visualization.DataTable();
-                gData.addColumn('date', 'Day');
-                gData.addColumn('number', 'Glucose Reading');
+                    var glucoseArray = [["Date", "Reading"]];
+                    $.each(response.glucoseEntries, function () {
+                        var glucoseItem = [this.updatedAt, this.measurement];
+                        glucoseArray.push(glucoseItem);
+                    });
 
-                var options = {
-                    chart: {
-                        title: 'Glucose Readings Over Time'//,
-                        //subtitle: 'in millions of dollars (USD)'
-                    },
-                    width: 900,
-                    height: 500
-                };
-                /////This is the google API implementation
-                var chart = new google.charts.Line(document.getElementById('linechart_material'));
-                
+                    var gData = google.visualization.arrayToDataTable(glucoseArray);
+                    var data = new google.visualization.DataTable();
+                    gData.addColumn('date', 'Day');
+                    gData.addColumn('number', 'Glucose Reading');
 
-                if (glucoseArray.length > 0)
-                    chart.draw(gData, google.charts.Line.convertOptions(options));
+                    var options = {
+                        chart: {
+                            title: 'Glucose Readings Over Time'//,
+                            //subtitle: 'in millions of dollars (USD)'
+                        },
+                        width: 900,
+                        height: 500
+                    };
+                    /////This is the google API implementation
+                    var chart = new google.charts.Line(document.getElementById('linechart_material'));
 
-                //let $div = $('#feat_' + response.featureId);
-                //$div.remove();                              // Delete the row entirely
+
+                    if (glucoseArray.length > 0)
+                        chart.draw(gData, google.charts.Line.convertOptions(options));
+
+                } // if
+                else
+                    $('#linechart_material').text('There are no meal entries for this user.');
+
             },
             error: function (response) {
                 console.log(response);
+                $('#linechart_material').text('There was an error retrieving the entries.');
                 //$link.removeClass('overlay');
             }
         });

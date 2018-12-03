@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using MyGlucoseDotNetCore.Data;
+using MyGlucoseDotNetCore.Models;
+using MyGlucoseDotNetCore.Services;
+using System.IO;
 
 namespace MyGlucoseDotNetCore
 {
@@ -30,18 +27,22 @@ namespace MyGlucoseDotNetCore
                                 .UseStartup<Startup>()
                                 .Build();
 
-            using ( var scope = host.Services.CreateScope() )
+            using( var scope = host.Services.CreateScope() )
             {
                 var db = scope.ServiceProvider.GetService<ApplicationDbContext>();
                 db.Database.Migrate();
-            }
+
+                var roleManager = scope.ServiceProvider.GetService<RoleManager<ApplicationRole>>();
+                new DatabaseSeeder( db, roleManager ).SeedRoles();
+
+            } // using
 
             host.Run();
 
         } // Main
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static IWebHost BuildWebHost( string[] args ) =>
+            WebHost.CreateDefaultBuilder( args )
                 .UseStartup<Startup>()
                 .Build();
     }
