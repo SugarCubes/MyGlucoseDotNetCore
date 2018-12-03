@@ -28,11 +28,8 @@ namespace MyGlucoseDotNetCore
             //     options.UseSqlServer( Configuration.GetConnectionString( "DefaultConnection" ) ) );
 
             services.AddDbContextPool<ApplicationDbContext>( options =>
-              options.UseMySql( Configuration.GetConnectionString( "MySqlConnection" ) ) );//,
-                 //mysqlOptions =>
-                 //{
-                 //    mysqlOptions.ServerVersion( new Version( 5, 5, 60 ), ServerType.MySql );
-                 //} ) );
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

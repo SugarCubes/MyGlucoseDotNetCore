@@ -52,5 +52,7 @@ namespace MyGlucoseDotNetCore.Controllers
             }
             return View(patientVM);
         }
+
+
     }
 }
