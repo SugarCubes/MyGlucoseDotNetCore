@@ -91,6 +91,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
 
         } // GetMealChart
 
+        int var;
     } // class
 
 } // namespace
