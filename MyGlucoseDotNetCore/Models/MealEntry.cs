@@ -7,6 +7,7 @@ namespace MyGlucoseDotNetCore.Models
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }
+        //public string UserId { get; set; }
         public Patient Patient { get; set; }
         public int TotalCarbs { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -30,8 +31,10 @@ namespace MyGlucoseDotNetCore.Models
             return "MEAL ENTRY:"
                 + "\nId: " + Id
                 + "\nUserName: " + UserName
+                //+ "\nUserId: " + UserId
                 + "\nTotal Carbs: " + TotalCarbs
-                + "\nDate: " + CreatedAt
+                + "\nCreatedAt: " + CreatedAt
+                + "\nUpdatedAt: " + UpdatedAt
                 + "\nTimestamp: " + Timestamp
                 + "\n" + mealItemString;
 

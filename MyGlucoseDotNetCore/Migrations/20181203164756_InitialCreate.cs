@@ -153,18 +153,19 @@ namespace MyGlucoseDotNetCore.Migrations
                     Steps = table.Column<int>(nullable: false),
                     Timestamp = table.Column<long>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
+                    //UserId = table.Column<Guid>(nullable: false),
                     UserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ExerciseEntries", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ExerciseEntries_AspNetUsers_UserName",
-                        column: x => x.UserName,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                    //table.ForeignKey(
+                    //    name: "FK_ExerciseEntries_AspNetUsers_UserId",
+                    //    column: x => x.UserId,
+                    //    principalTable: "AspNetUsers",
+                    //    principalColumn: "Id",
+                    //    onDelete: ReferentialAction.Restrict );
+                } );
 
             migrationBuilder.CreateTable(
                 name: "GlucoseEntries",
@@ -176,19 +177,20 @@ namespace MyGlucoseDotNetCore.Migrations
                     Measurement = table.Column<float>(nullable: false),
                     Timestamp = table.Column<long>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
+                    //UserId = table.Column<Guid>( nullable: false ),
                     UserName = table.Column<string>(nullable: true),
                     WhichMeal = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GlucoseEntries", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GlucoseEntries_AspNetUsers_UserName",
-                        column: x => x.UserName,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                    //table.ForeignKey(
+                    //    name: "FK_GlucoseEntries_AspNetUsers_UserId",
+                    //    column: x => x.UserId,
+                    //    principalTable: "AspNetUsers",
+                    //    principalColumn: "Id",
+                    //    onDelete: ReferentialAction.Restrict );
+                } );
 
             migrationBuilder.CreateTable(
                 name: "MealEntries",
@@ -199,18 +201,19 @@ namespace MyGlucoseDotNetCore.Migrations
                     Timestamp = table.Column<long>(nullable: false),
                     TotalCarbs = table.Column<int>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
+                    //UserId = table.Column<Guid>( nullable: false ),
                     UserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MealEntries", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MealEntries_AspNetUsers_UserName",
-                        column: x => x.UserName,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                    //table.ForeignKey(
+                    //    name: "FK_MealEntries_AspNetUsers_UserId",
+                    //    column: x => x.UserId,
+                    //    principalTable: "AspNetUsers",
+                    //    principalColumn: "Id",
+                    //    onDelete: ReferentialAction.Restrict );
+                } );
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",

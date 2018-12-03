@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using MyGlucoseDotNetCore.Data;
 using System;
@@ -234,6 +236,8 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<DateTime>("UpdatedAt");
 
+                    b.Property<string>("UserId");
+
                     b.Property<string>("UserName");
 
                     b.HasKey("Id");
@@ -258,6 +262,8 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<DateTime>("UpdatedAt");
 
+                    b.Property<string>("UserId");
+
                     b.Property<string>("UserName");
 
                     b.Property<int>("WhichMeal");
@@ -281,6 +287,8 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<int>("TotalCarbs");
 
                     b.Property<DateTime>("UpdatedAt");
+
+                    b.Property<string>("UserId");
 
                     b.Property<string>("UserName");
 
