@@ -1,7 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Exercise Chart";
 }
+
+<input type="date" class="fromDate"/>
+<input type="date" class="toDate"/>
 <div id="linechart_material"></div>
+
 @section scripts{
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="~/js/exerciseChart.js"></script>
