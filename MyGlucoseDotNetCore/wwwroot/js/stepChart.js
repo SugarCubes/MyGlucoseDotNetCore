@@ -5,7 +5,11 @@
 
     function drawChart() {
 
-        $url = "/API/ChartApi/GetUserMealChart?UserName=" + $.urlParam("UserName");
+        if ($.urlParam("UserName") === null)
+            $url = "/API/ChartApi/GetStepChart";
+        else
+            $url = "/API/ChartApi/GetUserStepChart?UserName=" + $.urlParam("UserName");
+
         console.log("Sending request: [href: " + $url + "]" + ";");
 
         $.ajax({
@@ -17,43 +21,46 @@
             success: function (response) {
                 console.log(response);
 
-                if (response.mealEntries !== null && response.mealEntries.length > 0) {
+                if (response.stepEntries !== null && response.stepEntries.length > 0) {
 
-                    var mealArray = [["Date", "Total Carbs"]];
-                    $.each(response.mealEntries, function () {
-                        var mealItem = [this.updatedAt, this.totalCarbs];
-                        mealArray.push(mealItem);
+                    var stepArray = [["Date", "Reading"]];
+
+                    $.each(response.stepEntries, function () {
+                        var stepItem = [this.updatedAt, this.steps];
+                        stepArray.push(stepItem);
                     });
 
-                    var gData = google.visualization.arrayToDataTable(mealArray);
+                    var gData = google.visualization.arrayToDataTable(stepArray);
                     var data = new google.visualization.DataTable();
                     gData.addColumn('date', 'Day');
-                    gData.addColumn('number', 'Total Carbs');
+                    gData.addColumn('number', 'Steps');
 
                     var options = {
                         chart: {
-                            title: 'Meals Over Time'//,
+                            title: 'Steps Over Time'//,
                             //subtitle: 'in millions of dollars (USD)'
                         },
                         width: 900,
                         height: 500
                     };
-
+                    /////This is the google API implementation
                     var chart = new google.charts.Line(document.getElementById('linechart_material'));
 
-                    if (mealArray.length > 0)
+
+                    if (stepArray.length > 0)
                         chart.draw(gData, google.charts.Line.convertOptions(options));
 
                 } // if
                 else
-                    $('#linechart_material').text('There are no meal entries for this user.');
+                    $('#linechart_material').text('There are no step entries for this user.');
 
+                //let $div = $('#feat_' + response.featureId);
+                //$div.remove();                              // Delete the row entirely
             },
             error: function (response) {
                 console.log(response);
-                //$link.removeClass('overlay');
                 $('#linechart_material').text('There was an error retrieving the entries.');
-
+                //$link.removeClass('overlay');
             }
         });
 
@@ -67,6 +74,6 @@
             return null;
         }
         return decodeURI(results[1]) || 0;
-    } // urlParam
+    }; // urlParam
 
 }); // document onLoad

@@ -1,6 +1,5 @@
 using MyGlucoseDotNetCore.Models;
-using MyGlucoseDotNetCore.Models.ViewModels
-;
+using MyGlucoseDotNetCore.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +14,8 @@ namespace MyGlucoseDotNetCore.Services.Interfaces
         Task<Patient> CreateAsync(Patient patient);
         Task UpdateAsync( string username, Patient project );
         Task DeleteAsync( string username );
-        ApplicationUser ReadPatient(string email);
 
-        bool Exists(string firstName/*, string lastName*/);
-
+        
 
     } // Interface
 

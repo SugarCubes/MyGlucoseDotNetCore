@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyGlucoseDotNetCore.Services.Interfaces
 {
-    public interface IGlucoseEntriesRepository
+    public interface IGlucoseEntryRepository
     {
         Task<GlucoseEntry> ReadAsync( Guid id );
         IQueryable<GlucoseEntry> ReadAll();

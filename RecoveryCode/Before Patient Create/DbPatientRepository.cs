@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyGlucoseDotNetCore.Data;
 using MyGlucoseDotNetCore.Models;
-using MyGlucoseDotNetCore.Models.ViewModels;
 using MyGlucoseDotNetCore.Services.Interfaces;
 using System;
 using System.Linq;
@@ -72,7 +71,19 @@ namespace MyGlucoseDotNetCore.Services
                 if ( oldPatient.Doctor != null && patient.Doctor != null
                     && oldPatient.Doctor.Id == patient.Doctor.Id )
                     _db.Entry( patient.Doctor ).State = EntityState.Unchanged;
-                
+                //oldPatient.Doctor = null;
+                //oldPatient.DoctorId = patient.DoctorId;
+                //var doctor = await _db.Doctors
+                //    .SingleOrDefaultAsync( u => u.UserName == patient.DoctorUserName );
+                //if ( doctor != null )
+                //    oldPatient.Doctor = patient.Doctor;
+                // Tries to insert duplicate entries:
+                //if ( patient.GlucoseEntries != null )
+                //    oldPatient.GlucoseEntries = patient.GlucoseEntries;
+                //if ( patient.ExerciseEntries != null )
+                //    oldPatient.ExerciseEntries = patient.ExerciseEntries;
+                //if ( patient.MealEntries != null )
+                //    oldPatient.MealEntries = patient.MealEntries;
                 _db.Entry( oldPatient ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;
@@ -92,16 +103,6 @@ namespace MyGlucoseDotNetCore.Services
             return;
 
         } // DeleteAsync
-
-        public ApplicationUser ReadPatient(string email)
-        {
-            return  _db.Users.FirstOrDefault(u => u.Email == email);
-        }
-
-        public bool Exists(string firstName/*, string lastName*/)
-        {
-            return _db.Patients.Any(fn => fn.FirstName == firstName/*, ln => ln.LastName ==lastName*/);
-        }
 
     } // Class
 

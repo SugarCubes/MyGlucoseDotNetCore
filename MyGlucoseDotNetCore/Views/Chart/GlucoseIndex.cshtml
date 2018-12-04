@@ -1,12 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Glucose Chart";
+    ViewData[ "Title" ] = "Glucose Entries for " + ViewData[ "UserName" ];
 }
 
-<input type="date" class="fromDate" />
-<input type="date" class="toDate" />
-<div id="linechart_material"></div>
+<h2>@ViewData[ "Title" ]</h2>
+
+<div id="linechart_material">Please wait...</div>
 
 @section scripts{
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="~/js/glucoseChart.js"></script>
+
 }

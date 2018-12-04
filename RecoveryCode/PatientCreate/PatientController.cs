@@ -1,0 +1,94 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using MyGlucoseDotNetCore.Models.ViewModels;
+using MyGlucoseDotNetCore.Services.Interfaces;
+
+namespace MyGlucoseDotNetCore.Controllers
+{
+    public class PatientController : Controller
+    {
+        private IPatientRepository _pat;
+        private IDoctorRepository _doc;
+
+        public PatientController(IPatientRepository pat,
+                                 IDoctorRepository doc)
+        {
+            _pat = pat;
+            _doc = doc;
+        }
+
+        public IActionResult Index()
+        {
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    if (!_pat.Exists(User.Identity.Name))
+            //    { 
+            //        return RedirectToAction("Create", "Patient");
+            //    }
+
+            //    if (User.IsInRole(Roles.DOCTOR))
+            //    {
+            //        return RedirectToAction(nameof(Index), "Doctor");
+            //    }
+            //    //var doctors = _doc.ReadAll();
+            //    //return View(doctors);
+            //    return View();
+            //}
+            return RedirectToAction("Index", "Home");
+        }
+
+        //public IActionResult PatientList()
+        //{
+        //    if (User.IsInRole(Roles.PATIENT))
+        //    {
+        //        return RedirectToAction(nameof(Index), "Patient");
+        //    }
+        //    var model = _pat.ReadAll()
+        //    .Select(p => new PatientViewModel
+        //    {
+        //        UserName = p.UserName,
+        //        FirstName = p.FirstName,
+        //        LastName = p.LastName,
+        //        Address1 = p.Address1,
+        //        Address2 = p.Address2,
+        //        City = p.City,
+        //        State = p.State,
+        //        Zip1 = p.Zip1,
+        //        Zip2 = p.Zip2,
+        //        PhoneNumber = p.PhoneNumber,
+        //        Email = p.Email
+        //    });
+        //    return View(model);
+        //}
+
+        public IActionResult DoctorNames()
+        {
+            var model = _doc.ReadAll()
+            .Select(p => new DoctorViewModel
+            {
+                FirstName = p.FirstName,
+                LastName = p.LastName
+            });
+            return View(model);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(PatientViewModel patientVM)
+        {
+            if (ModelState.IsValid)
+            {
+                await _pat.CreateAsync(patientVM.GetNewPatient());
+                return RedirectToAction("Index");
+            }
+            return View(patientVM);
+        }
+    }
+}

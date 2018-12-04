@@ -138,7 +138,12 @@ namespace MyGlucoseDotNetCore.Controllers
             if ( model.Zip2 != user.Zip2 )
                 user.Zip2 = model.Zip2;
 
-            await _users.UpdateAsync( user.UserName, user );
+            //if (User.IsInRole(Roles.DOCTOR))
+            //{
+            //    var patient = new Patient { model.FirstName,
+            //                             model.LastName}
+            //}
+                await _users.UpdateAsync( user.UserName, user );
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));

@@ -73,6 +73,16 @@ namespace MyGlucoseDotNetCore.Services
 
         } // DeleteAsync
 
+        public ApplicationUser ReadDoctor(string email)
+        {
+            return _db.Users.FirstOrDefault(u => u.Email == email);
+        }
+
+        public bool Exists(string firstName)
+        {
+            return _db.Doctors.Any(fn => fn.FirstName == firstName);
+        }
+
     } // Class
 
 } // Namespace

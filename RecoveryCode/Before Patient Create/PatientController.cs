@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Models.ViewModels;
 using MyGlucoseDotNetCore.Services.Interfaces;
 
@@ -53,14 +52,14 @@ namespace MyGlucoseDotNetCore.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Patient patient)
+        public async Task<IActionResult> Create(PatientViewModel patientVM)
         {
             if (ModelState.IsValid)
             {
-                await _pat.CreateAsync(patient);
+                await _pat.CreateAsync(patientVM.GetNewPatient());
                 return RedirectToAction("Index");
             }
-            return View(patient);
+            return View(patientVM);
         }
     }
 }

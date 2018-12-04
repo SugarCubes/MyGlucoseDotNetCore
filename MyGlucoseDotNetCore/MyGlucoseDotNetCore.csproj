@@ -21,6 +21,18 @@
     <Compile Remove="Migrations\20181031162350_AddedDatesToModels.Designer.cs" />
     <Compile Remove="Migrations\20181102224730_AddedDoctorIdToPatient.cs" />
     <Compile Remove="Migrations\20181102224730_AddedDoctorIdToPatient.Designer.cs" />
+    <Compile Remove="Migrations\20181201183817_role.cs" />
+    <Compile Remove="Migrations\20181201183817_role.Designer.cs" />
+    <Compile Remove="Migrations\20181203154834_RoleError.cs" />
+    <Compile Remove="Migrations\20181203154834_RoleError.Designer.cs" />
+    <Compile Remove="Migrations\20181203162905_RoleError.cs" />
+    <Compile Remove="Migrations\20181203162905_RoleError.Designer.cs" />
+    <Compile Remove="Migrations\20181203171047_Roles.cs" />
+    <Compile Remove="Migrations\20181203171047_Roles.Designer.cs" />
+    <Compile Remove="Migrations\20181203171926_Roles.cs" />
+    <Compile Remove="Migrations\20181203171926_Roles.Designer.cs" />
+    <Compile Remove="Migrations\20181203172232_Roles.cs" />
+    <Compile Remove="Migrations\20181203172232_Roles.Designer.cs" />
   </ItemGroup>
 
 

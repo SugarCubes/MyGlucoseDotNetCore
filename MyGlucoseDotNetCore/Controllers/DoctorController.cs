@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Models.ViewModels;
 using MyGlucoseDotNetCore.Services.Interfaces;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
-    public class PatientController : Controller
+    public class DoctorController : Controller
     {
         private IPatientRepository _pat;
         private IDoctorRepository _doc;
 
-        public PatientController(IPatientRepository pat,
+        public DoctorController(IPatientRepository pat,
                                  IDoctorRepository doc)
         {
             _pat = pat;
@@ -23,12 +22,28 @@ namespace MyGlucoseDotNetCore.Controllers
 
         public IActionResult Index()
         {
-            var doctors = _doc.ReadAll();
-            return View(doctors);
+            return View();
         }
 
-        public IActionResult PatientList()
+        public IActionResult PatientNames()
         {
+            var model = _pat.ReadAll()
+            .Select(p => new PatientViewModel
+            {
+                FirstName = p.FirstName,
+                LastName = p.LastName,
+                PhoneNumber = p.PhoneNumber
+            });
+            return View(model);
+        }
+ 
+
+        //[HttpPost]
+        public IActionResult PatientDetails()
+        {
+            
+            //var patient = _pat.ReadAsync(userName);
+
             var model = _pat.ReadAll()
             .Select(p => new PatientViewModel
             {
@@ -45,22 +60,6 @@ namespace MyGlucoseDotNetCore.Controllers
                 Email = p.Email
             });
             return View(model);
-        }
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(Patient patient)
-        {
-            if (ModelState.IsValid)
-            {
-                await _pat.CreateAsync(patient);
-                return RedirectToAction("Index");
-            }
-            return View(patient);
         }
     }
 }

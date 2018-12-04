@@ -1,5 +1,4 @@
 ﻿@model MyGlucoseDotNetCore.Models.ViewModels.PatientViewModel
-
 @{
     ViewData["Title"] = "Create";
 }
@@ -12,11 +11,7 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
+            
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -51,11 +46,6 @@
                 <label asp-for="Zip1" class="control-label"></label>
                 <input asp-for="Zip1" class="form-control" />
                 <span asp-validation-for="Zip1" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Zip2" class="control-label"></label>
-                <input asp-for="Zip2" class="form-control" />
-                <span asp-validation-for="Zip2" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PhoneNumber" class="control-label"></label>

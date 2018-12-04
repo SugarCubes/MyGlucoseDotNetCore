@@ -110,6 +110,8 @@ namespace MyGlucoseDotNetCore.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -124,6 +126,8 @@ namespace MyGlucoseDotNetCore.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -226,23 +230,17 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("PatientId");
-
                     b.Property<int>("Steps");
 
                     b.Property<long>("Timestamp");
 
                     b.Property<DateTime>("UpdatedAt");
 
-                    b.Property<string>("UserId");
-
                     b.Property<string>("UserName");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PatientId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserName");
 
                     b.ToTable("ExerciseEntries");
                 });
@@ -258,8 +256,6 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<float>("Measurement");
 
-                    b.Property<string>("PatientId");
-
                     b.Property<long>("Timestamp");
 
                     b.Property<DateTime>("UpdatedAt");
@@ -270,7 +266,7 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex("UserName");
 
                     b.ToTable("GlucoseEntries");
                 });
@@ -282,23 +278,17 @@ namespace MyGlucoseDotNetCore.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<string>("PatientId");
-
                     b.Property<long>("Timestamp");
 
                     b.Property<int>("TotalCarbs");
 
                     b.Property<DateTime>("UpdatedAt");
 
-                    b.Property<string>("UserId");
-
                     b.Property<string>("UserName");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PatientId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserName");
 
                     b.ToTable("MealEntries");
                 });
@@ -396,33 +386,32 @@ namespace MyGlucoseDotNetCore.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MyGlucoseDotNetCore.Models.ApplicationRole", b =>
+                {
+                    b.HasOne("MyGlucoseDotNetCore.Models.ApplicationUser")
+                        .WithMany("Roles")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.ExerciseEntry", b =>
                 {
-                    b.HasOne("MyGlucoseDotNetCore.Models.Patient")
+                    b.HasOne("MyGlucoseDotNetCore.Models.Patient", "Patient")
                         .WithMany("ExerciseEntries")
-                        .HasForeignKey("PatientId");
-
-                    b.HasOne("MyGlucoseDotNetCore.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserName");
                 });
 
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.GlucoseEntry", b =>
                 {
                     b.HasOne("MyGlucoseDotNetCore.Models.Patient", "Patient")
                         .WithMany("GlucoseEntries")
-                        .HasForeignKey("PatientId");
+                        .HasForeignKey("UserName");
                 });
 
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.MealEntry", b =>
                 {
-                    b.HasOne("MyGlucoseDotNetCore.Models.Patient")
+                    b.HasOne("MyGlucoseDotNetCore.Models.Patient", "Patient")
                         .WithMany("MealEntries")
-                        .HasForeignKey("PatientId");
-
-                    b.HasOne("MyGlucoseDotNetCore.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserName");
                 });
 
             modelBuilder.Entity("MyGlucoseDotNetCore.Models.MealItem", b =>
