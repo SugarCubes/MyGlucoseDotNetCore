@@ -12,10 +12,10 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
 {
     public class GlucoseController : Controller
     {
-        private IGlucoseEntriesRepository _glucose;
+        private IGlucoseEntryRepository _glucose;
         private IApplicationUserRepository _users;
 
-        public GlucoseController(IGlucoseEntriesRepository glucose, IApplicationUserRepository users)
+        public GlucoseController(IGlucoseEntryRepository glucose, IApplicationUserRepository users)
         {
             _glucose = glucose;
             _users = users;

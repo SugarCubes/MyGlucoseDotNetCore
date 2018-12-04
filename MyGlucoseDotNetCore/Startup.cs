@@ -27,12 +27,14 @@ namespace MyGlucoseDotNetCore
             //services.AddDbContext<ApplicationDbContext>( options =>
             //     options.UseSqlServer( Configuration.GetConnectionString( "DefaultConnection" ) ) );
 
+            services.AddScoped<DatabaseSeeder>();
+
             services.AddDbContextPool<ApplicationDbContext>( options =>
               options.UseMySql( Configuration.GetConnectionString( "MySqlConnection" ) ) );//,
-                 //mysqlOptions =>
-                 //{
-                 //    mysqlOptions.ServerVersion( new Version( 5, 5, 60 ), ServerType.MySql );
-                 //} ) );
+                    //mysqlOptions =>
+                    //{
+                    //    mysqlOptions.ServerVersion( new Version( 5, 5, 60 ), ServerType.MySql );
+                    //} ) );
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -40,11 +42,13 @@ namespace MyGlucoseDotNetCore
             // Adding scoped services to provide DB Repositories:
             services.AddScoped<IApplicationUserRepository, DbApplicationUserRepository>();
             services.AddScoped<IExerciseEntryRepository, DbExerciseEntryRepository>();
-            services.AddScoped<IGlucoseEntriesRepository, DbGlucoseEntriesRepository>();
+            services.AddScoped<IGlucoseEntryRepository, DbGlucoseEntriesRepository>();
             services.AddScoped<IMealEntryRepository, DbMealEntryRepository>();
             services.AddScoped<IMealItemRepository, DbMealItemRepository>();
             services.AddScoped<IPatientRepository, DbPatientRepository>();
             services.AddScoped<IDoctorRepository, DbDoctorRepository>();
+
+            //services.AddIdentityCore<RoleUser>(options => { });
 
             services.AddMvc()
             .AddJsonOptions( options =>
@@ -63,7 +67,7 @@ namespace MyGlucoseDotNetCore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure( IApplicationBuilder app, IHostingEnvironment env )
         {
-            if ( env.IsDevelopment() )
+            if( env.IsDevelopment() )
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
@@ -79,16 +83,16 @@ namespace MyGlucoseDotNetCore
             app.UseAuthentication();
 
             app.UseMvc( routes =>
-             {
-                 routes.MapRoute(
-                     name: "default",
-                     template: "{controller=Home}/{action=Index}/{id?}" );
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}" );
 
-                 routes.MapRoute(
-                     name: "areas",
-                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-                 );
-             } );
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+            } );
         }
     }
 }

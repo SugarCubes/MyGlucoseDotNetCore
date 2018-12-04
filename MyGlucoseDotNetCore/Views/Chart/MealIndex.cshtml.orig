@@ -1,0 +1,22 @@
+﻿@{
+<<<<<<< HEAD
+    ViewData["Title"] = "Meal Chart";
+}
+
+<input type="date" class="fromDate" />
+<input type="date" class="toDate" />
+<div id="linechart_material"></div>
+=======
+    ViewData[ "Title" ] = "Carbohydrate History for " + ViewData[ "UserName" ];
+}
+
+<h2>@ViewData[ "Title" ]</h2>
+
+<div id="linechart_material">Please wait...</div>
+>>>>>>> MYG__17_Sprint_4
+
+@section scripts{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="~/js/mealChart.js"></script>
+}
+

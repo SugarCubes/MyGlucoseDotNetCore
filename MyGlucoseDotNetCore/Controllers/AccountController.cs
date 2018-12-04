@@ -9,6 +9,7 @@ using MyGlucoseDotNetCore.Services;
 using MyGlucoseDotNetCore.Services.Interfaces;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -23,6 +24,9 @@ namespace MyGlucoseDotNetCore.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private IApplicationUserRepository _users;
+
+
+
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -58,21 +62,21 @@ namespace MyGlucoseDotNetCore.Controllers
         public async Task<IActionResult> Login( LoginViewModel model, string returnUrl = null )
         {
             ViewData[ "ReturnUrl" ] = returnUrl;
-            if ( ModelState.IsValid )
+            if( ModelState.IsValid )
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if ( result.Succeeded )
+                if( result.Succeeded )
                 {
                     _logger.LogInformation( "User logged in." );
                     return RedirectToLocal( returnUrl );
                 }
-                if ( result.RequiresTwoFactor )
+                if( result.RequiresTwoFactor )
                 {
                     return RedirectToAction( nameof( LoginWith2fa ), new { returnUrl, model.RememberMe } );
                 }
-                if ( result.IsLockedOut )
+                if( result.IsLockedOut )
                 {
                     _logger.LogWarning( "User account locked out." );
                     return RedirectToAction( nameof( Lockout ) );
@@ -96,7 +100,7 @@ namespace MyGlucoseDotNetCore.Controllers
             // Ensure the user has gone through the username & password screen first
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
 
-            if ( user == null )
+            if( user == null )
             {
                 throw new ApplicationException( $"Unable to load two-factor authentication user." );
             }
@@ -112,13 +116,13 @@ namespace MyGlucoseDotNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginWith2fa( LoginWith2faViewModel model, bool rememberMe, string returnUrl = null )
         {
-            if ( !ModelState.IsValid )
+            if( !ModelState.IsValid )
             {
                 return View( model );
             }
 
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if ( user == null )
+            if( user == null )
             {
                 throw new ApplicationException( $"Unable to load user with ID '{_userManager.GetUserId( User )}'." );
             }
@@ -127,12 +131,12 @@ namespace MyGlucoseDotNetCore.Controllers
 
             var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, model.RememberMachine);
 
-            if ( result.Succeeded )
+            if( result.Succeeded )
             {
                 _logger.LogInformation( "User with ID {UserId} logged in with 2fa.", user.Id );
                 return RedirectToLocal( returnUrl );
             }
-            else if ( result.IsLockedOut )
+            else if( result.IsLockedOut )
             {
                 _logger.LogWarning( "User with ID {UserId} account locked out.", user.Id );
                 return RedirectToAction( nameof( Lockout ) );
@@ -151,7 +155,7 @@ namespace MyGlucoseDotNetCore.Controllers
         {
             // Ensure the user has gone through the username & password screen first
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if ( user == null )
+            if( user == null )
             {
                 throw new ApplicationException( $"Unable to load two-factor authentication user." );
             }
@@ -166,13 +170,13 @@ namespace MyGlucoseDotNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginWithRecoveryCode( LoginWithRecoveryCodeViewModel model, string returnUrl = null )
         {
-            if ( !ModelState.IsValid )
+            if( !ModelState.IsValid )
             {
                 return View( model );
             }
 
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if ( user == null )
+            if( user == null )
             {
                 throw new ApplicationException( $"Unable to load two-factor authentication user." );
             }
@@ -181,12 +185,12 @@ namespace MyGlucoseDotNetCore.Controllers
 
             var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
 
-            if ( result.Succeeded )
+            if( result.Succeeded )
             {
                 _logger.LogInformation( "User with ID {UserId} logged in with a recovery code.", user.Id );
                 return RedirectToLocal( returnUrl );
             }
-            if ( result.IsLockedOut )
+            if( result.IsLockedOut )
             {
                 _logger.LogWarning( "User with ID {UserId} account locked out.", user.Id );
                 return RedirectToAction( nameof( Lockout ) );
@@ -210,37 +214,48 @@ namespace MyGlucoseDotNetCore.Controllers
         [AllowAnonymous]
         public IActionResult Register( string returnUrl = null )
         {
+            var vm = new RegisterViewModel
+            {
+                AllRoles = _users.ReadAllRoles()
+                    .OrderBy( n => n.Name )
+                    .ToList()
+            };
             ViewData[ "ReturnUrl" ] = returnUrl;
-            return View();
+            return View( vm );
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register( RegisterViewModel model, string returnUrl = null )
+        [HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register( RegisterViewModel registerVM, string returnUrl = null )
         {
             ViewData[ "ReturnUrl" ] = returnUrl;
-            if ( ModelState.IsValid )
+            if( ModelState.IsValid )
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if ( result.Succeeded )
+                var user = new ApplicationUser { UserName = registerVM.Email, Email = registerVM.Email };
+                var result = await _userManager.CreateAsync(user, registerVM.Password);
+
+                _logger.LogInformation( "********Role: " + registerVM.Role + "*************" );
+                await _userManager.AddToRoleAsync( user, registerVM.Role.ToString().ToUpper() );
+
+                if( result.Succeeded )
                 {
                     _logger.LogInformation( "User created a new account with password." );
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync( model.Email, callbackUrl );
+                    await _emailSender.SendEmailConfirmationAsync( registerVM.Email, callbackUrl );
 
                     await _signInManager.SignInAsync( user, isPersistent: false );
                     _logger.LogInformation( "User created a new account with password." );
+
                     return RedirectToLocal( returnUrl );
                 }
+
                 AddErrors( result );
+                //if()
             }
 
             // If we got this far, something failed, redisplay form
-            return View( model );
+            return View( registerVM );
         }
 
         [HttpPost]
@@ -267,25 +282,25 @@ namespace MyGlucoseDotNetCore.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLoginCallback( string returnUrl = null, string remoteError = null )
         {
-            if ( remoteError != null )
+            if( remoteError != null )
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
                 return RedirectToAction( nameof( Login ) );
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
-            if ( info == null )
+            if( info == null )
             {
                 return RedirectToAction( nameof( Login ) );
             }
 
             // Sign in the user with this external login provider if the user already has a login.
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
-            if ( result.Succeeded )
+            if( result.Succeeded )
             {
                 _logger.LogInformation( "User logged in with {Name} provider.", info.LoginProvider );
                 return RedirectToLocal( returnUrl );
             }
-            if ( result.IsLockedOut )
+            if( result.IsLockedOut )
             {
                 return RedirectToAction( nameof( Lockout ) );
             }
@@ -304,20 +319,20 @@ namespace MyGlucoseDotNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ExternalLoginConfirmation( ExternalLoginViewModel model, string returnUrl = null )
         {
-            if ( ModelState.IsValid )
+            if( ModelState.IsValid )
             {
                 // Get the information about the user from the external login provider
                 var info = await _signInManager.GetExternalLoginInfoAsync();
-                if ( info == null )
+                if( info == null )
                 {
                     throw new ApplicationException( "Error loading external login information during confirmation." );
                 }
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user);
-                if ( result.Succeeded )
+                if( result.Succeeded )
                 {
                     result = await _userManager.AddLoginAsync( user, info );
-                    if ( result.Succeeded )
+                    if( result.Succeeded )
                     {
                         await _signInManager.SignInAsync( user, isPersistent: false );
                         _logger.LogInformation( "User created an account using {Name} provider.", info.LoginProvider );
@@ -335,12 +350,12 @@ namespace MyGlucoseDotNetCore.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail( string userId, string code )
         {
-            if ( userId == null || code == null )
+            if( userId == null || code == null )
             {
                 return RedirectToAction( nameof( HomeController.Index ), "Home" );
             }
             var user = await _userManager.FindByIdAsync(userId);
-            if ( user == null )
+            if( user == null )
             {
                 throw new ApplicationException( $"Unable to load user with ID '{userId}'." );
             }
@@ -360,10 +375,10 @@ namespace MyGlucoseDotNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword( ForgotPasswordViewModel model )
         {
-            if ( ModelState.IsValid )
+            if( ModelState.IsValid )
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                if ( user == null || !( await _userManager.IsEmailConfirmedAsync( user ) ) )
+                if( user == null || !( await _userManager.IsEmailConfirmedAsync( user ) ) )
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return RedirectToAction( nameof( ForgotPasswordConfirmation ) );
@@ -393,7 +408,7 @@ namespace MyGlucoseDotNetCore.Controllers
         [AllowAnonymous]
         public IActionResult ResetPassword( string code = null )
         {
-            if ( code == null )
+            if( code == null )
             {
                 throw new ApplicationException( "A code must be supplied for password reset." );
             }
@@ -406,18 +421,18 @@ namespace MyGlucoseDotNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword( ResetPasswordViewModel model )
         {
-            if ( !ModelState.IsValid )
+            if( !ModelState.IsValid )
             {
                 return View( model );
             }
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if ( user == null )
+            if( user == null )
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction( nameof( ResetPasswordConfirmation ) );
             }
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
-            if ( result.Succeeded )
+            if( result.Succeeded )
             {
                 return RedirectToAction( nameof( ResetPasswordConfirmation ) );
             }
@@ -445,7 +460,7 @@ namespace MyGlucoseDotNetCore.Controllers
 
         private void AddErrors( IdentityResult result )
         {
-            foreach ( var error in result.Errors )
+            foreach( var error in result.Errors )
             {
                 ModelState.AddModelError( string.Empty, error.Description );
             }
@@ -453,7 +468,7 @@ namespace MyGlucoseDotNetCore.Controllers
 
         private IActionResult RedirectToLocal( string returnUrl )
         {
-            if ( Url.IsLocalUrl( returnUrl ) )
+            if( Url.IsLocalUrl( returnUrl ) )
             {
                 return Redirect( returnUrl );
             }

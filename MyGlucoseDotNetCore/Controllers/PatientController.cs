@@ -11,13 +11,22 @@ namespace MyGlucoseDotNetCore.Controllers
     public class PatientController : Controller
     {
         private IPatientRepository _pat;
+        private IDoctorRepository _doc;
 
-        public PatientController(IPatientRepository pat)
+        public PatientController(IPatientRepository pat,
+                                 IDoctorRepository doc)
         {
             _pat = pat;
+            _doc = doc;
         }
 
         public IActionResult Index()
+        {
+            var doctors = _doc.ReadAll();
+            return View(doctors);
+        }
+
+        public IActionResult PatientList()
         {
             var model = _pat.ReadAll()
             .Select(p => new PatientViewModel
@@ -52,5 +61,7 @@ namespace MyGlucoseDotNetCore.Controllers
             }
             return View(patientVM);
         }
+
+
     }
 }

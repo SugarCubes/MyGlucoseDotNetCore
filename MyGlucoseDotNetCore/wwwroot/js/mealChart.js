@@ -7,7 +7,7 @@
             return null;
         }
         return decodeURI(results[1]) || 0;
-    } // urlParam
+    }; // urlParam
 
     google.charts.load('current', { 'packages': ['line'] });
     google.charts.setOnLoadCallback(drawChart);
@@ -26,10 +26,10 @@
     });
 
     function drawChart() {
-        $url = "/API/ChartApi/GetUserExerciseChart?UserName=" + $.urlParam("UserName");
-        if ($(".fromDate").val() != null && $(".fromDate").val() != "")
+        $url = "/API/ChartApi/GetUserMealChart?UserName=" + $.urlParam("UserName");
+        if ($(".fromDate").val() !== null && $(".fromDate").val() !== "")
             $url += "&fromDate=" + $(".fromDate").val();
-        if ($(".toDate").val() != null && $(".toDate").val() != "")
+        if ($(".toDate").val() !== null && $(".toDate").val() !== "")
             $url += "&toDate=" + $(".toDate").val();
 
         console.log("Sending request: [href: " + $url + "]" + ";");
@@ -43,37 +43,43 @@
             success: function (response) {
                 console.log(response);
 
-                var mealArray = [["Date", "Total Carbs"]];
-                $.each(response.mealEntries, function () {
-                    var mealItem = [this.updatedAt, this.totalCarbs];
-                    mealArray.push(mealItem);
-                });
+                if (response.mealEntries !== null && response.mealEntries.length > 0) {
 
-                var gData = google.visualization.arrayToDataTable(mealArray);
-                var data = new google.visualization.DataTable();
-                gData.addColumn('date', 'Day');
-                gData.addColumn('number', 'Total Carbs');
+                    var mealArray = [["Date", "Total Carbs"]];
+                    $.each(response.mealEntries, function () {
+                        var mealItem = [this.updatedAt, this.totalCarbs];
+                        mealArray.push(mealItem);
+                    });
 
-                var options = {
-                    chart: {
-                        title: 'Meals Over Time'//,
-                        //subtitle: 'in millions of dollars (USD)'
-                    },
-                    width: 900,
-                    height: 500
-                };
+                    var gData = google.visualization.arrayToDataTable(mealArray);
+                    var data = new google.visualization.DataTable();
+                    gData.addColumn('date', 'Day');
+                    gData.addColumn('number', 'Total Carbs');
 
-                var chart = new google.charts.Line(document.getElementById('linechart_material'));
+                    var options = {
+                        chart: {
+                            title: 'Meals Over Time'//,
+                            //subtitle: 'in millions of dollars (USD)'
+                        },
+                        width: 900,
+                        height: 500
+                    };
 
-                if (mealArray.length > 0)
-                    chart.draw(gData, google.charts.Line.convertOptions(options));
+                    var chart = new google.charts.Line(document.getElementById('linechart_material'));
 
-                //let $div = $('#feat_' + response.featureId);
-                //$div.remove();                              // Delete the row entirely
+                    if (mealArray.length > 0)
+                        chart.draw(gData, google.charts.Line.convertOptions(options));
+
+                } // if
+                else
+                    $('#linechart_material').text('There are no meal entries for this user.');
+
             },
             error: function (response) {
                 console.log(response);
                 //$link.removeClass('overlay');
+                $('#linechart_material').text('There was an error retrieving the entries.');
+
             }
         });
 

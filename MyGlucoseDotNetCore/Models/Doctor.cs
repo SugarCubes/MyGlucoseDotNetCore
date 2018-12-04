@@ -13,6 +13,9 @@ namespace MyGlucoseDotNetCore.Models
         public Doctor()
         {
             Patients = new List<Patient>();
-        }
-    }
-}
+
+        } // constructor
+
+    } // class
+
+} // namespace

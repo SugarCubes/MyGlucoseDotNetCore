@@ -33,3 +33,7 @@
         display: none;
     }
 }
+
+input {
+    color: #333;
+}

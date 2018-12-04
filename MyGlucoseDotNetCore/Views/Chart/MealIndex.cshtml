@@ -1,10 +1,15 @@
 ﻿@{
-    ViewData["Title"] = "Meal Chart";
+    ViewData[ "Title" ] = "Carbohydrate History for " + ViewData[ "UserName" ];
 }
 
-<input type="date" class="fromDate" />
-<input type="date" class="toDate" />
-<div id="linechart_material"></div>
+<h2>@ViewData[ "Title" ]</h2>
+
+<div style="padding:3em 0em;">
+    From: <input type="date" class="fromDate" />
+    To: <input type="date" class="toDate" />
+</div>
+
+<div id="linechart_material">Please wait...</div>
 
 @section scripts{
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

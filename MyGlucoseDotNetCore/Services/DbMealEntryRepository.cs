@@ -27,7 +27,6 @@ namespace MyGlucoseDotNetCore.Services
         public async Task<MealEntry> ReadAsync( Guid id )
         {
             return await ReadAll()
-                .Include( o => o.MealItems )
                 .SingleOrDefaultAsync( o => o.Id == id );
 
         } // ReadAsync
@@ -35,8 +34,8 @@ namespace MyGlucoseDotNetCore.Services
 
         public IQueryable<MealEntry> ReadAll()
         {
-            return _db.MealEntries
-                .Include( o => o.MealItems );
+            return _db.MealEntries;
+                //.Include( o => o.MealItems );
 
         } // ReadAll
 
