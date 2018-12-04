@@ -252,8 +252,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
 
         #endregion
 
-
-        int var;
+            
     } // class
 
 } // namespace
