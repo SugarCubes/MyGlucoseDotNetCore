@@ -42,6 +42,27 @@ namespace MyGlucoseDotNetCore.Models
             //return Role;
         }
 
+
+        public void CopyFrom( ApplicationUser user )
+        {
+            Roles = user.Roles;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            RemoteLoginToken = user.RemoteLoginToken;
+            RemoteLoginExpiration = user.RemoteLoginExpiration;
+            Address1 = user.Address1;
+            Address2 = user.Address2;
+            City = user.City;
+            State = user.City;
+            Zip1 = user.Zip1;
+            Zip2 = user.Zip2;
+            Height = user.Height;
+            Weight = user.Weight;
+            CreatedAt = user.CreatedAt;
+            UpdatedAt = user.UpdatedAt;
+
+        } // CopyFrom
+
     } // class
 
 } // namespace

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Models.ViewModels;
@@ -9,6 +10,7 @@ using MyGlucoseDotNetCore.Services.Interfaces;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
+    [Authorize( Roles = Roles.PATIENT )]    //+ ", " + Roles.DOCTOR )]
     public class PatientController : Controller
     {
         private IPatientRepository _pat;
@@ -62,5 +64,7 @@ namespace MyGlucoseDotNetCore.Controllers
             }
             return View(patient);
         }
+
+
     }
 }

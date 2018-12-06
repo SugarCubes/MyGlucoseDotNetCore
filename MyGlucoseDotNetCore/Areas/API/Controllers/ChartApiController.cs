@@ -1,77 +1,48 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Models.ViewModels;
 using MyGlucoseDotNetCore.Services.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MyGlucoseDotNetCore.Areas.API.Controllers
 {
-    [Area("API")]
+    [Area( "API" )]
     public class ChartApiController : Controller
     {
         private IGlucoseEntryRepository _glucoseEntryRepo;
         private IExerciseEntryRepository _excerciseEntryRepo;
         private IMealEntryRepository _mealEntryRepo;
+        private readonly ILogger _logger;
 
-        public ChartApiController(IGlucoseEntryRepository glucoseEntriesRepository,
-                                  IExerciseEntryRepository excerciseEntryRepo, 
-                                  IMealEntryRepository mealEntryRepoository )
+
+        public ChartApiController( IGlucoseEntryRepository glucoseEntriesRepository,
+                                  IExerciseEntryRepository excerciseEntryRepo,
+                                  IMealEntryRepository mealEntryRepoository,
+                                  ILogger<ChartApiController> logger )
         {
             _glucoseEntryRepo = glucoseEntriesRepository;
             _excerciseEntryRepo = excerciseEntryRepo;
             _mealEntryRepo = mealEntryRepoository;
+            _logger = logger;
 
         } // constructor
 
-        public JsonResult GetUserExerciseChart(string UserName)
+
+        public JsonResult GetUserExerciseChart( string UserName, DateTime? fromDate = null, DateTime? toDate = null )
         {
-            var data = from e in _excerciseEntryRepo.ReadAll()
-                       where e.UserName == UserName && e.Minutes > 0
-                       orderby e.UpdatedAt
-                       group e by e.UpdatedAt.ToString("d") into grp
-                       let minutes = grp.Sum( s => s.Minutes )
-                       select new ChartExerciseViewModel
-                       {
-                           Minutes = minutes,
-                           UpdatedAt = grp.Key
-                       };
-            //var data = _excerciseEntryRepo.ReadAll()
-            //    .Where(e => e.UserName == UserName && e.Minutes > 0 )
-            //    .OrderBy(e => e.UpdatedAt)
-            //    .GroupBy( e => e.UpdatedAt )
-            //    .Select( g => new
-            //    {
-            //        UpdatedAt = g.Key.ToString("d"),
-            //        Minutes = e.Minutes
-            //    } );
-            return new JsonResult(new { exerciseEntries = data });
+            IQueryable<ChartExerciseViewModel> data = GetExerciseEntries( UserName, fromDate, toDate );
+
+            return new JsonResult( new { exerciseEntries = data } );
 
         } // GetUserExerciseChart
 
-        public JsonResult GetUserStepChart( string UserName )
+
+        public JsonResult GetUserStepChart( string UserName, DateTime? fromDate = null, DateTime? toDate = null )
         {
-            var data = from e in _excerciseEntryRepo.ReadAll()
-                       where e.UserName == UserName && e.Steps > 0
-                       orderby e.UpdatedAt
-                       group e by e.UpdatedAt.ToString("d") into grp
-                       let steps = grp.Sum( s => s.Steps )
-                       select new ChartStepViewModel
-                       {
-                           Steps = steps,
-                           UpdatedAt = grp.Key
-                       };
-            //var data = _excerciseEntryRepo
-            //    .ReadAll()
-            //    .Where(s => s.UserName == UserName && s.Steps > 0 )
-            //    .OrderBy(o => o.UpdatedAt)
-            //    .GroupBy( d => new { d.UpdatedAt, d.Steps } )
-            //    .Select( e => new ChartStepViewModel
-            //    {
-            //        UpdatedAt = e.Key.UpdatedAt.ToString("d"),
-            //        Steps = e.Key.Steps
-            //    } );
+            IQueryable<ChartStepViewModel> data = GetStepEntries( UserName, fromDate, toDate );
+
             return new JsonResult( new { stepEntries = data } );
 
         } // GetUserExerciseChart
@@ -82,65 +53,206 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
             var data = _glucoseEntryRepo
                 .ReadAll()
                 .OrderBy(o => o.UpdatedAt);
-            return new JsonResult(new { glucoseEntries = data });
+            return new JsonResult( new { glucoseEntries = data } );
 
         } // GetGlucoseChart
 
 
-        public JsonResult GetUserGlucoseChart(string UserName)
+        public JsonResult GetUserGlucoseChart( string UserName, DateTime? fromDate = null, DateTime? toDate = null )
         {
-            var data = from e in _glucoseEntryRepo.ReadAll()
-                       where e.UserName == UserName && e.Measurement > 0
+            IQueryable<ChartGlucoseViewModel> data = GetGlucoseEntries( UserName, fromDate, toDate );
+
+            return new JsonResult( new { glucoseEntries = data } );
+
+        } // GetGlucoseChart
+
+
+        public JsonResult GetUserMealChart( string UserName, DateTime? fromDate = null, DateTime? toDate = null )
+        {
+            IQueryable<ChartMealViewModel> data = GetMealEntries( UserName, fromDate, toDate );
+
+            return new JsonResult( new { mealEntries = data } );
+
+        } // GetMealChart
+
+
+        #region ------------------------------ HELPER METHODS ------------------------------
+
+        private IQueryable<ChartExerciseViewModel> GetExerciseEntries( string UserName, DateTime? fromDate, DateTime? toDate )
+        {
+            var data = from e in _excerciseEntryRepo.ReadAll()
+                       where e.UserName == UserName && e.Minutes > 0
                        orderby e.UpdatedAt
                        group e by e.UpdatedAt.ToString("d") into grp
-                       let average = grp.Average( s => s.Measurement )
-                       select new ChartGlucoseViewModel
+                       select new ChartExerciseViewModel
                        {
-                           Measurement = average,
-                           UpdatedAt = grp.Key
+                           Minutes = grp.Sum( s => s.Minutes ),
+                           UpdatedAt = grp.Key,
+                           Date = DateTime.Parse( grp.Key )
+                           //Date = ((List<DateTime>)(from g in grp
+                           //                         select g.UpdatedAt))[0]
                        };
-            //var data = _glucoseEntryRepo
-            //    .ReadAll()
-            //    .Where(o => o.UserName == UserName)
-            //    .OrderBy(o => o.UpdatedAt)
-            //    .GroupBy( d => new { d.UpdatedAt, d.Measurement } )
-            //    .Select( e => new ChartGlucoseViewModel
-            //    {
-            //        UpdatedAt = e.Key.UpdatedAt.ToString("d"),
-            //        Measurement = e.Key.Measurement
-            //    } );
-            return new JsonResult(new { glucoseEntries = data });
 
-        } // GetGlucoseChart
+            //_logger.LogDebug( "*******" + data.Count() + "*******" );
+
+            if( fromDate != null )
+                data = data.Where( d => d.Date >= fromDate );
+            if( toDate != null )
+            {
+                var addADay = (DateTime) toDate;
+                addADay = addADay.AddHours( 23 ).AddMinutes( 59 );
+                data = data.Where( d => d.Date <= addADay );
+            }
+
+            return data;
+
+        } // GetExerciseEntries
 
 
-        public JsonResult GetUserMealChart( string UserName )
+        private IQueryable<ChartMealViewModel> GetMealEntries( string UserName, DateTime? fromDate, DateTime? toDate )
         {
             var data = from e in _mealEntryRepo.ReadAll()
                        where e.UserName == UserName && e.TotalCarbs > 0
                        orderby e.UpdatedAt
                        group e by e.UpdatedAt.ToString("d") into grp
-                       let dailyCarbs = grp.Sum( s => s.TotalCarbs )
                        select new ChartMealViewModel
                        {
-                           TotalCarbs = dailyCarbs,
-                           UpdatedAt = grp.Key
+                           TotalCarbs = grp.Sum( s => s.TotalCarbs ),
+                           UpdatedAt = grp.Key,
+                           Date = DateTime.Parse( grp.Key )
+                           //Date = ((List<DateTime>)(from g in grp
+                           //                         select g.UpdatedAt))[0]
                        };
-            // TODO: Create ReadAll(Username)
-            //var data = _mealEntryRepo
-            //    .ReadAll()
-            //    .Where(o => o.UserName == UserName)
-            //    .OrderBy(o => o.UpdatedAt)
-            //    .GroupBy( d => new { d.UpdatedAt, d.TotalCarbs } )
-            //    .Select( e => new ChartMealViewModel
-            //    {
-            //        UpdatedAt = e.Key.UpdatedAt.ToString("d"),
-            //        TotalCarbs = e.Key.TotalCarbs
-            //    } );
-            return new JsonResult( new { mealEntries = data } );
 
-        } // GetMealChart
+            //_logger.LogDebug( "*******" + data.Count() + "*******" );
 
+            if( fromDate != null )
+                data = data.Where( d => d.Date >= fromDate );
+            if( toDate != null )
+            {
+                var addADay = (DateTime) toDate;
+                addADay = addADay.AddHours( 23 ).AddMinutes( 59 );
+                data = data.Where( d => d.Date <= addADay );
+            }
+
+            return data;
+
+        } // GetMealEntries
+
+
+        private IQueryable<ChartGlucoseViewModel> GetGlucoseEntries( string UserName, DateTime? fromDate, DateTime? toDate )
+        {
+            var data = from e in _glucoseEntryRepo.ReadAll()
+                       where e.UserName == UserName && e.Measurement > 0
+                       orderby e.UpdatedAt
+                       group e by e.UpdatedAt.ToString("d") into grp
+                       select new ChartGlucoseViewModel
+                       {
+                           Measurement = grp.Average( s => s.Measurement ),
+                           UpdatedAt = grp.Key,
+                           Date = DateTime.Parse( grp.Key )
+                           //Date = ((List<DateTime>)(from g in grp
+                           //                         select g.UpdatedAt))[0]
+                       };
+
+            //_logger.LogDebug( "*******" + data.Count() + "*******" );
+
+            if( fromDate != null )
+                data = data.Where( d => d.Date >= fromDate );
+            if( toDate != null )
+            {
+                var addADay = (DateTime) toDate;
+                addADay = addADay.AddHours( 23 ).AddMinutes( 59 );
+                data = data.Where( d => d.Date <= addADay );
+            }
+
+            return data;
+
+        } // GetGlucoseEntries
+
+
+        private IQueryable<ChartStepViewModel> GetStepEntries( string UserName, DateTime? fromDate, DateTime? toDate )
+        {
+            var data = from e in _excerciseEntryRepo.ReadAll()
+                       where e.UserName == UserName && e.Steps > 0
+                       orderby e.UpdatedAt
+                       group e by e.UpdatedAt.ToString("d") into grp
+                       select new ChartStepViewModel
+                       {
+                           Steps = grp.Sum( s => s.Steps ),
+                           UpdatedAt = grp.Key,
+                           Date = DateTime.Parse( grp.Key )
+                           //Date = ((List<DateTime>)(from g in grp
+                           //                         select g.UpdatedAt))[0]
+                       };
+
+            //_logger.LogDebug( "*******" + data.Count() + "*******" );
+
+            if( fromDate != null )
+                data = data.Where( d => d.Date >= fromDate );
+            if( toDate != null )
+            {
+                var addADay = (DateTime) toDate;
+                addADay = addADay.AddHours( 23 ).AddMinutes( 59 );
+                data = data.Where( d => d.Date <= addADay );
+            }
+
+            //_logger.LogDebug( "*******" + data1.Count() + "*******" );
+            return data;
+
+        } // GetStepEntries
+
+        #endregion
+
+
+        #region ------------------------------ UNUSED ------------------------------
+
+        // TODO: Not grouping by date
+        //var data = _excerciseEntryRepo.ReadAll()
+        //    .Where(s => s.UserName == UserName && s.Minutes > 0 )
+        //    .OrderBy(o => o.UpdatedAt)
+        //    .GroupBy( d => new { d.UpdatedAt, d.Minutes } )
+        //    .Select( e => new ChartExerciseViewModel
+        //    {
+        //        UpdatedAt = e.Key.UpdatedAt.ToString("d"),
+        //        Minutes = e.Key.Minutes,
+        //        Date = DateTime.Parse( e.Key.UpdatedAt.ToString() )
+        //    } );
+
+
+        //if( fromDate != null )
+        //    data = data.Where( d => d.Date >= fromDate );
+        //if( toDate != null )
+        //{
+        //    var addADay = (DateTime) toDate;
+        //    addADay = addADay.AddHours( 23 ).AddMinutes( 59 );
+        //    data = data.Where( d => d.Date <= addADay );
+        //}
+
+        //var data = _glucoseEntryRepo.ReadAll()
+        //    .Where(s => s.UserName == UserName && s.Measurement > 0 )
+        //    .OrderBy(o => o.UpdatedAt)
+        //    .GroupBy( d => new { d.UpdatedAt, d.Measurement } )
+        //    .Select( e => new ChartGlucoseViewModel
+        //    {
+        //        UpdatedAt = e.Key.UpdatedAt.ToString("d"),
+        //        Measurement = e.Key.Measurement,
+        //        Date = DateTime.Parse( e.Key.UpdatedAt.ToString() )
+        //    } );
+
+
+        //if( fromDate != null )
+        //    data = data.Where( d => d.Date >= fromDate );
+        //if( toDate != null )
+        //{
+        //    var addADay = (DateTime) toDate;
+        //    addADay = addADay.AddHours( 23 ).AddMinutes( 59 );
+        //    data = data.Where( d => d.Date <= addADay );
+        //}
+
+        #endregion
+
+            
     } // class
 
 } // namespace

@@ -31,10 +31,10 @@ namespace MyGlucoseDotNetCore
 
             services.AddDbContextPool<ApplicationDbContext>( options =>
               options.UseMySql( Configuration.GetConnectionString( "MySqlConnection" ) ) );//,
-                 //mysqlOptions =>
-                 //{
-                 //    mysqlOptions.ServerVersion( new Version( 5, 5, 60 ), ServerType.MySql );
-                 //} ) );
+                    //mysqlOptions =>
+                    //{
+                    //    mysqlOptions.ServerVersion( new Version( 5, 5, 60 ), ServerType.MySql );
+                    //} ) );
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -67,7 +67,7 @@ namespace MyGlucoseDotNetCore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure( IApplicationBuilder app, IHostingEnvironment env )
         {
-            if ( env.IsDevelopment() )
+            if( env.IsDevelopment() )
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
@@ -83,16 +83,16 @@ namespace MyGlucoseDotNetCore
             app.UseAuthentication();
 
             app.UseMvc( routes =>
-             {
-                 routes.MapRoute(
-                     name: "default",
-                     template: "{controller=Home}/{action=Index}/{id?}" );
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}" );
 
-                 routes.MapRoute(
-                     name: "areas",
-                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-                 );
-             } );
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+            } );
         }
     }
 }

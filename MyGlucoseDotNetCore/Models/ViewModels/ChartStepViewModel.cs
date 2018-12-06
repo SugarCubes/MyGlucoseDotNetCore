@@ -9,5 +9,6 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
     {
         public int Steps { get; set; }
         public string UpdatedAt { get; set; }
+        public DateTime Date { get; set; }
     }
 }

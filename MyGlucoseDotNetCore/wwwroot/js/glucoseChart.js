@@ -3,12 +3,29 @@
     google.charts.load('current', { 'packages': ['line'] });
     google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
+    $(document).on('change', ".fromDate", function (incomingDate) {
+        //$url += "&fromDate=" + $(".fromDate").val();
+        google.charts.load('current', { 'packages': ['line'] });
+        google.charts.setOnLoadCallback(drawChart);
+    });
 
-        if ($.urlParam("UserName") === null)
-            $url = "/API/ChartApi/GetGlucoseChart";
-        else
-            $url = "/API/ChartApi/GetUserGlucoseChart?UserName=" + $.urlParam("UserName");
+    $(document).on('change', ".toDate", function (incomingDate) {
+        //alert($(".toDate").val());
+        //$url += "&toDate=" + $(".toDate").val();
+        google.charts.load('current', { 'packages': ['line'] });
+        google.charts.setOnLoadCallback(drawChart);
+    });
+
+    function drawChart() {
+        $url = "/API/ChartApi/GetUserGlucoseChart?UserName=" + $.urlParam("UserName");
+        if ($(".fromDate").val() !== null && $(".fromDate").val() !== "")
+            $url += "&fromDate=" + $(".fromDate").val();
+        if ($(".toDate").val() !== null && $(".toDate").val() !== "")
+            $url += "&toDate=" + $(".toDate").val();
+        //if ($.urlParam("UserName") === null)
+        //    $url = "/API/ChartApi/GetGlucoseChart";
+        //else
+        //    $url = "/API/ChartApi/GetUserGlucoseChart?UserName=" + $.urlParam("UserName");
 
         console.log("Sending request: [href: " + $url + "]" + ";");
 
@@ -51,7 +68,7 @@
 
                 } // if
                 else
-                    $('#linechart_material').text('There are no meal entries for this user.');
+                    $('#linechart_material').text('There are no glucose entries for this user.');
 
             },
             error: function (response) {
@@ -61,7 +78,7 @@
             }
         });
 
-    } // drawChart
+    }; // drawChart
 
 
     // From: https://stackoverflow.com/a/25359264
@@ -71,6 +88,6 @@
             return null;
         }
         return decodeURI(results[1]) || 0;
-    } // urlParam
+    }; // urlParam
 
 }); // document onLoad

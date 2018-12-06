@@ -1,10 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using MyGlucoseDotNetCore.Data;
 using MyGlucoseDotNetCore.Models;
-using MyGlucoseDotNetCore.Models.ViewModels;
 using MyGlucoseDotNetCore.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,20 +18,20 @@ namespace MyGlucoseDotNetCore.Services
         } // Injection Constructor
 
 
+        public IQueryable<Doctor> ReadAll()
+        {
+            return _db.Doctors;
+
+        } // ReadAll
+
+
         public async Task<Doctor> ReadAsync( string username )
         {
             return await ReadAll()
+                .Include( p => p.Patients )
                 .SingleOrDefaultAsync( o => o.UserName == username );
 
         } // ReadAsync
-
-
-        public IQueryable<Doctor> ReadAll()
-        {
-            return _db.Doctors
-			.Include( p => p.Patients );
-
-        } // ReadAll
 
 
         public async Task<Doctor> CreateAsync( Doctor doctor )
@@ -46,13 +43,14 @@ namespace MyGlucoseDotNetCore.Services
         } // Create
 
 
-        public async Task UpdateAsync( string usernameid, DoctorViewModel doctorVM )
+        public async Task UpdateAsync( string userName, Doctor doctor )
         {
-            var oldDoctor = await ReadAsync( usernameid );
+            var oldDoctor = await ReadAsync( userName );
             if( oldDoctor != null )
             {
-    			oldDoctor.DegreeAbbreviation = doctorVM.DegreeAbbreviation;
-    			oldDoctor.Patients = doctorVM.Patients;
+                oldDoctor.DegreeAbbreviation = doctor.DegreeAbbreviation;
+                if( doctor.Patients != null )
+                    oldDoctor.Patients = doctor.Patients;
                 _db.Entry( oldDoctor ).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return;
@@ -73,14 +71,14 @@ namespace MyGlucoseDotNetCore.Services
 
         } // DeleteAsync
 
-        public ApplicationUser ReadDoctor(string email)
+        public ApplicationUser ReadDoctor( string email )
         {
-            return _db.Users.FirstOrDefault(u => u.Email == email);
+            return _db.Users.FirstOrDefault( u => u.Email == email );
         }
 
-        public bool Exists(string firstName)
+        public bool Exists( string firstName )
         {
-            return _db.Doctors.Any(fn => fn.FirstName == firstName);
+            return _db.Doctors.Any( fn => fn.FirstName == firstName );
         }
 
     } // Class

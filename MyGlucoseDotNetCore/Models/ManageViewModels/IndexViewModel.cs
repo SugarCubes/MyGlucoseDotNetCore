@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -53,5 +54,8 @@ namespace MyGlucoseDotNetCore.Models.ManageViewModels
         public int Zip2 { get; set; }
 
         public string StatusMessage { get; set; }
+        public string DegreeAbbreviation { get; set; }
+        public string Doctor { get; set; }
+        public List<Doctor> AllDoctors { get; set; }
     }
 }

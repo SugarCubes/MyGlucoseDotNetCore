@@ -2,22 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyGlucoseDotNetCore.Models.ViewModels;
 using MyGlucoseDotNetCore.Services.Interfaces;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
+    [Authorize( Roles = Roles.DOCTOR )]
     public class DoctorController : Controller
     {
         private IPatientRepository _pat;
-        private IDoctorRepository _doc;
 
-        public DoctorController(IPatientRepository pat,
-                                 IDoctorRepository doc)
+        public DoctorController(IPatientRepository pat)
         {
             _pat = pat;
-            _doc = doc;
         }
 
         public IActionResult Index()

@@ -2,39 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyGlucoseDotNetCore.Data;
 using MyGlucoseDotNetCore.Models;
-using MyGlucoseDotNetCore.Services.Interfaces;
-using MyGlucoseDotNetCore.Models.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
-    [Authorize(Roles = Roles.DOCTOR)]
-    public class GlucoseEntriesController : Controller
+    [Authorize( Roles = Roles.DOCTOR )]
+    public class MealEntriesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private IGlucoseEntryRepository _entry;
-        private Random rnd = new Random();
 
-
-        public GlucoseEntriesController(ApplicationDbContext context, 
-                                        IGlucoseEntryRepository entry)
+        public MealEntriesController(ApplicationDbContext context)
         {
             _context = context;
-            _entry = entry;
         }
 
-        // GET: GlucoseEntry
+        // GET: MealEntries
         public async Task<IActionResult> Index()
         {
-            return View(await _context.GlucoseEntries.ToListAsync());
+            var applicationDbContext = _context.MealEntries.Include(m => m.Patient);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: GlucoseEntry/Details/5
+        // GET: MealEntries/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -42,40 +36,43 @@ namespace MyGlucoseDotNetCore.Controllers
                 return NotFound();
             }
 
-            var GlucoseEntries = await _context.GlucoseEntries
+            var mealEntry = await _context.MealEntries
+                .Include(m => m.Patient)
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (GlucoseEntries == null)
+            if (mealEntry == null)
             {
                 return NotFound();
             }
 
-            return View(GlucoseEntries);
+            return View(mealEntry);
         }
 
-        // GET: GlucoseEntry/Create
+        // GET: MealEntries/Create
         public IActionResult Create()
         {
+            ViewData["UserName"] = new SelectList(_context.Patients, "Id", "Id");
             return View();
         }
 
-        // POST: GlucoseEntry/Create
+        // POST: MealEntries/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserName,Measurement,BeforeAfter,WhichMeal,Date,Timestamp")] GlucoseEntry GlucoseEntries)
+        public async Task<IActionResult> Create([Bind("Id,UserName,TotalCarbs,CreatedAt,UpdatedAt,Timestamp")] MealEntry mealEntry)
         {
             if (ModelState.IsValid)
             {
-                GlucoseEntries.Id = Guid.NewGuid();
-                _context.Add(GlucoseEntries);
+                mealEntry.Id = Guid.NewGuid();
+                _context.Add(mealEntry);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(GlucoseEntries);
+            ViewData["UserName"] = new SelectList(_context.Patients, "Id", "Id", mealEntry.UserName);
+            return View(mealEntry);
         }
 
-        // GET: GlucoseEntry/Edit/5
+        // GET: MealEntries/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -83,22 +80,23 @@ namespace MyGlucoseDotNetCore.Controllers
                 return NotFound();
             }
 
-            var GlucoseEntries = await _context.GlucoseEntries.SingleOrDefaultAsync(m => m.Id == id);
-            if (GlucoseEntries == null)
+            var mealEntry = await _context.MealEntries.SingleOrDefaultAsync(m => m.Id == id);
+            if (mealEntry == null)
             {
                 return NotFound();
             }
-            return View(GlucoseEntries);
+            ViewData["UserName"] = new SelectList(_context.Patients, "Id", "Id", mealEntry.UserName);
+            return View(mealEntry);
         }
 
-        // POST: GlucoseEntry/Edit/5
+        // POST: MealEntries/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,PatientUsername,Measurement,BeforeAfter,WhichMeal,Date,Timestamp")] GlucoseEntry GlucoseEntries)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,UserName,TotalCarbs,CreatedAt,UpdatedAt,Timestamp")] MealEntry mealEntry)
         {
-            if (id != GlucoseEntries.Id)
+            if (id != mealEntry.Id)
             {
                 return NotFound();
             }
@@ -107,12 +105,12 @@ namespace MyGlucoseDotNetCore.Controllers
             {
                 try
                 {
-                    _context.Update(GlucoseEntries);
+                    _context.Update(mealEntry);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GlucoseEntriesExists(GlucoseEntries.Id))
+                    if (!MealEntryExists(mealEntry.Id))
                     {
                         return NotFound();
                     }
@@ -123,10 +121,11 @@ namespace MyGlucoseDotNetCore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(GlucoseEntries);
+            ViewData["UserName"] = new SelectList(_context.Patients, "Id", "Id", mealEntry.UserName);
+            return View(mealEntry);
         }
 
-        // GET: GlucoseEntry/Delete/5
+        // GET: MealEntries/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -134,34 +133,31 @@ namespace MyGlucoseDotNetCore.Controllers
                 return NotFound();
             }
 
-            var GlucoseEntries = await _context.GlucoseEntries
+            var mealEntry = await _context.MealEntries
+                .Include(m => m.Patient)
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (GlucoseEntries == null)
+            if (mealEntry == null)
             {
                 return NotFound();
             }
 
-            return View(GlucoseEntries);
+            return View(mealEntry);
         }
 
-        // POST: GlucoseEntry/Delete/5
+        // POST: MealEntries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var GlucoseEntries = await _context.GlucoseEntries.SingleOrDefaultAsync(m => m.Id == id);
-            _context.GlucoseEntries.Remove(GlucoseEntries);
+            var mealEntry = await _context.MealEntries.SingleOrDefaultAsync(m => m.Id == id);
+            _context.MealEntries.Remove(mealEntry);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GlucoseEntriesExists(Guid id)
+        private bool MealEntryExists(Guid id)
         {
-            return _context.GlucoseEntries.Any(e => e.Id == id);
+            return _context.MealEntries.Any(e => e.Id == id);
         }
-        
     }
 }
-
-        
-        

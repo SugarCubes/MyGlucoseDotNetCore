@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyGlucoseDotNetCore.Services.Interfaces;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
+    //[Authorize(Roles = Roles.DOCTOR)]
     public class ChartController : Controller
     {
         private IApplicationUserRepository _applicationUserRepository;
@@ -61,5 +63,5 @@ namespace MyGlucoseDotNetCore.Controllers
         } // GetUserName
 
     } // class
-    
+
 } // namespace

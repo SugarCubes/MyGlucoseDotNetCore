@@ -19,7 +19,6 @@ namespace MyGlucoseDotNetCore.Data
         public DbSet<MealItem> MealItems { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
-        public DbSet<ApplicationUser> AppUser { get; set; }
         //public DbSet<ApplicationUserRole> ApplicationUserRoles { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -57,10 +56,6 @@ namespace MyGlucoseDotNetCore.Data
                 .WithOne( o => o.Patient )
                 .HasForeignKey( o => o.UserName );
 
-            //builder.Entity<ApplicationUser>()
-            //    .HasMany(r => r.Roles)
-            //    .WithOne(u => u.ApplicationRole)
-
             builder.Entity<Patient>()
                 .HasMany( o => o.ExerciseEntries )
                 .WithOne( o => o.Patient )
@@ -73,13 +68,6 @@ namespace MyGlucoseDotNetCore.Data
             builder.Entity<MealEntry>()
                 .HasMany( o => o.MealItems )
                 .WithOne( o => o.Meal );
-            
-            
-
-
-            //builder.Entity<MealItem>()
-            //    .HasOne( o => o.Meal )
-            //    .WithMany( o => o.MealItems );
 
         }
     }

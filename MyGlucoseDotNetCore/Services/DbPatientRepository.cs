@@ -23,6 +23,7 @@ namespace MyGlucoseDotNetCore.Services
         public async Task<Patient> ReadAsync( string username )
         {
             return await ReadAll()
+                .Include( d => d.Doctor )
                 .SingleOrDefaultAsync( o => o.UserName == username );
 
         } // ReadAsync

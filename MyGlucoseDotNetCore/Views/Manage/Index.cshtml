@@ -1,13 +1,13 @@
 ﻿@model IndexViewModel
 @*@inject Doctor
-@inject Patient*@
+    @inject Patient*@
 @{
-    ViewData["Title"] = "Profile";
-    ViewData.AddActivePage(ManageNavPages.Index);
+    ViewData[ "Title" ] = "Profile";
+    ViewData.AddActivePage( ManageNavPages.Index );
 }
 
-<h4>@ViewData["Title"]</h4>
-@Html.Partial("_StatusMessage", Model.StatusMessage)
+<h4>@ViewData[ "Title" ]</h4>
+@Html.Partial( "_StatusMessage", Model.StatusMessage )
 <div class="row">
     <div class="col-md-6">
         <form method="post">
@@ -16,20 +16,51 @@
                 <label asp-for="Username"></label>
                 <input asp-for="Username" class="form-control" disabled />
             </div>
+            @if( Model.Doctor != null )
+            {
+                <label>Current Doctor: </label>
+                <span>@Model.Doctor</span>
+            }
+            @if( Model.AllDoctors != null && Model.AllDoctors.Count() > 0 )
+            {
+                <div class="form-group">
+                    <label asp-for="Doctor"></label>
+                    @Html.DropDownList( "Doctor",
+                        new SelectList(Model.AllDoctors),
+                        "Select your doctor",
+                        new { @class = "form-control" })
+                    @*<select asp-for="Doctor" class="form-control" asp-items="@(new SelectList( Model.AllDoctors, Model.Doctor, "LastName" ))">*@
+                    @*@foreach( var dr in Model.AllDoctors )
+                            {
+                                var name = dr.LastName + ", " + dr.FirstName + ", " + dr.DegreeAbbreviation;
+                                @:<option value="@dr.UserName">@name</option>
+                            }
+                        </select>*@
+                </div>
+            }
+            @if( User.IsInRole( Roles.DOCTOR ) )
+            {
+                <div class="form-group">
+                    <label asp-for="DegreeAbbreviation"></label>
+                    <input asp-for="DegreeAbbreviation" class="form-control" />
+                    <span asp-validation-for="DegreeAbbreviation" class="text-danger"></span>
+                </div>
+
+            }
             <div class="form-group">
                 <label asp-for="Email"></label>
-                @if (Model.IsEmailConfirmed)
-                {
-                    <div class="input-group">
-                        <input asp-for="Email" class="form-control" />
-                        <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
-                    </div>
-                }
-                else
-                {
+                @*@if( Model.IsEmailConfirmed )
+                    {*@
+                <div class="input-group">
                     <input asp-for="Email" class="form-control" />
-                    <button asp-action="SendVerificationEmail" class="btn btn-link">Send verification email</button>
-                }
+                    <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+                </div>
+                @*}
+                    else
+                    {
+                        <input asp-for="Email" class="form-control" />
+                        <button asp-action="SendVerificationEmail" class="btn btn-link">Send verification email</button>
+                    }*@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -47,14 +78,6 @@
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            @if (User.IsInRole(Roles.DOCTOR))
-            {
-                @*<div class="form-group">
-                    <label asp-for="@Doctor.DegreeAbbreviation"></label>
-                    <input asp-for="@Doctor.DegreeAbbreviation" class="form-control" />
-                    <span asp-validation-for="Address1" class="text-danger"></span>
-                </div>*@
-            }
             <div class="form-group">
                 <label asp-for="Address1"></label>
                 <input asp-for="Address1" class="form-control" />
@@ -91,5 +114,5 @@
 </div>
 
 @section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync( "_ValidationScriptsPartial" )
 }

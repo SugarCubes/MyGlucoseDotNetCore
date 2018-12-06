@@ -9,6 +9,7 @@ namespace MyGlucoseDotNetCore.Models.ViewModels
     {
         public float Measurement { get; set; }
         public string UpdatedAt { get; set; }
+        public DateTime Date { get; set; }
 
     } // class
 

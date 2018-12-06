@@ -33,3 +33,7 @@
         display: none;
     }
 }
+
+input, select, option {
+    color: #333;
+}

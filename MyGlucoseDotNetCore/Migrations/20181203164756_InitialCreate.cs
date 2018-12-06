@@ -165,7 +165,7 @@ namespace MyGlucoseDotNetCore.Migrations
                     //    principalTable: "AspNetUsers",
                     //    principalColumn: "Id",
                     //    onDelete: ReferentialAction.Restrict );
-                });
+                } );
 
             migrationBuilder.CreateTable(
                 name: "GlucoseEntries",
@@ -190,7 +190,7 @@ namespace MyGlucoseDotNetCore.Migrations
                     //    principalTable: "AspNetUsers",
                     //    principalColumn: "Id",
                     //    onDelete: ReferentialAction.Restrict );
-                });
+                } );
 
             migrationBuilder.CreateTable(
                 name: "MealEntries",
@@ -213,7 +213,7 @@ namespace MyGlucoseDotNetCore.Migrations
                     //    principalTable: "AspNetUsers",
                     //    principalColumn: "Id",
                     //    onDelete: ReferentialAction.Restrict );
-                });
+                } );
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",

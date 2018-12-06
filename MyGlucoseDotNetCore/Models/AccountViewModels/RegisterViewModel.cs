@@ -18,7 +18,6 @@ namespace MyGlucoseDotNetCore.Models.AccountViewModels
         public string Role { get; set; }
 
         public List<ApplicationRole> AllRoles { get; set; }
-        public List<Doctor> AllDoctors { get; set; }
 
         //public string SelectedUser { get; set; }
 

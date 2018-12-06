@@ -3,10 +3,10 @@
 @*@inject IApplicationUserRepository assignRole*@
 @*@inject UserManager<IdentityUser> UserManager*@
 @{
-    ViewData["Title"] = "Register";
+    ViewData[ "Title" ] = "Register";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>@ViewData[ "Title" ]</h2>
 
 <div class="row">
     <div class="col-md-4">
@@ -16,23 +16,19 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Role" style="font-size: 18px;" class="control_label"></label><br />
-                @for (int i = 0; i < Model.AllRoles.Count(); i++)
+                @for( int i = 0; i < Model.AllRoles.Count(); i++ )
                 {
-                    @*@Html.Label( Model.AllRoles[ i ].Name )*@
-                    if (i == 0)
+                    @Html.Label( Model.AllRoles[ i ].Name )
+                    if( i == 0 )
                     {
-                        <h4>Doctor</h4>
-                        <input asp-for="Role" type="radio" style="width: 20px; height: 20px;" value="@Model.AllRoles[i].Name"  />
-                        <br />
-                }
-                else 
-                {
-                        <h4>Patient</h4>
-                        <input asp-for="Role" type="radio" style="width: 20px; height: 20px;" value="@Model.AllRoles[i].Name" />
+                        <input asp-for="Role" type="radio" value="@Model.AllRoles[i].Name" checked="checked" />
+                    }
+                    else
+                    {
+                        <input asp-for="Role" type="radio" value="@Model.AllRoles[i].Name" />
                     }
                     @*<input asp-for="@role.Name" type="hidden" />*@
-                    /**/
-                    @:&nbsp;
+@:&nbsp;
                 }
 
             </div>
@@ -59,5 +55,5 @@
 </div>
 
 @section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync( "_ValidationScriptsPartial" )
 }
