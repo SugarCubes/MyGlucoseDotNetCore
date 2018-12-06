@@ -21,19 +21,31 @@
                     @Html.Label( Model.AllRoles[ i ].Name )
                     if( i == 0 )
                     {
-                        <input asp-for="Role" type="radio" value="@Model.AllRoles[i].Name" checked="checked" />
+                        <input asp-for="Role" type="radio" value="@Model.AllRoles[i].Name" class="@Model.AllRoles[i].Name" checked="checked" />
                     }
                     else
                     {
-                        <input asp-for="Role" type="radio" value="@Model.AllRoles[i].Name" />
+                        <input asp-for="Role" type="radio" value="@Model.AllRoles[i].Name" class="@Model.AllRoles[i].Name" />
                     }
                     @*<input asp-for="@role.Name" type="hidden" />*@
-@:&nbsp;
+                    @:&nbsp;
                 }
 
+                <span asp-validation-for="Role" class="text-danger"></span>
             </div>
 
-            <span asp-validation-for="Role" class="text-danger"></span>
+            <div class="form-group" id="doctorList">
+                <label asp-for="DoctorUserName"></label>
+                @Html.DropDownList( "DoctorUserName",
+                    new SelectList(Model.AllDoctors),
+                    "Select your doctor",
+                    new { @class = "form-control" })
+            </div>
+            <div class="form-group" id="degreeAbreviation">
+                <label asp-for="DegreeAbbreviation" style="font-size: 18px;" c></label>
+                <input asp-for="DegreeAbbreviation" class="form-control" />
+                <span asp-validation-for="DegreeAbbreviation" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Email" style="font-size: 18px;" c></label>
                 <input asp-for="Email" class="form-control" />
@@ -55,5 +67,6 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/register.js"></script>
     @await Html.PartialAsync( "_ValidationScriptsPartial" )
 }

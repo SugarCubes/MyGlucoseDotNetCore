@@ -31,8 +31,15 @@ namespace MyGlucoseDotNetCore.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-        
+
+        // API
+        [Display( Name = "Doctor" )]
         public string DoctorUserName { get; set; }
+        // Register:
+        [Display( Name = "Degree Abbreviation" )]
+        public string DegreeAbbreviation { get; set; }
+        [Display( Name = "Doctor" )]
+        public List<Doctor> AllDoctors { get; set; }
 
         public Patient GetNewPatient()
         {

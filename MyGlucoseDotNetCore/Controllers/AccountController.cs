@@ -220,6 +220,7 @@ namespace MyGlucoseDotNetCore.Controllers
         {
             var vm = new RegisterViewModel
             {
+                AllDoctors = _doctorRepository.ReadAll().ToList(),
                 AllRoles = _users.ReadAllRoles()
                     .OrderBy( n => n.Name )
                     .ToList()
@@ -242,12 +243,21 @@ namespace MyGlucoseDotNetCore.Controllers
                 //var user = new ApplicationUser { UserName = registerVM.Email, Email = registerVM.Email };
                 if( registerVM.Role == Roles.DOCTOR )
                 {
-                    doctor = new Doctor { UserName = registerVM.Email, Email = registerVM.Email };
+                    doctor = new Doctor {
+                        UserName = registerVM.Email,
+                        Email = registerVM.Email,
+                        DegreeAbbreviation = registerVM.DegreeAbbreviation
+                    };
                     result = await _userManager.CreateAsync(doctor, registerVM.Password);
                 }
                 else if( registerVM.Role == Roles.PATIENT )
                 {
-                    patient = new Patient { UserName = registerVM.Email, Email = registerVM.Email };
+                    patient = new Patient {
+                        UserName = registerVM.Email,
+                        Email = registerVM.Email,
+                        Doctor = await _doctorRepository.ReadAsync( registerVM.DoctorUserName ),
+                        DoctorUserName = registerVM.DoctorUserName
+                    };
                     result = await _userManager.CreateAsync( patient, registerVM.Password );
                 }
 
