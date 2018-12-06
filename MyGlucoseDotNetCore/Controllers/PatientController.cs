@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyGlucoseDotNetCore.Models;
 using MyGlucoseDotNetCore.Models.ViewModels;
 using MyGlucoseDotNetCore.Services.Interfaces;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
-    [Authorize( Roles = Roles.PATIENT )]    //+ ", " + Roles.DOCTOR )]
+    [Authorize( Roles = Roles.PATIENT + ", " + Roles.DOCTOR )]
     public class PatientController : Controller
     {
         private IPatientRepository _pat;
         private IDoctorRepository _doc;
 
-        public PatientController(IPatientRepository pat,
-                                 IDoctorRepository doc)
+        public PatientController( IPatientRepository pat,
+                                 IDoctorRepository doc )
         {
             _pat = pat;
             _doc = doc;
@@ -26,7 +24,7 @@ namespace MyGlucoseDotNetCore.Controllers
         public IActionResult Index()
         {
             var doctors = _doc.ReadAll();
-            return View(doctors);
+            return View( doctors );
         }
 
         public IActionResult PatientList()
@@ -46,7 +44,7 @@ namespace MyGlucoseDotNetCore.Controllers
                 PhoneNumber = p.PhoneNumber,
                 Email = p.Email
             });
-            return View(model);
+            return View( model );
         }
 
         public IActionResult Create()
@@ -55,16 +53,30 @@ namespace MyGlucoseDotNetCore.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Patient patient)
+        public async Task<IActionResult> Create( Patient patient )
         {
-            if (ModelState.IsValid)
+            if( ModelState.IsValid )
             {
-                await _pat.CreateAsync(patient);
-                return RedirectToAction("Index");
+                await _pat.CreateAsync( patient );
+                return RedirectToAction( "Index" );
             }
-            return View(patient);
-        }
+            return View( patient );
+
+        } // Create
 
 
-    }
-}
+        //[Authorize( Roles = Roles.DOCTOR + ", " + Roles.PATIENT )]
+        public async Task<IActionResult> Details( Patient patient )
+        {
+            var pat = await _pat.ReadAsync( patient.UserName );
+
+            if( User.Identity.Name != pat.UserName && User.Identity.Name != pat.Doctor.UserName )
+                return new UnauthorizedResult();
+            return View( await _pat.ReadAsync( patient.UserName ) );
+
+        } // Details
+
+
+    } // class
+
+} // namespace

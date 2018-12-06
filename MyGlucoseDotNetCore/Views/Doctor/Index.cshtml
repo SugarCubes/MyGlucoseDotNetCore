@@ -1,14 +1,54 @@
-﻿
+﻿@model Doctor
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData[ "Title" ] = "All patients for " + Model.FirstName + " " + Model.LastName + ", " + Model.DegreeAbbreviation;
 }
 
-<h2>Pick your functionality</h2>
+<div class="jumbotron" style="padding-left:2em; padding-right: 2em;">
 
-<select onchange="location = this.value;">
-    <option value="">----------- Select an Option -----------</option>
-    <option value="/Chart/GlucoseIndex">Glucose Graph</option>
-    <option value="/Chart/ExerciseIndex">Exercise Graph</option>
-    <option value="/Chart/MealIndex">Meal Graph</option>
-</select>
- 
+    <h2>@ViewData[ "Title" ]</h2>
+
+    @if( Model.Patients.Count() > 0 )
+    {
+        <table class="table table-striped table-responsive table-bordered rounded mtop-2">
+
+            <tr class="row">
+                <th class="col-sm-4 bold text-center">
+                    Patient Name
+                </th>
+                <th class="col-sm-4 bold text-center"">
+                    Joined
+                </th>
+                <th class="col-sm-4 bold text-center"">
+                    Action
+                </th>
+            </tr>
+            @foreach( var patient in Model.Patients )
+            {
+                <tr class="row">
+                    <td class="col-sm-4">
+                        @patient.FirstName  @patient.LastName
+                    </td>
+                    <td class="col-sm-4">
+                        @patient.CreatedAt
+                    </td>
+                    <td class="col-sm-4">
+                        <a asp-controller="Patient" asp-action="Details" asp-route-UserName="@patient.UserName">Details</a> |
+                        <a asp-controller="Chart" asp-action="GlucoseIndex" asp-route-UserName="@patient.UserName">Average Glucose Graph</a> |
+                        <a asp-controller="Chart" asp-action="MealIndex" asp-route-UserName="@patient.UserName">Carb Graph</a> |
+                        <a asp-controller="Chart" asp-action="ExerciseIndex" asp-route-UserName="@patient.UserName">Exercise Graph</a> |
+                        <a asp-controller="Chart" asp-action="StepIndex" asp-route-UserName="@patient.UserName">Step Graph</a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    }
+    else
+    {
+        <div>
+            You currently have no registered patients.
+        </div>
+    }
+
+</div>

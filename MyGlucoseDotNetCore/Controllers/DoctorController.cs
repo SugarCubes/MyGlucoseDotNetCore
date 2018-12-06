@@ -1,49 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyGlucoseDotNetCore.Models.ViewModels;
 using MyGlucoseDotNetCore.Services.Interfaces;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
     [Authorize( Roles = Roles.DOCTOR )]
     public class DoctorController : Controller
     {
-        private IPatientRepository _pat;
+        private IDoctorRepository _doctorRepository;
+        private IPatientRepository _patientRepository;
 
-        public DoctorController(IPatientRepository pat)
+        public DoctorController( IPatientRepository patientRepository,
+            IDoctorRepository doctorRepository )
         {
-            _pat = pat;
+            _doctorRepository = doctorRepository;
+            _patientRepository = patientRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
+            var doctor = await _doctorRepository.ReadAsync( User.Identity.Name );
+            doctor.Patients = doctor.Patients
+                .OrderBy( l => l.LastName )
+                .ThenBy( f => f.FirstName )
+                .ToList();
+            return View( doctor );
+
+        } // Index
 
         public IActionResult PatientNames()
         {
-            var model = _pat.ReadAll()
+            var model = _patientRepository.ReadAll()
+                .OrderBy( l => l.LastName )
+                .ThenBy( f => f.FirstName )
             .Select(p => new PatientViewModel
             {
                 FirstName = p.FirstName,
                 LastName = p.LastName,
                 PhoneNumber = p.PhoneNumber
             });
-            return View(model);
-        }
- 
+            return View( model );
+
+        } // PatientNames
+
 
         //[HttpPost]
         public IActionResult PatientDetails()
         {
-            
+
             //var patient = _pat.ReadAsync(userName);
 
-            var model = _pat.ReadAll()
+            var model = _patientRepository.ReadAll()
             .Select(p => new PatientViewModel
             {
                 UserName = p.UserName,
@@ -58,7 +68,10 @@ namespace MyGlucoseDotNetCore.Controllers
                 PhoneNumber = p.PhoneNumber,
                 Email = p.Email
             });
-            return View(model);
-        }
-    }
-}
+            return View( model );
+
+        } // PatientDetails
+
+    } // class
+
+} // namespace

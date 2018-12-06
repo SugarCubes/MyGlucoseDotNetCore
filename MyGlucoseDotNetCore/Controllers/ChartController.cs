@@ -1,26 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyGlucoseDotNetCore.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace MyGlucoseDotNetCore.Controllers
 {
-    //[Authorize(Roles = Roles.DOCTOR)]
+    //[Authorize( Roles = Roles.DOCTOR )]
     public class ChartController : Controller
     {
         private IApplicationUserRepository _applicationUserRepository;
+        private IPatientRepository _patientRepository;
 
-        public ChartController( IApplicationUserRepository applicationUserRepository )
+        public ChartController( IApplicationUserRepository applicationUserRepository,
+            IPatientRepository patientRepository )
         {
             _applicationUserRepository = applicationUserRepository;
+            _patientRepository = patientRepository;
 
         }
 
         public async Task<IActionResult> GlucoseIndex( string UserName = null )
         {
+            if( User.Identity.Name != UserName && !User.IsInRole( Roles.DOCTOR ) )
+                return RedirectToAction( "Index", "Home" );
+
             ViewData[ "UserName" ] = await GetUserName( UserName );
 
             return View();
@@ -29,6 +31,9 @@ namespace MyGlucoseDotNetCore.Controllers
 
         public async Task<IActionResult> ExerciseIndex( string UserName = null )
         {
+            if( User.Identity.Name != UserName && !User.IsInRole( Roles.DOCTOR ) )
+                return RedirectToAction( "Index", "Home" );
+
             ViewData[ "UserName" ] = await GetUserName( UserName );
             return View();
 
@@ -36,6 +41,9 @@ namespace MyGlucoseDotNetCore.Controllers
 
         public async Task<IActionResult> MealIndex( string UserName = null )
         {
+            if( User.Identity.Name != UserName && !User.IsInRole( Roles.DOCTOR ) )
+                return RedirectToAction( "Index", "Home" );
+
             ViewData[ "UserName" ] = await GetUserName( UserName );
             return View();
 
@@ -43,6 +51,9 @@ namespace MyGlucoseDotNetCore.Controllers
 
         public async Task<IActionResult> StepIndex( string UserName = null )
         {
+            if( User.Identity.Name != UserName && !User.IsInRole( Roles.DOCTOR ) )
+                return RedirectToAction( "Index", "Home" );
+
             ViewData[ "UserName" ] = await GetUserName( UserName );
             return View();
 

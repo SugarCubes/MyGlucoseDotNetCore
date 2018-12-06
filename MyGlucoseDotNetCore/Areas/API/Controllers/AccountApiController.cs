@@ -117,7 +117,7 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
         public async Task<IActionResult> Register( RegisterViewModel model )
         {
             var doctor = await _doctorRepository.ReadAsync( model.DoctorUserName );
-            Patient patient = model.GetNewPatient();
+            Patient patient = await model.GetNewPatient( _doctorRepository );
             patient.Doctor = doctor;
             patient.DoctorUserName = doctor.UserName;
 

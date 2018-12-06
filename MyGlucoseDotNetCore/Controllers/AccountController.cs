@@ -243,21 +243,23 @@ namespace MyGlucoseDotNetCore.Controllers
                 //var user = new ApplicationUser { UserName = registerVM.Email, Email = registerVM.Email };
                 if( registerVM.Role == Roles.DOCTOR )
                 {
-                    doctor = new Doctor {
-                        UserName = registerVM.Email,
-                        Email = registerVM.Email,
-                        DegreeAbbreviation = registerVM.DegreeAbbreviation
-                    };
+                    doctor = registerVM.GetNewDoctor();
+                    //    new Doctor {
+                    //    UserName = registerVM.Email,
+                    //    Email = registerVM.Email,
+                    //    DegreeAbbreviation = registerVM.DegreeAbbreviation
+                    //};
                     result = await _userManager.CreateAsync(doctor, registerVM.Password);
                 }
                 else if( registerVM.Role == Roles.PATIENT )
                 {
-                    patient = new Patient {
-                        UserName = registerVM.Email,
-                        Email = registerVM.Email,
-                        Doctor = await _doctorRepository.ReadAsync( registerVM.DoctorUserName ),
-                        DoctorUserName = registerVM.DoctorUserName
-                    };
+                    patient = await registerVM.GetNewPatient( _doctorRepository );
+                    //    new Patient {
+                    //    UserName = registerVM.Email,
+                    //    Email = registerVM.Email,
+                    //    Doctor = await _doctorRepository.ReadAsync( registerVM.DoctorUserName ),
+                    //    DoctorUserName = registerVM.DoctorUserName
+                    //};
                     result = await _userManager.CreateAsync( patient, registerVM.Password );
                 }
 

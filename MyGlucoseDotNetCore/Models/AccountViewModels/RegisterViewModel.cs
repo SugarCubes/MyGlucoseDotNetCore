@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyGlucoseDotNetCore.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,6 +9,11 @@ namespace MyGlucoseDotNetCore.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
 
         [Required]
         [EmailAddress]
@@ -41,13 +47,35 @@ namespace MyGlucoseDotNetCore.Models.AccountViewModels
         [Display( Name = "Doctor" )]
         public List<Doctor> AllDoctors { get; set; }
 
-        public Patient GetNewPatient()
+        public async Task<Patient> GetNewPatient( IDoctorRepository doctorRepository)
         {
+            var doctor = await doctorRepository.ReadAsync( DoctorUserName );
             return new Patient
             {
+                FirstName = FirstName,
+                LastName = LastName,
                 Email = Email,
+                DoctorId = doctor.Id,
+                Doctor = doctor,
                 DoctorUserName = DoctorUserName,
-                UserName = Email
+                UserName = Email,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            };
+
+        } // GetNewPatient
+
+        public Doctor GetNewDoctor()
+        {
+            return new Doctor
+            {
+                FirstName = FirstName,
+                LastName = LastName,
+                Email = Email,
+                UserName = Email,
+                DegreeAbbreviation = DegreeAbbreviation,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
 
         } // GetNewPatient
