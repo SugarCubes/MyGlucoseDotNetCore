@@ -21,10 +21,10 @@ namespace MyGlucoseDotNetCore.Controllers
             _doc = doc;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var doctors = _doc.ReadAll();
-            return View( doctors );
+            //var doctors = _doc.ReadAll();
+            return View( await _pat.ReadAsync( User.Identity.Name ) );
         }
 
         public IActionResult PatientList()

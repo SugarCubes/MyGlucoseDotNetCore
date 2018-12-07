@@ -7,13 +7,17 @@
 
 <h2>Welcome Patient</h2>
 
-<select onchange="location = this.value;">
-    <option value=""></option>
-    <option value="/Chart/GlucoseIndex/?@Model.UserName">Glucose Graph</option>
-    <option value="/Chart/ExerciseIndex/?@Model.UserName">Exercise Graph</option>
-    <option value="/Chart/MealIndex/?@Model.UserName">Meal Graph</option>
-    <option value="/Chart/StepIndex/?@Model.UserName">Meal Graph</option>
-</select>
+<div class="row">
+    <div class="form-group col-sm-4">
+        <select onchange="location=this.value;" class="form-control">
+            <option value="">-- Select a Graph to View --</option>
+            <option value="/Chart/GlucoseIndex/?UserName=@Model.UserName">Glucose Graph</option>
+            <option value="/Chart/ExerciseIndex/?UserName=@Model.UserName">Exercise Graph</option>
+            <option value="/Chart/MealIndex/?UserName=@Model.UserName">Meal Graph</option>
+            <option value="/Chart/StepIndex/?UserName=@Model.UserName">Step Graph</option>
+        </select>
+    </div>
+</div>
 
 @*<a asp-controller="Chart" asp-action="GlucoseIndex" asp-route-UserName="@Model.UserName">Average Glucose Graph</a> |
 <a asp-controller="Chart" asp-action="MealIndex" asp-route-UserName="@Model.UserName">Carb Graph</a> |
