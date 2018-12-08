@@ -50,7 +50,7 @@
 
                 if (response.stepEntries !== null && response.stepEntries.length > 0) {
 
-                    var stepArray = [["Date", "Reading"]];
+                    var stepArray = [["Date", "Daily Steps"]];
 
                     $.each(response.stepEntries, function () {
                         var stepItem = [this.updatedAt, this.steps];
@@ -59,15 +59,15 @@
 
                     var gData = google.visualization.arrayToDataTable(stepArray);
                     var data = new google.visualization.DataTable();
-                    gData.addColumn('date', 'Day');
-                    gData.addColumn('number', 'Steps');
+                    //gData.addColumn('date', 'Day');
+                    //gData.addColumn('number', 'Steps');
 
                     var options = {
                         chart: {
                             title: 'Steps Over Time'//,
                             //subtitle: 'in millions of dollars (USD)'
                         },
-                        width: 900,
+                        width: $('#linechart_material').width(),
                         height: 500
                     };
                     /////This is the google API implementation
@@ -79,7 +79,7 @@
 
                 } // if
                 else
-                    $('#linechart_material').text('There are no step entries for this user.');
+                    $('#linechart_material').html('<div class="chart_inner">There are no daily step entries for this user.</div>');
 
                 //let $div = $('#feat_' + response.featureId);
                 //$div.remove();                              // Delete the row entirely

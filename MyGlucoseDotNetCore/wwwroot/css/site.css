@@ -66,26 +66,19 @@ input, select, option {
     border-radius: 8px;
 }
 
-    /*.rounded th:first-child {
-        border-radius: 10px 0 0 0;
-    }
+#linechart_material {
+    min-width: 100%;
+    min-height: 200px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: white;
+    color: #333;
+    margin: auto auto;
+    width: fit-content;
+    margin-top: 2em;
+    border: 8px solid #fff;
+}
 
-    .rounded th:nth-child(2n) {
-        border-top: none;
-        border-left: none;
-        border-right:none;
-    }
-
-    .rounded th:nth-child(2n+1) {
-        border-top: none;
-        border-left: none;
-        border-right: none;
-    }
-
-    .rounded th:last-child {
-        border-radius: 0 10px 0 0;
-    }
-
-    .rounded th:only-child {
-        border-radius: 10px 10px 0 0;
-    }*/
+.chart_inner {
+    padding-top: 6em;
+}

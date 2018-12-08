@@ -53,15 +53,15 @@
 
                     var gData = google.visualization.arrayToDataTable(mealArray);
                     var data = new google.visualization.DataTable();
-                    gData.addColumn('date', 'Day');
-                    gData.addColumn('number', 'Total Carbs');
+                    //gData.addColumn('date', 'Day');
+                    //gData.addColumn('number', 'Total Carbs');
 
                     var options = {
                         chart: {
                             title: 'Meals Over Time'//,
                             //subtitle: 'in millions of dollars (USD)'
                         },
-                        width: 900,
+                        width: $('#linechart_material').width(),
                         height: 500
                     };
 
@@ -72,7 +72,7 @@
 
                 } // if
                 else
-                    $('#linechart_material').text('There are no meal entries for this user.');
+                    $('#linechart_material').html('<div class="chart_inner">There are no meal entries for this user.</div>');
 
             },
             error: function (response) {

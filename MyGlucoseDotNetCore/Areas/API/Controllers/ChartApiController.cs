@@ -176,7 +176,8 @@ namespace MyGlucoseDotNetCore.Areas.API.Controllers
             var data = from e in _excerciseEntryRepo.ReadAll()
                        where e.UserName == UserName && e.Steps > 0
                        orderby e.UpdatedAt
-                       group e by e.UpdatedAt.ToString("d") into grp
+                       // Subtract a day, because each step entry is entered the *next* day
+                       group e by e.UpdatedAt.AddDays(-1).ToString("d") into grp
                        select new ChartStepViewModel
                        {
                            Steps = grp.Sum( s => s.Steps ),

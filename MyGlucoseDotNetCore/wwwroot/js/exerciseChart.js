@@ -53,15 +53,15 @@
 
                     var gData = google.visualization.arrayToDataTable(exerciseArray);
                     var data = new google.visualization.DataTable();
-                    gData.addColumn('date', 'Date');
-                    gData.addColumn('number', 'Minutes');
+                    //gData.addColumn('date', 'Date');
+                    //gData.addColumn('number', 'Minutes');
 
                     var options = {
                         chart: {
                             title: 'Exercise Over Time'//,
                             //subtitle: 'in millions of dollars (USD)'
                         },
-                        width: 900,
+                        width: $('#linechart_material').width(),
                         height: 500
                     };
 
@@ -71,7 +71,7 @@
                         chart.draw(gData, google.charts.Line.convertOptions(options));
                 }
                 else
-                    $('#linechart_material').text('There are no exercise entries for this user.');
+                    $('#linechart_material').html('<div class="chart_inner">There are no exercise entries for this user.</div>');
 
                 $url = null;
             },

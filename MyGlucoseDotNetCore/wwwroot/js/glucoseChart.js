@@ -48,15 +48,15 @@
 
                     var gData = google.visualization.arrayToDataTable(glucoseArray);
                     var data = new google.visualization.DataTable();
-                    gData.addColumn('date', 'Day');
-                    gData.addColumn('number', 'Glucose Reading');
+                    //gData.addColumn('date', 'Day');
+                    //gData.addColumn('number', 'Glucose Reading');
 
                     var options = {
                         chart: {
                             title: 'Glucose Readings Over Time'//,
                             //subtitle: 'in millions of dollars (USD)'
                         },
-                        width: 900,
+                        width: $('#linechart_material').width(),
                         height: 500
                     };
                     /////This is the google API implementation
@@ -68,7 +68,7 @@
 
                 } // if
                 else
-                    $('#linechart_material').text('There are no glucose entries for this user.');
+                    $('#linechart_material').html('<div class="chart_inner">There are no glucose entries for this user.</div>');
 
             },
             error: function (response) {

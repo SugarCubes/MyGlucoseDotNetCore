@@ -1,16 +1,19 @@
-﻿
+﻿@model Patient
+
 @{
     ViewData[ "Title" ] = "Steps for " + ViewData[ "UserName" ];
 }
 
 <h2>@ViewData[ "Title" ]</h2>
-
-<div style="padding:3em 0em;">
-    From: <input type="date" class="fromDate" />
-    To: <input type="date" class="toDate" />
+<div class="row">
+    <div class="form-group col-sm-8 form-inline">
+        From: <input type="date" class="fromDate form-control" />&nbsp;&nbsp;
+        To: <input type="date" class="toDate form-control" />
+    </div>
+    @Html.PatientChartNavigationDropDown( Model.UserName, "form-group col-sm-4 text-right" )
 </div>
 
-<div id="linechart_material">Please wait...</div>
+<div id="linechart_material"><div class="chart_inner">Please wait...</div></div>
 
 @section scripts{
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
